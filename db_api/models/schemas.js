@@ -7,13 +7,17 @@ const schemas = {
 
     equipoTotal: new Schema({
         id: { type: String },
-        value: { type: String },
+        value: { type: String }
     }),
 
     equipoParcial: new Schema({
         id: { type: String },
         value: { type: String },
-        datetime: { type: String },
+        datetime: { type: String }
+    }),
+
+    devices: new Schema({
+        id: { type: String }
     })
 
 };

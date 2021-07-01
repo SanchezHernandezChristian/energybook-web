@@ -9,7 +9,15 @@ router = express.Router();
 app.set('port', process.env.PORT || 4000);
 var url_devices = "http://pureplasticecg.dyndns-web.com/services/user/devices.xml";
 
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('00 9 * * *', () => {
+	response.getData(url_devices).then((data) => {
+		add_olus_db.insertDevices(data);
+	}, (error) => {
+		console.log(error);
+	});
+});
+
+cron.schedule('00 18 * * *', () => {
 	response.getData(url_devices).then((data) => {
 		add_olus_db.insertTotalValue(data);
 	}, (error) => {

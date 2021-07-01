@@ -1,6 +1,7 @@
 const response = require('../http/request');
 EquipoTotal = require('../models/equipo_total').EquipoTotal;
 EquipoParcial = require('../models/equipo_parcial').EquipoParcial;
+Devices = require('../models/devices').Devices;
 
 function insertTotalValue(data) {
     let ids = data.devices.id;
@@ -48,6 +49,13 @@ function insertPartialValue(data) {
     });
 };
 
+function insertDevices(data) {
+    for (const iterator of data.devices.id) {
+        const devices = new Devices({ id: iterator });
+        devices.save().then(() => console.log("Inserted ID:", iterator, "-- Ok --")).catch((e) => console.log('Error:', e));
+    };
+};
+
 function _date() {
     let date = new Date();
     let day = date.getDate();
@@ -62,4 +70,4 @@ function _date() {
         return `${day}${month}${year}`;
     }
 }
-module.exports = { insertTotalValue, insertPartialValue };
+module.exports = { insertTotalValue, insertPartialValue, insertDevices };
