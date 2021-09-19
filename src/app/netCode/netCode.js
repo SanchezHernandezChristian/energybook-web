@@ -141,7 +141,7 @@ export default {
                   // Ignore first device. EDS
                   if (index === 0) return;
                   this.metersFilter.options.push({
-                    value: `${this.eds.meter_id} ${device.name}`,
+                    value: `${this.eds.meter_id}*${device.name}`,
                     text: device.description,
                   });
                 });
@@ -387,7 +387,7 @@ export default {
               );
 
               /*      //Checaremos que primero se este tratando del tipo que queremos
-            if (res["Vab"]) {//Voltaje 
+            if (res["Vab"]) {//Voltaje
               console.log("se trata de voltaje");
             }
             if(res["Ia"]){ // Amperaje Ib e Ic

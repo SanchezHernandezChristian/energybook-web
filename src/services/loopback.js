@@ -32,8 +32,9 @@ function addTokenFromLocalStorage(http) {
 }
 
 const http = axios.create({
-  baseURL: "http://api.ienergybook.com/api",
-  // baseURL: "http://localhost:3000/api",
+  baseURL: "http://api.olus.mx/api",
+  //baseURL: "http://api.ienergybook.com/api",
+  //baseURL: "http://localhost:3000/api",
 });
 
 // Current setLoading function

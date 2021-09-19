@@ -33,7 +33,7 @@
     <b-card id="login-container">
       <b-form @submit.prevent="login">
         <div class="logo">
-          <img src="/assets/Logotipo_iEnergybook.svg" />
+          <img src="/assets/Olus-Logotipo.jpg" />
         </div>
         <h5>¡Bienvenido! Ingresa a tu cuenta</h5>
         <b-form-group id="login-user">
@@ -83,7 +83,7 @@
           <b-col>
             <br />
             <p>
-              iEnergybook
+              OLUS
               <br />
               <font size="1">Version 3.05</font>
             </p>
@@ -114,4 +114,3 @@
 </template>
 
                 <script src="./login"></script>
-                

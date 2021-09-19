@@ -2,7 +2,8 @@
 import eUsers from '@/services/eUsers'
 import store from '@/store/store'
 
-let socket = require('engine.io-client')('http://localhost:3000/api')
+let socket = require('engine.io-client')('http://api.olus.mx/api')
+//let socket = require('engine.io-client')('http://localhost:3000/api')
 
 socket.on('open', function () {
 
