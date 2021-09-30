@@ -94,7 +94,22 @@ var dataLine = {
       },
     },
   },
-  series: [],
+  series: [
+    {
+      name: "Demanda",
+      data: [0],
+      dataLabels: {
+        format:
+          '<div style="text-align:center"><span style="font-size:25px;color:' +
+          "#485658" +
+          '">{y}</span><br/>' +
+          '<span style="font-size:12px;color:#ADADAD">kW</span></div>',
+      },
+      tooltip: {
+        valueSuffix: " kW",
+      },
+    },
+  ],
 };
 
 var gaugeOptions = {
