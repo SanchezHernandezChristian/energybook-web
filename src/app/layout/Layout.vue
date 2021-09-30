@@ -505,13 +505,13 @@ export default {
           },
         })
         .then((designatedMeters) => {
+        //console.log('designatedMeters: ', designatedMeters);
           if (designatedMeters[0].tipo == "Acuvim II") {
             console.log(designatedMeters[0], "warn");
             this.$store.commit("mode", "ACUVIM");
             this.services = designatedMeters[0].devices.map(
               (service) => service.name
             );
-            console.log(this.services);
             this.$store.commit(
               "setServiceSelected",
               this.services ? this.services[0] : ""
@@ -555,4 +555,3 @@ export default {
 <style lang="scss">
 @import "../../styles/menu.scss";
 </style>
-

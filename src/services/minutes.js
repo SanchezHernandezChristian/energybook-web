@@ -9,11 +9,10 @@ let Minutes = Object.assign(
   {
     relation: "",
     variables(Dia, DesignatedMeterId) {
-      return loopback.post(
-        "/Minutes/VariablesMedidorUltimaHora",
-        Dia,
-        DesignatedMeterId
-      );
+      return loopback.post("/Minutes/VariablesMedidorUltimaHora", {
+        Dia: Dia,
+        DesignatedMeterId: DesignatedMeterId,
+      });
     },
     ValoresMensuales(IdMedidor) {
       return loopback.post("/Minutes/VariablesMensual", IdMedidor);

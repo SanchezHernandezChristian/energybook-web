@@ -266,7 +266,7 @@ export default {
   },
 
   computed: {
-    InyeccionMensual() {},
+    //InyeccionMensual() {},
 
     isadminNormal() {
       if (JSON.parse(localStorage.getItem("user")).Administrando == undefined) {
@@ -284,8 +284,8 @@ export default {
     },
     CostNet() {
       if (this.edsId) {
-        console.log(this.edsId);
-        console.log(this.serviceSelected);
+        console.log('CostNet:', this.edsId);
+        console.log('CostNet:', this.serviceSelected);
 
         meters
           .getStandardReadings(
@@ -299,7 +299,7 @@ export default {
           )
           .then((resultado) => {
             var costo_total = [];
-            console.log(resultado);
+            console.log('Costo_Dispositivo: ', resultado);
             resultado.forEach((valor) => {
               costo_total.push(valor.value);
             });
@@ -307,12 +307,12 @@ export default {
             var Costo_Dispositivo = costo_total
               .reduce((a, b) => a + b, 0) //Sumando los valores
               .toFixed(2); //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
-
+            console.log('Costo_Dispositivo: ',Costo_Dispositivo);
             /*  var formatter = new Intl.NumberFormat("en-US", {
                style: "currency",
                currency: "USD",
              });
-             
+
              var Costo_Dispositivo = formatter.format(Costo_Dispositivo);
 
              */
@@ -526,15 +526,18 @@ export default {
     },
   },
 
-  beforeMount() {
+  async beforeMount() {
     if (this.isAdmin) return;
+    console.log('no es admin: ', this.$store.state.mode)
+    await this.getMeters();
     if (this.$store.state.mode == "ACUVIM") {
-      console.log(this.edsId);
+      console.log('beforeMount: ', this.edsId);
       var start = moment().format("L");
-      console.log(start);
+      console.log('beforeMount: ', start);
 
-      Minutes.variables(start, "idMedidor")
+      Minutes.variables(start, this.edsId)
         .then((res) => {
+          console.log('Minutes.Variables: ', res);
           if (res.response.error) {
           } else {
             console.log(res);
@@ -549,7 +552,7 @@ export default {
               )
                 .then((response) => {
                   if (response) {
-                    console.log(response);
+                    console.log('DistributionPeriod: ', response);
                     this.variablesDistribucion = response.response;
                     // this.distributionMonthCost = response.response.cost;
 
@@ -616,15 +619,16 @@ export default {
             this.getConsumptionCost(Constants.Meters.filters.month);
           })
           .catch((err) => {
-            console.log(err);
+            console.log('beforeMount: getConsumptionCost - error -> ',err);
           });
       });
     }
   },
 
-  mounted() {
-    console.log(this.$store.state.mode);
-    console.log(this.edsId);
+  async mounted() {
+    await this.getMeters();
+    console.log('mounted: ', this.$store.state.mode);
+    console.log('mounted: ', this.edsId);
     if (this.isAdmin) {
       $(".user-dashboard").remove();
       return;
@@ -642,7 +646,7 @@ export default {
     if (this.$store.state.mode == "ACUVIM") {
       this.updatePieChartAcuvim();
     } else {
-      console.log("fue normal update");
+      //console.log("fue normal update");
       this.updatePieChart();
     }
 
@@ -654,37 +658,35 @@ export default {
       if (this.$store.state.mode == "ACUVIM") {
         console.log("entre a consumo diario ");
         this.consumptionCost = this.consumovaloracuvim;
-      }
+      } else {
       //TODOOOOOOO
-      /*  return new Promise((resolve, reject) => {
-        meters
-          .getConsumptionCostsByFilter(
-            this.edsId,
-            "",
-            this.serviceSelected,
-            period,
-            86400,
-            {}
-          )
-          .then((res) => {
-            let cost = res
-              .reduce((prev, curr) => {
-                return prev + parseFloat(curr.cost);
-              }, 0)
-              .toFixed(2);
-            if (period === Constants.Meters.filters.today) {
-              this.consumptionCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            } else if (period === Constants.Meters.filters.month) {
-              this.consumptionMonthCost = cost.replace(
-                /\B(?=(\d{3})+(?!\d))/g,
-                ","
-              );
-            }
-            resolve();
-          })
-          .catch(() => reject());
-      });
-      */
+        return new Promise((resolve, reject) => {
+          meters
+            .getConsumptionCostsByFilter(
+              this.edsId,
+              "",
+              this.serviceSelected,
+              period,
+              86400,
+              {}
+            )
+            .then((res) => {
+              console.log('meters.getConsumptionCostsByFilter: ', period, ' -> ', res);
+              let cost = res
+                .reduce((prev, curr) => {
+                  return prev + parseFloat(curr.cost);
+                }, 0)
+                .toFixed(2);
+              if (period === Constants.Meters.filters.today) {
+                this.consumptionCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              } else if (period === Constants.Meters.filters.month) {
+                this.consumptionMonthCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              }
+              resolve();
+            })
+            .catch(() => reject());
+        });
+      }
     },
     refresh() {
       this.refreshingData = true;
@@ -810,7 +812,7 @@ export default {
           })
           .then((res) => {
             this.meters = res;
-            console.log(res);
+            //console.log('getMeters: response -> ',res);
             let metersCount = this.meters.length;
             if (metersCount > 0 && this.serviceSelected !== "") {
               if (res[0].tipo == "Acuvim II") {
@@ -838,7 +840,7 @@ export default {
                   (service) => service.serviceName === this.serviceSelected
                 )[0];
                 this.edsId = this.meters[0].meter_id;
-                console.log(this.edsId);
+                //console.log('getMeters: edsId -> ',this.edsId);
 
                 if (currService.dp <= 0) {
                   // Mostrar numero 0 cuando son valores negativos
@@ -948,7 +950,7 @@ export default {
     updatePieChart() {
       this.chartData.datasets[0].data = [];
       this.chartData.labels = [];
-      console.log("esto va en piechart", this.consumptionSummary);
+      //console.log("esto va en piechart", this.consumptionSummary);
       Object.values(this.consumptionSummary).forEach((device) => {
         if (device.value > 0) {
           this.chartData.datasets[0].data.push(device.value);
