@@ -86,8 +86,9 @@ export default {
     loadCompany({ commit, rootState }, company_id) {
       if (rootState.isUser) {
         return companies.find({ id: company_id }).then((company) => {
+          //console.log("loadCompany: sies -> ", company);
           if (company.name == "Administrado") {
-            console.log("sies");
+            //console.log("loadCompany: sies -> ", company);
             commit("mode", "ACUVIM");
           }
           commit("setCompany", company);

@@ -203,11 +203,11 @@ export default {
             if (JSON.parse(localStorage.getItem('user')).Administrando == undefined) {
                 return this.$store.state.isadminNormal = false
             } else {
-                return this.$store.state.isadminNormal = true 
+                return this.$store.state.isadminNormal = true
             }
         },
         isAdmin() {
-            
+
             return JSON.parse(localStorage.getItem('user')).role_id === 1 && this.$route.name === 'dashboard';
         },
 
@@ -234,7 +234,7 @@ export default {
         dailyLastUpdatedTime() {
             return this.$store.state.socket.lastUpdated;
         },
-    
+
 
         distributionCost() {
             return (this.cfePrices.distributionPrice * parseFloat(this.distribution)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -345,11 +345,13 @@ export default {
         },
 
         consumption() {
-            this.getConsumptionCost(Constants.Meters.filters.today);
+          this.load();
+          this.getConsumptionCost(Constants.Meters.filters.today);
         },
 
         consumptionMonth() {
-            this.getConsumptionCost(Constants.Meters.filters.month);
+          this.load();
+          this.getConsumptionCost(Constants.Meters.filters.month);
         },
 
         serviceSelected() {
@@ -359,11 +361,11 @@ export default {
         }
     },
 
-    beforeMount() {
- 
-         
+    async beforeMount() {
+
+
         if(this.isAdmin) return;
-        this.getMeters()
+        await this.getMeters()
             .then(() => {
                 this.getConsumptionCost(Constants.Meters.filters.today)
                     .then(() => {
@@ -372,7 +374,7 @@ export default {
                     .catch(err => {
                         console.log(err);
                     })
-                
+
             });
     },
 
@@ -381,7 +383,7 @@ export default {
             $('.user-dashboard').remove()
             return;
         }
-  
+
 
 
 
@@ -436,7 +438,7 @@ export default {
                     text: 'Verifica que tus medidores estén funcionando correctamente '
                 });
             }); */
-            
+
             designatedMeters.odometerReadings(this.companyId)
                 .finally(() => {
                     return designatedMeters.dailyReadings(this.companyId);
@@ -461,7 +463,7 @@ export default {
                 .catch(error => {
                     console.log(error);
                     this.refreshingData = false;
-                    
+
                     this.$notify({
                         group: 'notification',
                         type: 'error',
@@ -520,7 +522,7 @@ export default {
                     if(metersCount > 0 && this.serviceSelected !== '') {
                         let currService = this.meters[0].services.filter(service => service.serviceName === this.serviceSelected)[0];
                         this.edsId = this.meters[0].meter_id;
-                        
+
                         this.$store.dispatch('socket/odometerReading', currService.dp);
                         this.$store.dispatch('socket/dailyReading', currService.dailyReadings);
                         this.$store.dispatch('socket/monthlyReading', currService.monthlyReadings);
