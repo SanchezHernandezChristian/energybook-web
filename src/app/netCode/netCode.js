@@ -274,7 +274,7 @@ export default {
               this.unidades = " A";
             }
             if (this.graphType.selected == 2) {
-              this.unidades = " A";
+              this.unidades = " %";
             }
             if (this.graphType.selected == 3) {
               this.unidades = " %";
@@ -368,7 +368,7 @@ export default {
                 this.unidades = " A";
               }
               if (this.graphType.selected == 2) {
-                this.unidades = " A";
+                this.unidades = " %";
               }
               if (this.graphType.selected == 3) {
                 this.unidades = " %";

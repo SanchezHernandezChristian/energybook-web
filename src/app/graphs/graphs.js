@@ -407,7 +407,8 @@ export default {
                     (this.array.reduce((a, b) => a + b, 0) / this.array.length)
                       .toFixed(2)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  ) + " kWh";
+                //  ) + " kWh";
+                  );
 
                 let {
                   xAxis,
