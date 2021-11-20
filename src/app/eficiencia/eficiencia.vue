@@ -5,55 +5,55 @@
     <b-col cols="12" md="8">
 
 
-     <b-card 
+     <b-card
  block
     >
      <b-row >
 
-    <b-col cols="4">   
+    <b-col cols="4">
      <b-card bg-variant="dark" text-variant="white"  width:>
-         <h5 v-if="numero!=''" class="text-left"> {{dia }}   </h5> 
+         <h5 v-if="numero!=''" class="text-left"> {{dia }}   </h5>
               <h2 v-if="numero!=''" class="text-justify"> {{ mes  }}  {{numero}}
               <br>
               <br>
-          <div> 
+          <div>
                           <div class="d-flex justify-content-around">
-              <p style="font-size: 17px;">Consumo</p>      <p style="font-size: 17px;">{{DiaConsumoKwh}}</p> 
+              <p style="font-size: 17px;">Consumo</p>      <p style="font-size: 17px;">{{DiaConsumoKwh}}</p>
             </div>
-               
-              <hr>          
+
+              <hr>
               <div class="d-flex justify-content-around">
                <p style="font-size: 17px;">Demanda</p>       <p style="font-size: 17px;">{{DiaDemandaKwh}}</p>
             </div>
-              
+
               <hr>
                 <div class="d-flex justify-content-around">
-               <p style="font-size: 17px;" >Produccion</p>      <p style="font-size: 17px;">{{ valorMuestra }}</p>   
+               <p style="font-size: 17px;" >Produccion</p>      <p style="font-size: 17px;">{{ valorMuestra }}</p>
             </div>
-               
+
 
 
 
     <b-row>
-    <b-col><b-form-input  v-model="produccion" variant="Primary" ></b-form-input></b-col>
-    <b-col><b-button   @click="GuardarValor(produccion,ctx)" variant="light"> <i class="fas fa-save"></i> Guardar</b-button></b-col>
+    <b-col><b-form-input id="produccionInput" v-model="produccion" variant="Primary" ></b-form-input></b-col>
+    <b-col><b-button   @click="GuardarValor(produccion)" variant="light"> <i class="fas fa-save"></i> Guardar</b-button></b-col>
   </b-row>
 
-           
+
 
 
           </div>
-                  </h2> 
-          <h5 v-if="numero==''">Cargando ... </h5> 
+                  </h2>
+          <h5 v-if="numero==''">Cargando ... </h5>
 
 
 
 
 </b-card>
-      
+
      <!-- <pre class="small">{{context}} </pre> -->
-  
- 
+
+
     </b-col>
     <b-col cols="8">
        <date-picker
@@ -62,7 +62,7 @@
                       @dp-change="setCustomDate"
                         :config="dateConfig"
                       >  </date-picker>
-     
+
     </b-col>
 
   </b-row>
@@ -75,16 +75,16 @@
               <div  class="w-1" width="2" heigth=""
   >
               <b-card>
-              
-              <h2 class="text-right"> {{mes}} </h2> 
-              <hr> 
+
+              <h2 class="text-right"> {{mes}} </h2>
+              <hr>
 
                    <div class="d-flex justify-content-around">
               <p>Consumo </p>     <p>{{ EpimpKwh }}  </p>     <p>${{consumoDinero}}</p>
             </div>
 
 
-           
+
               <hr>
 
                       <div class="d-flex justify-content-around">
@@ -92,7 +92,7 @@
             </div>
 
 
-           
+
                     <hr>
 
                           <div class="d-flex justify-content-around">
@@ -102,33 +102,33 @@
                       <div class="d-flex justify-content-around">
   <p>   {{resultado1}}</p>
                     </div>
-              
-              
-             
+
+
+
                 <br >
                     <div v-if="DisplayFormula2!=''"  class="d-flex justify-content-around">
-  {{DisplayFormula2}} 
+  {{DisplayFormula2}}
   <img  src="/assets/images/manufactura.svg" alt="" width="50" height="50">
                     </div>
-         
-              
-                
+
+
+
 
 
 
               <br>
-           
 
-              
+
+
                </b-card>
-               
-              
+
+
             </div>
 
 
- 
 
- 
+
+
   </b-col>
 
   <b-col>
@@ -158,7 +158,7 @@
   </b-row>
 
 
-  
+
 </template>
 
 <script>
@@ -185,7 +185,7 @@ import Minutesss from "@/services/Minutes";
          const minDate = new Date(today)
       const maxDate = new Date(today)
 
-      
+
       const fecha = new Date();
       const DiasDelmes = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
 
@@ -254,12 +254,12 @@ import Minutesss from "@/services/Minutes";
 var dateString =
     m.getFullYear() + "-" +
     ("0" + (m.getMonth()+1)).slice(-2) + "-" +
-    ("0" + (m.getDate()-1)).slice(-2) 
+    ("0" + (m.getDate()-1)).slice(-2)
 this.date_custom = dateString
 
 this.setCustomDate();
 
-   
+
 
            },
 
@@ -268,14 +268,14 @@ this.setCustomDate();
            var monthcostCpacidad =  this.capacityMonthCost;  // Capacidad
             var  distributionMonthCost = this.distributionMonthCost // month costo
             var Consumodinero = this.consumoDinero
-          var convertidoconsumo =  parseInt(Consumodinero); // convirtiendo a int 
-    var suma =  distributionMonthCost + monthcostCpacidad; 
-            this.costodemandamensual = suma.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
-            var total =  convertidoconsumo + distributionMonthCost + monthcostCpacidad; // sumando 
+          var convertidoconsumo =  parseInt(Consumodinero); // convirtiendo a int
+    var suma =  distributionMonthCost + monthcostCpacidad;
+            this.costodemandamensual = suma.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var total =  convertidoconsumo + distributionMonthCost + monthcostCpacidad; // sumando
 
             var formula2 = total / this.ProduccionDelMes
 
-            
+
 
             this.DisplayFormula2 = formula2.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " $/Unidad"
 
@@ -314,7 +314,7 @@ this.setCustomDate();
 
     beforeMount() {
 
-      
+
           this.getMeters();
 designatedmeters
     .get()
@@ -336,7 +336,7 @@ designatedmeters
                   });
 
 
-  
+
 
     },
     methods: {
@@ -350,7 +350,7 @@ designatedmeters
 console.log("HOLAAAAAAA ")
             }else{
 
-         
+
             designatedmeters.find({
                 filter: {
                     include: ['services'],
@@ -387,11 +387,11 @@ console.log("HOLAAAAAAA ")
       GuardarValor(produccion) {
       eficiencia
           .eficiency()
-          .then(res => { 
+          .then(res => {
               var id_eficiencia_a_cambiar = 0;
               var bandera = 0
               res.forEach(dia => {
-                  if (dia.UserId == this.$store.state.user.user.id && dia.Dia == this.selectedYMD && bandera == 0) { 
+                  if (dia.UserId == this.$store.state.user.user.id && dia.Dia == this.selectedYMD && bandera == 0) {
                       this.valorMuestra = produccion;
                       bandera = 1;
                       id_eficiencia_a_cambiar = dia
@@ -439,21 +439,21 @@ console.log("HOLAAAAAAA ")
               console.log(err);
           });
 
-    
+
 
 
   },
 Cleaning(){
-     this.DiaConsumoKwh = ""; 
+     this.DiaConsumoKwh = "";
      this.DiaDemandaKwh = '';
       this.DiaConsumoKwh = '';
 
 },
   diseño(){
-    
- 
-      
-      var fechaseleccionada = new Date(this.fecha[0],this.fecha[1]-1,this.fecha[2]); 
+
+
+
+      var fechaseleccionada = new Date(this.fecha[0],this.fecha[1]-1,this.fecha[2]);
       var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
       var dias = new Array("domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado")
 
@@ -467,7 +467,7 @@ Cleaning(){
         this.selectedYMD = this.date_custom;
 
      console.log(this.$store.state.mode)
-      
+
           if(this.$store.state.mode == "ACUVIM"){
               console.log("entre")
 console.log("this.desginated", this.designatedmeter)
@@ -482,7 +482,7 @@ console.log("this.desginated", this.designatedmeter)
           }
          this.fecha = this.selectedYMD.split("-");
            this.diseño();
-      
+
 
 
 
@@ -491,7 +491,7 @@ console.log("this.desginated", this.designatedmeter)
     .then(res => {
            var bandera = 0
         res.forEach(dia => {
-         
+
             if (dia.UserId == this.$store.state.user.user.id && dia.Dia == this.selectedYMD) {
                 this.valorMuestra = dia.valor;
                 bandera = 1;
@@ -510,7 +510,7 @@ console.log("this.desginated", this.designatedmeter)
            this.produccionMensual();
            // producciones mensuales aber
            this.ValoresMensuales();
-        // Calculando las unidades 
+        // Calculando las unidades
 
 
 
@@ -519,7 +519,7 @@ console.log("this.desginated", this.designatedmeter)
 
       },
       calculos(){
- 
+
 
       },
       ValoresMensuales(){
@@ -533,23 +533,23 @@ console.log("this.desginated", this.designatedmeter)
 
           }else{
 
-      
 
-   
-        
+
+
+
                             var inicio = this.fecha[0] + "-"+ this.fecha[1] + "-01"
                             var Comparador = this.fecha[0] + "-"+ this.fecha[1] + "-30"
                             var seleccionado = this.selectedYMD
 
                             var iniciando = new Date(inicio) // inicio de mes
                             var predefinido  =new Date(Comparador) // Final de mes
-                            var seleccionador = new Date(seleccionado) // seleccionado 
+                            var seleccionador = new Date(seleccionado) // seleccionado
 
  var m = new Date();
 var dateString =
     m.getUTCFullYear() + "-" +
     ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
-    ("0" + m.getUTCDate()).slice(-2) 
+    ("0" + m.getUTCDate()).slice(-2)
 
 
    var meshoy =  ("0" + (m.getUTCMonth()+1)).slice(-2);
@@ -621,12 +621,12 @@ var dateString =
                                   var khwConsumoTotal = khwConsumo
                                       .reduce((a, b) => a + b, 0) //Sumando los valores
                                       .toFixed(2) //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
-                            
+
                                   this.EpimpKwh = khwConsumoTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " kWh"
 
 
-                       
-                          this.DemandaKwh =  khwConsumoTotal / (24 * 30 * 0.57) 
+
+                          this.DemandaKwh =  khwConsumoTotal / (24 * 30 * 0.57)
 
 
 
@@ -637,11 +637,11 @@ var dateString =
                               .catch(err => {
                              console.log(err);
                               });
-                        
 
-                                
+
+
                             }else{ // normal
-                    
+
                                      meter
                     .getConsumptionCostsByFilter(
                         this.designatedmeter,
@@ -684,19 +684,19 @@ var dateString =
                                       .toFixed(2) //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
 
                                   this.EpimpKwh =  khwConsumoTotal .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")  + "  kWh"
-                    
 
-                        
+
+
                                     this.DemandaKwh =   String((khwConsumoTotal / (24 * this.DiasDelmes * 0.57)).toFixed(2)) + " kW"
                                         if(parseInt(this.ProduccionDelMes) != 0 ){
 
-                                       
+
                                   this.resultado1 =String( (khwConsumoTotal / parseInt(this.ProduccionDelMes)).toFixed(2)) + " kWh/unidad"
  }else{
         this.resultado1 ="No tiene dato de produccion de mes. "
  }
 
-                                
+
 
                               })
                               .catch(err => {
@@ -707,15 +707,15 @@ var dateString =
 
                             }
 
-                          
 
-              
-                     
+
+
+
 
        }
       },
       DiaKwhConsumo(){
-          
+
 
 
         meter.getStandardReadings(this.designatedmeter, '', 'Servicio 1', 'EPimp', -1, 3600, {from: this.date_custom , until: this.date_custom })
@@ -731,9 +731,9 @@ var dateString =
 
 
 
-           
 
-                                   this.DiaConsumoKwh = String(khwConsumoTotalDia) + " kWh"; 
+
+                                   this.DiaConsumoKwh = String(khwConsumoTotalDia) + " kWh";
 
                                    this.DiaDemandaKwh =  String( (khwConsumoTotalDia / (24 * 1 * 0.57)).toFixed(2) ) + " kW  ";
 
@@ -750,7 +750,7 @@ var dateString =
 
       produccionMensual(){
           eficiencia.ProduccionMes(this.$store.state.user.user.id, this.selectedYMD ).then(res=>{
-        
+
             this.ProduccionDelMes = res["Resultado"];
 
           }).catch(err=>{
@@ -762,3 +762,7 @@ var dateString =
     }
   }
 </script>
+
+<style lang="scss">
+@import "../../styles/eficiencia.scss";
+</style>
