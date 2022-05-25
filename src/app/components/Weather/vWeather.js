@@ -1,5 +1,5 @@
-import DesignatedMeter from "@/services/designatedMeters";
-import constants from "@/constants.json";
+import DesignatedMeter from '@/services/designatedMeters';
+import constants from '@/constants.json';
 
 export default {
   props: {
@@ -20,7 +20,7 @@ export default {
       temperature: null,
       location: null,
       wind_speed: null,
-      icon: "",
+      icon: '',
     };
   },
 
@@ -32,6 +32,7 @@ export default {
 
   computed: {
     weatherIcon() {
+      console.log(constants.Weather.condition_icons[this.icon]);
       return constants.Weather.condition_icons[this.icon];
     },
   },

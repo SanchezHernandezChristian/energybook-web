@@ -6,7 +6,7 @@ import meters from "@/services/meters";
 import axisParser from "@/mixins/axisParser";
 import notify from "@/mixins/notify";
 import datesValidator from "@/mixins/datesValidator";
-import Minutess from "@/services/Minutes";
+import Minutess from "@/services/minutes";
 const warnTitle = "Petición en proceso";
 const warnText = "Por favor, espera mientras los datos de la gráfica se cargan";
 

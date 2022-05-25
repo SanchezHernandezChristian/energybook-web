@@ -1,73 +1,76 @@
 /* eslint-disable */
-import designatedMeters from "@/services/designatedMeters";
-import VCfeGDMTH from "@/app/components/VCfeGDMTH";
-import VCfeGDMTO from "@/app/components/VCfeGDMTO";
-import ReadingCard from "@/app/components/ReadingCard";
-import meters from "@/services/meters";
-import VTable from "@/app/components/VTable.vue";
-import PieChart from "@/app/components/chart/pieChart";
-import { gmapApi } from "vue2-google-maps";
-import Weather from "vue-weather-widget";
-import "vue-weather-widget/dist/css/vue-weather-widget.css";
-import VueHighcharts from "vue2-highcharts";
-import VueHighChartsComponent from "@/app/components/chart/VueHighCharts.vue";
-import Highcharts from "highcharts";
-import DashboardAdmin from "@/app/dashboard/DashboardAdmin.vue";
-import solidGauge from "highcharts/modules/solid-gauge";
-import highchartsMore from "highcharts/highcharts-more";
-import Constants from "@/constants.json";
-import Minutes from "@/services/minutes";
-import { log } from "console";
-import Axios from "axios";
-import { error } from "jquery";
-import { ok } from "assert";
+import designatedMeters from '@/services/designatedMeters';
+import VCfeGDMTH from '@/app/components/VCfeGDMTH';
+import VCfeGDMTO from '@/app/components/VCfeGDMTO';
+import ReadingCard from '@/app/components/ReadingCard';
+import meters from '@/services/meters';
+import VTable from '@/app/components/VTable.vue';
+import PieChart from '@/app/components/chart/pieChart';
+import { gmapApi } from 'vue2-google-maps';
+import Weather from 'vue-weather-widget';
+import 'vue-weather-widget/dist/css/vue-weather-widget.css';
+import VueHighcharts from 'vue2-highcharts';
+import VueHighChartsComponent from '@/app/components/chart/VueHighCharts.vue';
+import Highcharts from 'highcharts';
+import DashboardAdmin from '@/app/dashboard/DashboardAdmin.vue';
+import solidGauge from 'highcharts/modules/solid-gauge';
+import highchartsMore from 'highcharts/highcharts-more';
+import Constants from '@/constants.json';
+import Minutes from '@/services/minutes';
+import { log } from 'console';
+import Axios from 'axios';
+import { error } from 'jquery';
+import { ok } from 'assert';
+import Moment from 'moment';
+import $ from 'jquery';
+
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
 
 const monthLabels = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "11",
-  "12",
-  "13",
-  "14",
-  "15",
-  "16",
-  "17",
-  "18",
-  "19",
-  "20",
-  "21",
-  "22",
-  "23",
-  "24",
-  "25",
-  "26",
-  "27",
-  "28",
-  "29",
-  "30",
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+  '24',
+  '25',
+  '26',
+  '27',
+  '28',
+  '29',
+  '30',
 ];
 
 Highcharts.setOptions({
   chart: {
     style: {
-      fontFamily: "Poppins",
+      fontFamily: 'Poppins',
     },
   },
 });
 
 var dataLine = {
   chart: {
-    type: "spline",
+    type: 'spline',
   },
   title: {
     text: null,
@@ -96,17 +99,17 @@ var dataLine = {
   },
   series: [
     {
-      name: "Demanda",
+      name: 'Demanda',
       data: [0],
       dataLabels: {
         format:
           '<div style="text-align:center"><span style="font-size:25px;color:' +
-          "#485658" +
+          '#485658' +
           '">{y}</span><br/>' +
           '<span style="font-size:12px;color:#ADADAD">kW</span></div>',
       },
       tooltip: {
-        valueSuffix: " kW",
+        valueSuffix: ' kW',
       },
     },
   ],
@@ -114,22 +117,21 @@ var dataLine = {
 
 var gaugeOptions = {
   chart: {
-    type: "solidgauge",
+    type: 'solidgauge',
   },
 
   title: null,
 
   pane: {
-    center: ["50%", "85%"],
-    size: "140%",
+    center: ['50%', '85%'],
+    size: '140%',
     startAngle: -90,
     endAngle: 90,
     background: {
-      backgroundColor:
-        (Highcharts.theme && Highcharts.theme.background2) || "#EEE",
-      innerRadius: "60%",
-      outerRadius: "100%",
-      shape: "arc",
+      backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+      innerRadius: '60%',
+      outerRadius: '100%',
+      shape: 'arc',
     },
   },
 
@@ -140,9 +142,9 @@ var gaugeOptions = {
   // the value axis
   yAxis: {
     stops: [
-      [0.1, "#AFFC0F"], // green
-      [0.5, "#DDDF0D"], // yellow
-      [0.9, "#DF5353"], // red
+      [0.1, '#AFFC0F'], // green
+      [0.5, '#DDDF0D'], // yellow
+      [0.9, '#DF5353'], // red
     ],
     lineWidth: 0,
     minorTickInterval: null,
@@ -167,8 +169,8 @@ var gaugeOptions = {
 };
 
 var asyncData = {
-  name: "Consumo",
-  color: "#2f7ed8",
+  name: 'Consumo',
+  color: '#2f7ed8',
   data: [
     7.0,
     6.9,
@@ -187,8 +189,8 @@ var asyncData = {
   ],
 };
 
-var position = { lat: "20.663782", lng: "-103.3916394" };
-moment.locale("es");
+var position = { lat: '20.663782', lng: '-103.3916394' };
+Moment.locale('es');
 var chartSpeed;
 
 function parseHours(rawDate) {
@@ -205,7 +207,7 @@ function parseDate(rawDate) {
 }
 
 function currencyFormat(num) {
-  return num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  return num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
 export default {
@@ -238,8 +240,8 @@ export default {
       VariablesMensualAcu: [],
       VariablesAcu: [],
       VariablesAcuMensual: [],
-      valuedemanda: "",
-      InyeccionMensual: "",
+      valuedemanda: '',
+      InyeccionMensual: '',
       meters: [],
       dpVal: 0,
       epimpVal: 0,
@@ -247,17 +249,7 @@ export default {
         datasets: [
           {
             data: [],
-            backgroundColor: [
-              "#229954",
-              "#3498DB",
-              "#1ABC9C",
-              "#F1C40F",
-              "#E67E22",
-              "#2980B9",
-              "#E74C3C",
-              "#8E44AD",
-              "#138D75",
-            ],
+            backgroundColor: ['#229954', '#3498DB', '#1ABC9C', '#F1C40F', '#E67E22', '#2980B9', '#E74C3C', '#8E44AD', '#138D75'],
           },
         ],
         labels: [],
@@ -273,7 +265,7 @@ export default {
         },
       },
       lineOptions: dataLine,
-      edsId: "",
+      edsId: '',
       refreshingData: false,
       consumptionCost: 0,
       consumptionMonthCost: 0,
@@ -284,7 +276,7 @@ export default {
     //InyeccionMensual() {},
 
     isadminNormal() {
-      if (JSON.parse(localStorage.getItem("user")).Administrando == undefined) {
+      if (JSON.parse(localStorage.getItem('user')).Administrando == undefined) {
         return (this.$store.state.isadminNormal = false);
       } else {
         return (this.$store.state.isadminNormal = true);
@@ -292,38 +284,25 @@ export default {
     },
 
     isAdmin() {
-      return (
-        JSON.parse(localStorage.getItem("user")).role_id === 1 &&
-        this.$route.name === "dashboard"
-      );
+      return JSON.parse(localStorage.getItem('user')).role_id === 1 && this.$route.name === 'dashboard';
     },
     CostNet() {
       if (this.edsId) {
         console.log('CostNet:', this.edsId);
         console.log('CostNet:', this.serviceSelected);
 
-        meters
-          .getStandardReadings(
-            this.edsId,
-            "",
-            this.serviceSelected,
-            "EPexp",
-            3,
-            86400,
-            {}
-          )
-          .then((resultado) => {
-            var costo_total = [];
-            console.log('Costo_Dispositivo: ', resultado);
-            resultado.forEach((valor) => {
-              costo_total.push(valor.value);
-            });
+        meters.getStandardReadings(this.edsId, '', this.serviceSelected, 'EPexp', 3, 86400, {}).then((resultado) => {
+          var costo_total = [];
+          console.log('Costo_Dispositivo: ', resultado);
+          resultado.forEach((valor) => {
+            costo_total.push(valor.value);
+          });
 
-            var Costo_Dispositivo = costo_total
-              .reduce((a, b) => a + b, 0) //Sumando los valores
-              .toFixed(2); //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
-            console.log('Costo_Dispositivo: ',Costo_Dispositivo);
-            /*  var formatter = new Intl.NumberFormat("en-US", {
+          var Costo_Dispositivo = costo_total
+            .reduce((a, b) => a + b, 0) //Sumando los valores
+            .toFixed(2); //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
+          console.log('Costo_Dispositivo: ', Costo_Dispositivo);
+          /*  var formatter = new Intl.NumberFormat("en-US", {
                style: "currency",
                currency: "USD",
              });
@@ -331,17 +310,17 @@ export default {
              var Costo_Dispositivo = formatter.format(Costo_Dispositivo);
 
              */
-            this.valuedemanda = Costo_Dispositivo;
-          });
+          this.valuedemanda = Costo_Dispositivo;
+        });
       }
     },
 
     isCompanyDetail() {
-      return this.$route.name === "companyDetail";
+      return this.$route.name === 'companyDetail';
     },
 
     cfePrices() {
-      return this.$store.getters["meter/getCfePrices"];
+      return this.$store.getters['meter/getCfePrices'];
     },
 
     epimpHistory() {
@@ -353,18 +332,16 @@ export default {
     },
 
     distribution() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
         return this.distributionDiarioData.value;
       } else {
-        let prettyDist = this.prettifyNumbers(
-          this.$store.state.socket.distribution
-        );
+        let prettyDist = this.prettifyNumbers(this.$store.state.socket.distribution);
         return prettyDist;
       }
     },
 
     dailyLastUpdatedTime() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
         return this.VariablesAcu.ultima_modificacion;
       } else {
         return this.$store.state.socket.lastUpdated;
@@ -372,35 +349,25 @@ export default {
     },
 
     distributionCost() {
-      return (this.cfePrices.distributionPrice * parseFloat(this.distribution))
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return (this.cfePrices.distributionPrice * parseFloat(this.distribution)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
 
     distributionCharge() {
-      let prettyDistributionCharge = this.prettifyNumbers(
-        this.$store.state.socket.distributionCharge
-      );
+      let prettyDistributionCharge = this.prettifyNumbers(this.$store.state.socket.distributionCharge);
       return currencyFormat(parseFloat(prettyDistributionCharge));
     },
 
     distributionMonth() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
         return this.variablesDistribucion.value;
       } else {
-        let prettyDistribution = this.prettifyNumbers(
-          this.$store.state.socket.distributionMonth
-        );
+        let prettyDistribution = this.prettifyNumbers(this.$store.state.socket.distributionMonth);
         return parseFloat(prettyDistribution);
       }
     },
 
     distributionMonthCost() {
-      return (
-        this.cfePrices.distributionPrice * parseFloat(this.distributionMonth)
-      )
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return (this.cfePrices.distributionPrice * parseFloat(this.distributionMonth)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
 
     odometer() {
@@ -408,12 +375,10 @@ export default {
     },
 
     consumption() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
         return this.VariablesAcu.EP_IMP_kWh;
       } else {
-        let prettyCons = this.prettifyNumbers(
-          this.$store.state.socket.consumption
-        );
+        let prettyCons = this.prettifyNumbers(this.$store.state.socket.consumption);
         return prettyCons;
       }
     },
@@ -423,9 +388,7 @@ export default {
     },
 
     capacityCost() {
-      return (this.cfePrices.capacityPrice * parseFloat(this.capacity))
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return (this.cfePrices.capacityPrice * parseFloat(this.capacity)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
 
     capacityMonth() {
@@ -433,13 +396,11 @@ export default {
     },
 
     capacityMonthCost() {
-      return (this.cfePrices.capacityPrice * parseFloat(this.capacityMonth))
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return (this.cfePrices.capacityPrice * parseFloat(this.capacityMonth)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
 
     consumptionMonth() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
         var consumoMensual = this.VariablesAcuMensual.EP_IMP_kWh;
         var alcuadrado = Math.pow(consumoMensual, 2); // sacando powerfactor  epimp / raiz(epimp² + eqimp²)
         var squareroot = Math.sqrt(alcuadrado + alcuadrado);
@@ -449,9 +410,7 @@ export default {
 
         return consumoMensual;
       } else {
-        let prettyConsumption = this.prettifyNumbers(
-          this.$store.state.socket.consumptionMonth
-        );
+        let prettyConsumption = this.prettifyNumbers(this.$store.state.socket.consumptionMonth);
 
         return prettyConsumption;
       }
@@ -462,13 +421,11 @@ export default {
     },
 
     powerFactor() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
         var PowerFactorAcu = this.PowerFactorAcuvar;
         return PowerFactorAcu;
       } else {
-        let prettyFP = this.prettifyNumbers(
-          this.$store.state.socket.powerFactor
-        );
+        let prettyFP = this.prettifyNumbers(this.$store.state.socket.powerFactor);
         return this.$store.state.socket.powerFactor;
       }
     },
@@ -476,25 +433,25 @@ export default {
     reactives() {
       return parseInt(this.$store.state.socket.reactive)
         .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
 
     billablePeriod() {
-      moment().locale();
-      let start = moment().startOf("month").format("LL");
+      Moment().locale();
+      let start = Moment().startOf('month').format('LL');
       start = start.slice(0, -8);
-      let end = moment().endOf("month").format("LL");
+      let end = Moment().endOf('month').format('LL');
       return `${start} - ${end}`;
     },
 
     currentDay() {
-      moment().locale();
-      let day = moment().format("dddd D [de] MMMM");
+      Moment().locale();
+      let day = Moment().format('dddd D [de] MMMM');
       return day;
     },
 
     currentFormattedDate() {
-      return moment(this.currentDate).format("LLL");
+      return Moment(this.currentDate).format('LLL');
     },
 
     position() {
@@ -503,7 +460,7 @@ export default {
 
     companyId() {
       if (this.isCompanyDetail) return this.companyIdProp;
-      return JSON.parse(localStorage.getItem("user")).company_id;
+      return JSON.parse(localStorage.getItem('user')).company_id;
     },
 
     serviceSelected() {
@@ -543,11 +500,11 @@ export default {
 
   async beforeMount() {
     if (this.isAdmin) return;
-    console.log('no es admin: ', this.$store.state.mode)
+    console.log('no es admin: ', this.$store.state.mode);
     await this.getMeters();
-    if (this.$store.state.mode == "ACUVIM") {
+    if (this.$store.state.mode == 'ACUVIM') {
       console.log('beforeMount: ', this.edsId);
-      var start = moment().format("L");
+      var start = Moment().format('L');
       console.log('beforeMount: ', start);
 
       Minutes.variables(start, this.edsId)
@@ -558,56 +515,33 @@ export default {
             console.log(res);
             this.VariablesAcu = res.response;
 
-            Minutes.ValoresMensuales("idMedidor").then((respuesta) => {
+            Minutes.ValoresMensuales('idMedidor').then((respuesta) => {
               this.VariablesAcuMensual = respuesta.response;
-              Minutes.DistributionPeriod(
-                "idMedidor",
-                3,
-                "5e345446dd4d00894f1ce565"
-              )
+              Minutes.DistributionPeriod('idMedidor', 3, '5e345446dd4d00894f1ce565')
                 .then((response) => {
                   if (response) {
                     console.log('DistributionPeriod: ', response);
                     this.variablesDistribucion = response.response;
                     // this.distributionMonthCost = response.response.cost;
 
-                    Minutes.BaseMediaPuntaDia(
-                      start,
-                      "idMedidor",
-                      "5e345446dd4d00894f1ce565"
-                    ).then((respuesta) => {
+                    Minutes.BaseMediaPuntaDia(start, 'idMedidor', '5e345446dd4d00894f1ce565').then((respuesta) => {
                       this.consumptionCost = respuesta.response;
                       console.log(respuesta);
                       if (respuesta) {
-                        Minutes.BaseMediaPuntaMes(
-                          "idMedidor",
-                          "5e345446dd4d00894f1ce565"
-                        ).then((contesta) => {
+                        Minutes.BaseMediaPuntaMes('idMedidor', '5e345446dd4d00894f1ce565').then((contesta) => {
                           if (contesta) {
-                            var resultado = this.prettifyNumbers(
-                              contesta.response
-                            );
+                            var resultado = this.prettifyNumbers(contesta.response);
 
                             this.consumptionMonthCost = resultado;
 
-                            Minutes.DistributionPeriodDiario(
-                              "idMedidor",
-                              3,
-                              "5e345446dd4d00894f1ce565"
-                            ).then((con) => {
+                            Minutes.DistributionPeriodDiario('idMedidor', 3, '5e345446dd4d00894f1ce565').then((con) => {
                               if (con) {
                                 this.distributionDiarioData = con.response;
-                                Minutes.InyeccionPeriod(
-                                  "idMedidor",
-                                  3,
-                                  "5e345446dd4d00894f1ce565"
-                                ).then((c) => {
+                                Minutes.InyeccionPeriod('idMedidor', 3, '5e345446dd4d00894f1ce565').then((c) => {
                                   if (c) {
                                     console.log(c);
-                                    let prettyDist = this.prettifyNumbers(
-                                      c.response
-                                    );
-                                    this.InyeccionMensual = prettyDist + " kWh";
+                                    let prettyDist = this.prettifyNumbers(c.response);
+                                    this.InyeccionMensual = prettyDist + ' kWh';
                                   }
                                 });
                               }
@@ -634,7 +568,7 @@ export default {
             this.getConsumptionCost(Constants.Meters.filters.month);
           })
           .catch((err) => {
-            console.log('beforeMount: getConsumptionCost - error -> ',err);
+            console.log('beforeMount: getConsumptionCost - error -> ', err);
           });
       });
     }
@@ -645,20 +579,20 @@ export default {
     console.log('mounted: ', this.$store.state.mode);
     console.log('mounted: ', this.edsId);
     if (this.isAdmin) {
-      $(".user-dashboard").remove();
+      $('.user-dashboard').remove();
       return;
     }
     if (this.isadminNormal) {
-      this.goTo("DashboardAdmin");
+      this.goTo('DashboardAdmin');
     }
 
-    $(".dashboard-history .highcharts-container").css({
-      "max-width": "1149px",
-      width: "auto",
+    $('.dashboard-history .highcharts-container').css({
+      'max-width': '1149px',
+      width: 'auto',
     });
 
     this.load();
-    if (this.$store.state.mode == "ACUVIM") {
+    if (this.$store.state.mode == 'ACUVIM') {
       this.updatePieChartAcuvim();
     } else {
       //console.log("fue normal update");
@@ -670,21 +604,14 @@ export default {
 
   methods: {
     getConsumptionCost(period) {
-      if (this.$store.state.mode == "ACUVIM") {
-        console.log("entre a consumo diario ");
+      if (this.$store.state.mode == 'ACUVIM') {
+        console.log('entre a consumo diario ');
         this.consumptionCost = this.consumovaloracuvim;
       } else {
-      //TODOOOOOOO
+        //TODOOOOOOO
         return new Promise((resolve, reject) => {
           meters
-            .getConsumptionCostsByFilter(
-              this.edsId,
-              "",
-              this.serviceSelected,
-              period,
-              86400,
-              {}
-            )
+            .getConsumptionCostsByFilter(this.edsId, '', this.serviceSelected, period, 86400, {})
             .then((res) => {
               console.log('meters.getConsumptionCostsByFilter: ', period, ' -> ', res);
               let cost = res
@@ -693,9 +620,9 @@ export default {
                 }, 0)
                 .toFixed(2);
               if (period === Constants.Meters.filters.today) {
-                this.consumptionCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                this.consumptionCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
               } else if (period === Constants.Meters.filters.month) {
-                this.consumptionMonthCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                this.consumptionMonthCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
               }
               resolve();
             })
@@ -705,7 +632,7 @@ export default {
     },
     refresh() {
       this.refreshingData = true;
-      this.$store.dispatch("socket/odometerReading", this.valuedemanda);
+      this.$store.dispatch('socket/odometerReading', this.valuedemanda);
 
       /* Promise.all([
                 designatedMeters.odometerReadings(this.companyId),
@@ -760,25 +687,25 @@ export default {
           this.refreshingData = false;
 
           this.$notify({
-            group: "notification",
-            type: "error",
-            title: "Error al obtener datos de medidores",
-            text: "Verifica que tus medidores estén funcionando correctamente ",
+            group: 'notification',
+            type: 'error',
+            title: 'Error al obtener datos de medidores',
+            text: 'Verifica que tus medidores estén funcionando correctamente ',
           });
         });
     },
 
     load() {
       let lineCharts = this.$refs.lineCharts;
-      lineCharts.delegateMethod("showLoading", "Loading...");
+      lineCharts.delegateMethod('showLoading', 'Loading...');
       chartSpeed = Highcharts.chart(
-        "container-odometer",
+        'container-odometer',
         Highcharts.merge(gaugeOptions, {
           yAxis: {
             min: 0,
             max: 0,
             title: {
-              text: "Demanda",
+              text: 'Demanda',
             },
           },
 
@@ -788,24 +715,24 @@ export default {
 
           series: [
             {
-              name: "Demanda",
+              name: 'Demanda',
               data: [0],
               dataLabels: {
                 format:
                   '<div style="text-align:center"><span style="font-size:25px;color:' +
-                  "#485658" +
+                  '#485658' +
                   '">{y}</span><br/>' +
                   '<span style="font-size:12px;color:#ADADAD">kW</span></div>',
               },
               tooltip: {
-                valueSuffix: " kW",
+                valueSuffix: ' kW',
               },
             },
           ],
         })
       );
-      if (this.$store.state.mode == "ACUVIM") {
-        console.log("yo nunca entro");
+      if (this.$store.state.mode == 'ACUVIM') {
+        console.log('yo nunca entro');
         this.updateEpimpHistoryChart();
         this.updatePieChartAcuvim();
       } else {
@@ -819,7 +746,7 @@ export default {
         designatedMeters
           .find({
             filter: {
-              include: ["services"],
+              include: ['services'],
               where: {
                 company_id: this.companyId,
               },
@@ -829,78 +756,54 @@ export default {
             this.meters = res;
             //console.log('getMeters: response -> ',res);
             let metersCount = this.meters.length;
-            if (metersCount > 0 && this.serviceSelected !== "") {
-              if (res[0].tipo == "Acuvim II") {
-                console.log("laptm");
-                let currService = this.meters[0].devices.filter(
-                  (devices) => devices.name === this.serviceSelected
-                )[0];
+            if (metersCount > 0 && this.serviceSelected !== '') {
+              if (res[0].tipo == 'Acuvim II') {
+                console.log('laptm');
+                let currService = this.meters[0].devices.filter((devices) => devices.name === this.serviceSelected)[0];
 
                 if (currService.dp <= 0) {
                   // Mostrar numero 0 cuando son valores negativos
 
-                  this.$store.dispatch("socket/odometerReading", 10);
+                  this.$store.dispatch('socket/odometerReading', 10);
                   this.valedemanda = 0;
                 } else {
                   // numeros positivos
 
-                  this.$store.dispatch(
-                    "socket/odometerReading",
-                    currService.dp
-                  );
+                  this.$store.dispatch('socket/odometerReading', currService.dp);
                   this.valuedemanda = 0;
                 }
               } else {
-                let currService = this.meters[0].services.filter(
-                  (service) => service.serviceName === this.serviceSelected
-                )[0];
+                let currService = this.meters[0].services.filter((service) => service.serviceName === this.serviceSelected)[0];
                 this.edsId = this.meters[0].meter_id;
                 //console.log('getMeters: edsId -> ',this.edsId);
 
                 if (currService.dp <= 0) {
                   // Mostrar numero 0 cuando son valores negativos
 
-                  this.$store.dispatch("socket/odometerReading", 0);
+                  this.$store.dispatch('socket/odometerReading', 0);
                   this.valedemanda = 0;
                 } else {
                   // numeros positivos
 
-                  this.$store.dispatch(
-                    "socket/odometerReading",
-                    currService.dp
-                  );
+                  this.$store.dispatch('socket/odometerReading', currService.dp);
                   this.valuedemanda = 0;
                 }
 
-                this.$store.dispatch(
-                  "socket/dailyReading",
-                  currService.dailyReadings
-                );
-                this.$store.dispatch(
-                  "socket/monthlyReading",
-                  currService.monthlyReadings
-                );
-                this.$store.dispatch(
-                  "socket/epimpHistoryReading",
-                  currService.epimp
-                );
-                this.$store.dispatch(
-                  "socket/consumptionSummary",
-                  currService.consumptionSummary
-                );
-                this.$store.dispatch("socket/powerFactor", currService.fp);
-                this.$store.dispatch("socket/reactive", currService.reactive);
+                this.$store.dispatch('socket/dailyReading', currService.dailyReadings);
+                this.$store.dispatch('socket/monthlyReading', currService.monthlyReadings);
+                this.$store.dispatch('socket/epimpHistoryReading', currService.epimp);
+                this.$store.dispatch('socket/consumptionSummary', currService.consumptionSummary);
+                this.$store.dispatch('socket/powerFactor', currService.fp);
+                this.$store.dispatch('socket/reactive', currService.reactive);
               }
-              meters
-                .consumptionMaxMinValues({ id: this.edsId })
-                .then((values) => {
-                  chartSpeed.update({
-                    yAxis: {
-                      min: values.min,
-                      max: values.max,
-                    },
-                  });
+              meters.consumptionMaxMinValues({ id: this.edsId }).then((values) => {
+                chartSpeed.update({
+                  yAxis: {
+                    min: values.min,
+                    max: values.max,
+                  },
                 });
+              });
               resolve();
               this.autoconsumo();
             }
@@ -917,8 +820,8 @@ export default {
       //console.log("EPIMP HISTORY", this.epimpHistory);
       //console.log(this.$store.state);
       //  console.log(this.VariablesAcu);
-      if (this.$store.state.mode == "ACUVIM") {
-        Minutes.EpimpHistorialMensualActual("idMedidor").then((res) => {
+      if (this.$store.state.mode == 'ACUVIM') {
+        Minutes.EpimpHistorialMensualActual('idMedidor').then((res) => {
           console.log(res.response);
           Object.values(res.response).forEach((obj) => {
             xAxis.push(obj.date);
@@ -926,7 +829,7 @@ export default {
             let lineCharts = this.$refs.lineCharts;
             let chart = lineCharts.getChart();
             if (!chart.renderer.forExport) {
-              lineCharts.delegateMethod("showLoading", "Loading...");
+              lineCharts.delegateMethod('showLoading', 'Loading...');
               lineCharts.removeSeries();
               chart.update({
                 xAxis: { categories: xAxis },
@@ -947,7 +850,7 @@ export default {
       let lineCharts = this.$refs.lineCharts;
       let chart = lineCharts.getChart();
       if (!chart.renderer.forExport) {
-        lineCharts.delegateMethod("showLoading", "Loading...");
+        lineCharts.delegateMethod('showLoading', 'Loading...');
         lineCharts.removeSeries();
         chart.update({
           xAxis: { categories: xAxis },
@@ -976,9 +879,9 @@ export default {
     updatePieChartAcuvim() {
       this.chartData.datasets[0].data = [];
       this.chartData.labels = [];
-      console.log("entre a piechar acuvim");
+      console.log('entre a piechar acuvim');
       var ok = [];
-      ok.push({ device: "Medidor Acuvim ", value: 20 });
+      ok.push({ device: 'Medidor Acuvim ', value: 20 });
       Object.values(ok).forEach((device) => {
         if (device.value > 0) {
           this.chartData.datasets[0].data.push(device.value);
@@ -987,23 +890,20 @@ export default {
       });
     },
     prettifyNumbers(number) {
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
     autoconsumo() {
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
       } else {
         meters
-          .getGenerationReadings(this.edsId, "", "Servicio 1", 3, 3600, 2, {}) // Inyeccion a la red
+          .getGenerationReadings(this.edsId, '', 'Servicio 1', 3, 3600, 2, {}) // Inyeccion a la red
           .then((res) => {
             var sumatoriaInyeccion = 0;
             res.forEach((elemento) => {
               sumatoriaInyeccion = sumatoriaInyeccion + elemento.value;
             });
 
-            this.InyeccionMensual =
-              sumatoriaInyeccion
-                .toFixed(2)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " kWh";
+            this.InyeccionMensual = sumatoriaInyeccion.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' kWh';
           });
       }
     },

@@ -1,7 +1,7 @@
 /* eslint-disable */
-import axios from "axios";
-import router from "@/router";
-import Vue from "vue";
+import axios from 'axios';
+import router from '@/router';
+import Vue from 'vue';
 
 const Storage = window.localStorage;
 
@@ -10,7 +10,7 @@ const Storage = window.localStorage;
  * */
 function exportTokenToLocalStorage(token) {
   if (Storage) {
-    Storage.setItem("loopback-token", JSON.stringify(token));
+    Storage.setItem('loopback-token', JSON.stringify(token));
   }
 }
 
@@ -19,20 +19,20 @@ function exportTokenToLocalStorage(token) {
  */
 function removeTokenFromLocalStorage() {
   if (Storage) {
-    Storage.removeItem("loopback-token");
+    Storage.removeItem('loopback-token');
     Storage.clear();
   }
 }
 
 function addTokenFromLocalStorage(http) {
-  const token = Storage && Storage.getItem("loopback-token");
+  const token = Storage && Storage.getItem('loopback-token');
   if (token) {
     http.setToken(JSON.parse(token), false);
   }
 }
 
 const http = axios.create({
-  baseURL: "http://api.olus.mx/api",
+  baseURL: 'http://stg.api.olus.mx/api',
   //baseURL: "http://api.ienergybook.com/api",
   //baseURL: "http://localhost:3000/api",
 });
@@ -68,15 +68,15 @@ http.errorCallback = (error) => {
 const expiredToken = () => {
   setTimeout(() => {
     Vue.notify({
-      group: "login",
-      title: "Sesión Expirada",
-      text: "Tu sesión ha expirado debido a inactividad",
-      type: "warn",
+      group: 'login',
+      title: 'Sesión Expirada',
+      text: 'Tu sesión ha expirado debido a inactividad',
+      type: 'warn',
       duration: 5000,
     });
   }, 400);
   http.removeToken();
-  router.push({ name: "login" });
+  router.push({ name: 'login' });
 };
 
 const interceptResErrors = (err) => {

@@ -1,20 +1,21 @@
 /* eslint-disable */
-import designatedMeters from "@/services/designatedMeters";
-import datePicker from "vue-bootstrap-datetimepicker";
-import VSeries from "@/app/components/chart/VSeries";
-import meters from "@/services/meters";
-import axisParser from "@/mixins/axisParser";
-import notify from "@/mixins/notify";
-import datesValidator from "@/mixins/datesValidator";
-import Minutesss from "@/services/Minutes";
+import designatedMeters from '@/services/designatedMeters';
+import datePicker from 'vue-bootstrap-datetimepicker';
+import VSeries from '@/app/components/chart/VSeries';
+import meters from '@/services/meters';
+import axisParser from '@/mixins/axisParser';
+import notify from '@/mixins/notify';
+import datesValidator from '@/mixins/datesValidator';
+import Minutesss from '@/services/minutes';
+import moment from 'moment';
 
-const warnTitle = "Petición en proceso";
-const warnText = "Por favor, espera mientras los datos de la gráfica se cargan";
+const warnTitle = 'Petición en proceso';
+const warnText = 'Por favor, espera mientras los datos de la gráfica se cargan';
 
 export default {
-  props: ["companyIdProp"],
+  props: ['companyIdProp'],
 
-  mixins: [axisParser, notify("notification"), datesValidator],
+  mixins: [axisParser, notify('notification'), datesValidator],
 
   components: {
     datePicker,
@@ -23,14 +24,14 @@ export default {
 
   data() {
     return {
-      unidades: "",
-      fechas: "",
-      promedio: "",
-      minimo: "",
-      maximo: "",
+      unidades: '',
+      fechas: '',
+      promedio: '',
+      minimo: '',
+      maximo: '',
       array: [],
       metersFilter: {
-        selected: "",
+        selected: '',
         options: [],
       },
       date_custom: {
@@ -38,7 +39,7 @@ export default {
         until: null,
       },
       dateConfig: {
-        format: "YYYY-MM-DD",
+        format: 'YYYY-MM-DD',
         useCurrent: false,
       },
       dangerAlert: false,
@@ -47,27 +48,27 @@ export default {
       graphPeriod: {
         selected: 0,
         options: [
-          { value: -1, text: "Calendario" },
-          { value: 0, text: "Hoy" },
-          { value: 1, text: "Ayer" },
-          { value: 2, text: "Esta Semana" },
-          { value: 3, text: "Este Mes" },
+          { value: -1, text: 'Calendario' },
+          { value: 0, text: 'Hoy' },
+          { value: 1, text: 'Ayer' },
+          { value: 2, text: 'Esta Semana' },
+          { value: 3, text: 'Este Mes' },
         ],
       },
       graphType: {
         selected: 0,
         options: [
-          { variables: ["DP"], name: "Demanda" },
-          { variables: ["EPimp"], name: "Consumo" },
+          { variables: ['DP'], name: 'Demanda' },
+          { variables: ['EPimp'], name: 'Consumo' },
         ],
       },
       graphInterval: {
         selected: 900,
         options: [
-          { text: "1 hora", value: 3600 },
-          { text: "30 minutos", value: 1800 },
-          { text: "15 minutos", value: 900 },
-          { text: "5 minutos", value: 300 },
+          { text: '1 hora', value: 3600 },
+          { text: '30 minutos', value: 1800 },
+          { text: '15 minutos', value: 900 },
+          { text: '5 minutos', value: 300 },
         ],
       },
     };
@@ -82,10 +83,10 @@ export default {
       return this.$store.state.company_id;
     },
     isCosts() {
-      return this.$route.name === "costs";
+      return this.$route.name === 'costs';
     },
     title() {
-      return this.isCosts ? "Costos" : "Gráficas";
+      return this.isCosts ? 'Costos' : 'Gráficas';
     },
     meterSelected() {
       return this.metersFilter.selected;
@@ -102,14 +103,11 @@ export default {
       return this.graphType.options[selected].variables[0];
     },
     shouldShowIntervals() {
-      return this.currentVariableNameSelected !== "Demanda";
+      return this.currentVariableNameSelected !== 'Demanda';
     },
     dayDifference() {
       if (this.date_custom.until && this.date_custom.from) {
-        return moment(this.date_custom.until).diff(
-          moment(this.date_custom.from),
-          "days"
-        );
+        return moment(this.date_custom.until).diff(moment(this.date_custom.from), 'days');
       }
       return 0;
     },
@@ -137,7 +135,7 @@ export default {
       designatedMeters
         .find({
           filter: {
-            include: ["services"],
+            include: ['services'],
             where: { company_id: this.companyId },
           },
         })
@@ -145,7 +143,7 @@ export default {
           if (eds.length > 0) {
             this.eds = eds[0];
 
-            if (eds[0].tipo == "Acuvim II") {
+            if (eds[0].tipo == 'Acuvim II') {
               this.eds.devices.forEach((service) => {
                 this.metersFilter.options.push({
                   value: `${service.name}*${service.id}`,
@@ -183,26 +181,18 @@ export default {
         });
     },
     setCustomDate() {
-      if (
-        this.date_custom.from &&
-        this.date_custom.until &&
-        !this.currentChart.isLoading
-      ) {
-        const { isValid, errorMessage } = this.validateDates(
-          this.date_custom.from,
-          this.date_custom.until,
-          this.dayDifference
-        );
+      if (this.date_custom.from && this.date_custom.until && !this.currentChart.isLoading) {
+        const { isValid, errorMessage } = this.validateDates(this.date_custom.from, this.date_custom.until, this.dayDifference);
         if (isValid) {
           this.renderChartWithNewData();
         } else {
-          this.notify(errorMessage.title, errorMessage.text, "warn");
+          this.notify(errorMessage.title, errorMessage.text, 'warn');
         }
       }
     },
     changeType(new_type) {
       if (this.currentChart.isLoading) {
-        this.notify(warnTitle, warnText, "warn");
+        this.notify(warnTitle, warnText, 'warn');
       } else if (new_type !== null && !this.dangerAlert) {
         this.graphType.selected = new_type;
         this.graphPeriod.selected = 0;
@@ -212,7 +202,7 @@ export default {
     },
     changePeriod(new_period) {
       if (this.currentChart.isLoading) {
-        this.notify(warnTitle, warnText, "warn");
+        this.notify(warnTitle, warnText, 'warn');
       } else if (new_period !== null && !this.dangerAlert) {
         this.graphPeriod.selected = new_period;
         if (new_period === -1) return (this.showDatePicker = true);
@@ -222,7 +212,7 @@ export default {
     },
     changeInterval(new_interval) {
       if (this.currentChart.isLoading) {
-        this.notify(warnTitle, warnText, "warn");
+        this.notify(warnTitle, warnText, 'warn');
       } else if (new_interval !== null && !this.dangerAlert) {
         this.graphInterval.selected = new_interval;
         this.renderChartWithNewData();
@@ -234,7 +224,7 @@ export default {
         until: null,
       };
       this.showDatePicker = false;
-      if (this.currentVariableNameSelected === "Demanda") {
+      if (this.currentVariableNameSelected === 'Demanda') {
         this.graphInterval.selected = 900;
       } else {
         this.graphInterval.selected = 3600;
@@ -247,22 +237,20 @@ export default {
           this.getData();
         })
         .catch(() => {
-          console.log("Could not load new data");
+          console.log('Could not load new data');
           this.dangerAlert = true;
         });
     },
     getData() {
-      const meter = this.metersFilter.selected.split("*");
+      const meter = this.metersFilter.selected.split('*');
       console.log(meter);
       const meter_id = meter[0];
-      const meter_device = meter[1] === "EDS" ? "" : meter[1];
-      const service = meter[1] === "EDS" ? meter[2] : "";
+      const meter_device = meter[1] === 'EDS' ? '' : meter[1];
+      const service = meter[1] === 'EDS' ? meter[2] : '';
 
-      if (this.$store.state.mode == "ACUVIM") {
-        console.log("HOLA SOY ACUVIM");
-        console.log(
-          this.graphType.options[this.graphType.selected].variables[0]
-        );
+      if (this.$store.state.mode == 'ACUVIM') {
+        console.log('HOLA SOY ACUVIM');
+        console.log(this.graphType.options[this.graphType.selected].variables[0]);
         Minutesss.StandardReadings(
           meter[1],
           this.graphPeriod.selected,
@@ -283,47 +271,40 @@ export default {
 
           this.fechas =
             String(arrayprimerdia[0]) +
-            "-" +
+            '-' +
             String(arrayprimerdia[1]) +
-            "-" +
+            '-' +
             String(arrayprimerdia[2]) +
             String(arrayprimerdia[3]) +
-            " a " +
+            ' a ' +
             String(arrayultimodia[0]) +
-            "-" +
+            '-' +
             String(arrayultimodia[1]) +
-            "-" +
+            '-' +
             String(arrayultimodia[2]) +
             String(arrayultimodia[3]);
 
           if (this.graphType.selected == 1) {
             // consumo
 
-            this.unidades = " kWh";
+            this.unidades = ' kWh';
           }
           if (this.graphType.selected == 0) {
             // Demanada
 
-            this.unidades = " kW";
+            this.unidades = ' kW';
           }
 
           this.maximo = String(Math.max(...this.array));
           this.minimo = String(Math.min(...this.array));
-          this.promedio =
-            String(
-              (this.array.reduce((a, b) => a + b, 0) / this.array.length)
-                .toFixed(2)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            ) + " kWh";
+          this.promedio = String((this.array.reduce((a, b) => a + b, 0) / this.array.length).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')) + ' kWh';
 
-          let { xAxis, tickInterval, data, zones } = this.parseMeterValues(
-            res.response
-          );
+          let { xAxis, tickInterval, data, zones } = this.parseMeterValues(res.response);
           const update_data = {
             xAxis: {
               categories: xAxis,
               tickInterval,
-              tickmarkPlacement: "on",
+              tickmarkPlacement: 'on',
             },
           };
           const series = [
@@ -331,7 +312,7 @@ export default {
               data,
               zones,
               name: this.currentVariableNameSelected,
-              color: "#2f7ed8",
+              color: '#2f7ed8',
             },
           ];
           this.currentChart.updateChart(update_data);
@@ -351,17 +332,13 @@ export default {
           .then((res) => {
             if (res) {
               console.log(res);
-              if (res == "") {
+              if (res == '') {
                 console.log(res);
-                this.notify(
-                  "Problema al intentar sacar informacion del meter",
-                  "Accediendo a la base de datos en busca de valores",
-                  "warn"
-                );
+                this.notify('Problema al intentar sacar informacion del meter', 'Accediendo a la base de datos en busca de valores', 'warn');
 
                 this.graphPeriod = {
                   selected: 1,
-                  options: [{ value: 1, text: "Ayer" }],
+                  options: [{ value: 1, text: 'Ayer' }],
                 };
               } else {
                 this.array = [];
@@ -376,51 +353,43 @@ export default {
 
                 this.fechas =
                   String(arrayprimerdia[0]) +
-                  "-" +
+                  '-' +
                   String(arrayprimerdia[1]) +
-                  "-" +
+                  '-' +
                   String(arrayprimerdia[2]) +
                   String(arrayprimerdia[3]) +
-                  " a " +
+                  ' a ' +
                   String(arrayultimodia[0]) +
-                  "-" +
+                  '-' +
                   String(arrayultimodia[1]) +
-                  "-" +
+                  '-' +
                   String(arrayultimodia[2]) +
                   String(arrayultimodia[3]);
 
                 if (this.graphType.selected == 1) {
                   // consumo
 
-                  this.unidades = " kWh";
+                  this.unidades = ' kWh';
                 }
                 if (this.graphType.selected == 0) {
                   // Demanada
 
-                  this.unidades = " kW";
+                  this.unidades = ' kW';
                 }
 
                 this.maximo = String(Math.max(...this.array));
                 this.minimo = String(Math.min(...this.array));
-                this.promedio =
-                  String(
-                    (this.array.reduce((a, b) => a + b, 0) / this.array.length)
-                      .toFixed(2)
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                //  ) + " kWh";
-                  );
+                this.promedio = String(
+                  (this.array.reduce((a, b) => a + b, 0) / this.array.length).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  //  ) + " kWh";
+                );
 
-                let {
-                  xAxis,
-                  tickInterval,
-                  data,
-                  zones,
-                } = this.parseMeterValues(res);
+                let { xAxis, tickInterval, data, zones } = this.parseMeterValues(res);
                 const update_data = {
                   xAxis: {
                     categories: xAxis,
                     tickInterval,
-                    tickmarkPlacement: "on",
+                    tickmarkPlacement: 'on',
                   },
                 };
                 const series = [
@@ -428,7 +397,7 @@ export default {
                     data,
                     zones,
                     name: this.currentVariableNameSelected,
-                    color: "#2f7ed8",
+                    color: '#2f7ed8',
                   },
                 ];
                 console.log(zones);
@@ -454,7 +423,7 @@ export default {
         if (reading.isPeak !== undefined && reading.isPeak !== isPeak) {
           zones.push({
             value: currVal,
-            color: reading.isPeak ? "#2f7ed8" : "#ce1616",
+            color: reading.isPeak ? '#2f7ed8' : '#ce1616',
           });
         }
         currVal++;
@@ -463,12 +432,7 @@ export default {
         dates.push(reading.date);
         return reading.value;
       });
-      let { xAxis, tickInterval } = this.parseXAxis(
-        dates,
-        this.graphPeriod.selected,
-        this.dayDifference,
-        this.graphInterval.selected
-      );
+      let { xAxis, tickInterval } = this.parseXAxis(dates, this.graphPeriod.selected, this.dayDifference, this.graphInterval.selected);
       return { data, xAxis, tickInterval, zones };
     },
   },

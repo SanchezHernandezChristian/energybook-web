@@ -1,29 +1,22 @@
 <template>
-  <confirmation-dialog
-    title="Nuevo Medidor"
-    :show="showForm"
-    acceptText="Crear"
-    @accept="validateData"
-    @cancel="cancelCreation"
-    @hidden="cancelCreation"
-  >
+  <confirmation-dialog title="Nuevo Medidor" :show="showForm" acceptText="Crear" @accept="validateData" @cancel="cancelCreation" @hidden="cancelCreation">
     <meter-data :companies="companies" :meter="meter" />
   </confirmation-dialog>
 </template>
 
 <script>
-import ConfirmationDialog from "@/app/components/ConfirmationDialog.vue";
-import _l from "lodash";
-import MeterData from "./MeterData.vue";
-import notify from "@/mixins/notify";
+import ConfirmationDialog from '@/app/components/ConfirmationDialog.vue';
+import _l from 'lodash';
+import MeterData from './MeterData.vue';
+import notify from '@/mixins/notify';
 
 export default {
-  name: "MeterForm",
+  name: 'MeterForm',
   components: {
     ConfirmationDialog,
     MeterData,
   },
-  mixins: [notify("notification")],
+  mixins: [notify('notification')],
   props: {
     showForm: {
       type: Boolean,
@@ -37,13 +30,13 @@ export default {
   data() {
     return {
       meter: {
-        device_name: "",
-        serial_number: "",
-        hostname: "",
-        max_value: "",
+        device_name: '',
+        serial_number: '',
+        hostname: '',
+        max_value: '',
         min_value: 0,
         company_id: null,
-        tipo: "EDS DELUXE",
+        tipo: 'EDS DELUXE',
       },
     };
   },
@@ -57,39 +50,35 @@ export default {
         this.meter.min_value >= 0 &&
         this.meter.max_value > this.meter.min_value;
 
-      if (this.meter.tipo == "Acuvim II") {
+      if (this.meter.tipo == 'Acuvim II') {
         // validar que sea una direccion accesible
         // const httpRegexp = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.){1}[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm;
         //const hostnameValid = httpRegexp.test(this.meter.hostname);
       } else {
-        const httpRegexp = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.){1}[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm;
+        const httpRegexp = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.){1}[a-z0-9]+([/.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm;
         const hostnameValid = httpRegexp.test(this.meter.hostname);
       }
 
       if (valuesValid) {
-        this.$emit("create", _l.cloneDeep(this.meter));
+        this.$emit('create', _l.cloneDeep(this.meter));
 
         this.resetMeter();
       } else {
-        this.notify(
-          "",
-          "Verifica que los campos estén llenados correctamente",
-          "warn"
-        );
+        this.notify('', 'Verifica que los campos estén llenados correctamente', 'warn');
       }
     },
     cancelCreation() {
       this.resetMeter();
-      this.$emit("hide");
+      this.$emit('hide');
     },
     resetMeter() {
       this.meter = {
-        serial_number: "",
-        device_name: "",
-        max_value: "",
+        serial_number: '',
+        device_name: '',
+        max_value: '',
         min_value: 0,
         company_id: null,
-        tipo: "EDS DELUXE",
+        tipo: 'EDS DELUXE',
       };
     },
   },

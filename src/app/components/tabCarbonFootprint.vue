@@ -3,11 +3,7 @@
     <b-col>
       <b-row class="header">
         <div class="filters-container">
-          <b-form-select
-            v-model="metersFilter.selected"
-            :options="metersFilter.options"
-            class="mb-3"
-          />
+          <b-form-select v-model="metersFilter.selected" :options="metersFilter.options" class="mb-3" />
         </div>
       </b-row>
       <b-row id="carbon-footprint-cards">
@@ -23,28 +19,13 @@
                 <template v-slot:body>
                   <b-row class="properties">
                     <b-col cols="12">
-                      <v-property
-                        property-name="Consumo"
-                        :property-value="consumption"
-                        property-unit="kWh"
-                        :property-image="images.consumption"
-                      />
+                      <v-property property-name="Consumo" :property-value="consumption" property-unit="kWh" :property-image="images.consumption" />
                     </b-col>
                     <b-col cols="12">
-                      <v-property
-                        :property-image="images.generation"
-                        property-name="Generación"
-                        :property-value="generation"
-                        property-unit="kWh"
-                      />
+                      <v-property :property-image="images.generation" property-name="Generación" :property-value="generation" property-unit="kWh" />
                     </b-col>
                     <b-col cols="12">
-                      <v-property
-                        property-name="Total"
-                        :property-value="total"
-                        property-unit="kWh"
-                        :property-image="images.total"
-                      />
+                      <v-property property-name="Total" :property-value="total" property-unit="kWh" :property-image="images.total" />
                     </b-col>
                   </b-row>
                 </template>
@@ -60,12 +41,7 @@
                 <template v-slot:body>
                   <b-row class="properties">
                     <b-col cols="12">
-                      <v-property
-                        :property-image="images.co2e"
-                        property-name="Eco2E"
-                        :property-value="co2Emission"
-                        property-unit="t"
-                      />
+                      <v-property :property-image="images.co2e" property-name="Eco2E" :property-value="co2Emission" property-unit="t" />
                     </b-col>
                   </b-row>
                 </template>
@@ -81,18 +57,10 @@
                 <template v-slot:body>
                   <b-row class="properties">
                     <b-col cols="12">
-                      <v-property
-                        :property-image="images.emissionFactor"
-                        property-name="FE"
-                        :property-value="emissionFactor"
-                      />
+                      <v-property :property-image="images.emissionFactor" property-name="FE" :property-value="emissionFactor" />
                     </b-col>
                     <b-col cols="12">
-                      <v-property
-                        :property-image="images.co2eLimit"
-                        property-name="Límite Eco2e"
-                        :property-value="co2Limit"
-                      />
+                      <v-property :property-image="images.co2eLimit" property-name="Límite Eco2e" :property-value="co2Limit" />
                     </b-col>
                   </b-row>
                 </template>
@@ -103,10 +71,7 @@
       </b-row>
       <b-row class="list">
         <b-col>
-          <b-card
-            class="margin-bottom-1"
-            v-show="metersFilter.selected !== null"
-          >
+          <b-card class="margin-bottom-1" v-show="metersFilter.selected !== null">
             <v-columns :meterId="metersFilter.selected" />
           </b-card>
         </b-col>
@@ -116,36 +81,37 @@
 </template>
 
 <script>
-import ReadingCard from "@/app/components/ReadingCard";
-import VProperty from "@/app/components/VProperty";
-import designatedMeters from "@/services/designatedMeters";
-import companies from "@/services/companies";
-import meters from "@/services/meters";
-import VColumns from "@/app/components/chart/VColumnsCarbonFootprint.vue";
-import Constants from "@/constants.json";
+import ReadingCard from '@/app/components/ReadingCard';
+import VProperty from '@/app/components/VProperty';
+import designatedMeters from '@/services/designatedMeters';
+import companies from '@/services/companies';
+import meters from '@/services/meters';
+import VColumns from '@/app/components/chart/VColumnsCarbonFootprint.vue';
+import Constants from '@/constants.json';
+import moment from 'moment';
 
 export default {
   components: {
     ReadingCard,
     VProperty,
-    VColumns
+    VColumns,
   },
   props: {
     companyIdProp: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
 
   data() {
     return {
       devices: [],
       cardStyle: {
-        height: "190px"
+        height: '190px',
       },
       metersFilter: {
-        selected: "",
-        options: []
+        selected: '',
+        options: [],
       },
       eds: [],
       consumption: 0,
@@ -157,80 +123,80 @@ export default {
       images: {
         generation: {
           src: Constants.images.generationCircle,
-          alt: "generationg img"
+          alt: 'generationg img',
         },
         consumption: {
           src: Constants.images.consumption,
-          alt: "consumption img"
+          alt: 'consumption img',
         },
         total: {
           src: Constants.images.total,
-          alt: "total img"
+          alt: 'total img',
         },
         co2e: {
           src: Constants.images.co2e,
-          alt: "co2e img"
+          alt: 'co2e img',
         },
         emissionFactor: {
           src: Constants.images.emissionFactor,
-          alt: "emissionFactor img"
+          alt: 'emissionFactor img',
         },
         co2eLimit: {
           src: Constants.images.co2eLimit,
-          alt: "co2eLimit img"
-        }
-      }
+          alt: 'co2eLimit img',
+        },
+      },
     };
   },
   computed: {
     currentDay() {
       moment().locale();
-      return moment().format("dddd D [de] MMMM");
+      return moment().format('dddd D [de] MMMM');
     },
     companyId() {
       return this.companyIdProp;
-    }
+    },
   },
   watch: {
     companyId() {
       this.updateServices();
     },
-    "metersFilter.selected": function() {
+    'metersFilter.selected': function () {
       this.getServerData();
-    }
+    },
   },
   methods: {
     updateServices() {
       designatedMeters
         .find({
           filter: {
-            include: ["services"],
-            where: { company_id: this.companyId }
-          }
+            include: ['services'],
+            where: { company_id: this.companyId },
+          },
         })
-        .then(eds => {
+        .then((eds) => {
           if (!eds[0]) return;
           this.eds = eds[0];
           if (this.eds.services) {
-            this.eds.services.forEach(service => {
+            this.eds.services.forEach((service) => {
               this.metersFilter.options.push({
                 value: `${this.eds.meter_id}*EDS*${service.serviceName}`,
-                text: service.serviceName
+                text: service.serviceName,
               });
             });
           }
           this.eds.services;
           meters
             .connectedDevices({
-              id: this.eds.id
+              id: this.eds.id,
             })
-            .then(devices => {
+            .then((devices) => {
               devices.forEach((device, index) => {
                 // Ignore first device. EDS
                 if (index === 0) return;
                 this.metersFilter.options.push({
                   value: `${this.eds.meter_id}*${device.name}`,
-                  text: device.description
+                  text: device.description,
                 });
               });
               this.metersFilter.selected = this.metersFilter.options[0].value;
@@ -238,29 +204,27 @@ export default {
         });
     },
     getServerData() {
-      let selectedDevice = this.metersFilter.selected.split("*");
+      let selectedDevice = this.metersFilter.selected.split('*');
       if (selectedDevice.length === 3) {
         selectedDevice = selectedDevice[2];
       } else {
         selectedDevice = selectedDevice[1];
       }
-      designatedMeters
-        .getCarbonFootprint(this.companyId, selectedDevice)
-        .then(data => {
-          let response = data.response;
-          this.consumption = parseFloat(response.consumption.toFixed(2));
-          this.generation = parseFloat(response.generation.toFixed(2));
-          this.total = parseFloat(response.total.toFixed(2));
-          this.emissionFactor = parseFloat(response.emissionFactor.toFixed(2));
-          this.co2Emission = parseFloat(response.cO2Emissions.toFixed(2));
-          this.co2Limit = parseFloat(response.co2Limit.toFixed(2));
-        });
-    }
+      designatedMeters.getCarbonFootprint(this.companyId, selectedDevice).then((data) => {
+        let response = data.response;
+        this.consumption = parseFloat(response.consumption.toFixed(2));
+        this.generation = parseFloat(response.generation.toFixed(2));
+        this.total = parseFloat(response.total.toFixed(2));
+        this.emissionFactor = parseFloat(response.emissionFactor.toFixed(2));
+        this.co2Emission = parseFloat(response.cO2Emissions.toFixed(2));
+        this.co2Limit = parseFloat(response.co2Limit.toFixed(2));
+      });
+    },
   },
   mounted() {
     this.updateServices();
     this.getServerData();
-  }
+  },
 };
 </script>
 

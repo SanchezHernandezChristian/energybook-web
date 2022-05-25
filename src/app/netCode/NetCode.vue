@@ -3,11 +3,7 @@
     <b-col>
       <b-row class="header">
         <div class="filters-container">
-          <b-form-select
-            v-model="metersFilter.selected"
-            :options="metersFilter.options"
-            class="mb-3"
-          />
+          <b-form-select v-model="metersFilter.selected" :options="metersFilter.options" class="mb-3" />
         </div>
       </b-row>
       <b-row id="net-code-graphs">
@@ -22,38 +18,29 @@
                       v-for="(type, index) in graphType.options"
                       :key="index + 1"
                       :class="{
-                                                'btn-success': graphType.selected === index,
-                                                'btn-outline-success': graphType.selected !== index
-                                                }"
+                        'btn-success': graphType.selected === index,
+                        'btn-outline-success': graphType.selected !== index,
+                      }"
                       @click="changeType(index)"
-                    >{{ type.name }}</b-button>
+                      >{{ type.name }}</b-button
+                    >
                   </b-col>
                   <b-col lg="7" md="12" class="text-right mt-lg-0 mt-md-2">
                     <div class="datepickers" v-if="showDatePicker">
-                      <date-picker
-                        placeholder="Desde"
-                        v-model="date_custom.from"
-                        @dp-change="setCustomDate"
-                        :config="dateConfig"
-                      ></date-picker>
-                      <date-picker
-                        class="mr-0"
-                        placeholder="Hasta"
-                        v-model="date_custom.until"
-                        @dp-change="setCustomDate"
-                        :config="dateConfig"
-                      ></date-picker>
+                      <date-picker placeholder="Desde" v-model="date_custom.from" @dp-change="setCustomDate" :config="dateConfig"></date-picker>
+                      <date-picker class="mr-0" placeholder="Hasta" v-model="date_custom.until" @dp-change="setCustomDate" :config="dateConfig"></date-picker>
                     </div>
                     <b-button
                       variant="outline-dark"
                       v-for="(button, index) in graphPeriod.options"
                       :key="index"
                       :class="{
-                                                'btn-success': graphPeriod.selected === button.value,
-                                                'btn-outline-success': graphPeriod.selected !== button.value
-                                                }"
+                        'btn-success': graphPeriod.selected === button.value,
+                        'btn-outline-success': graphPeriod.selected !== button.value,
+                      }"
                       @click="changePeriod(button.value)"
-                    >{{ button.text }}</b-button>
+                      >{{ button.text }}</b-button
+                    >
                   </b-col>
                 </b-row>
               </div>
@@ -66,19 +53,17 @@
                       v-for="interval in graphInterval.options"
                       :key="interval.value"
                       :class="{
-                                                'btn-success': graphInterval.selected === interval.value,
-                                                'btn-outline-success':graphInterval.selected !== interval.value
-                                                }"
+                        'btn-success': graphInterval.selected === interval.value,
+                        'btn-outline-success': graphInterval.selected !== interval.value,
+                      }"
                       @click="changeInterval(interval.value)"
-                    >{{ interval.text }}</b-button>
+                      >{{ interval.text }}</b-button
+                    >
                   </div>
                 </div>
-                <b-alert
-                  v-else
-                  show
-                  class="margin-top-1"
-                  variant="danger"
-                >Hubo un error al obtener los datos del medidor. ¡Refresca la página e intenta de nuevo!</b-alert>
+                <b-alert v-else show class="margin-top-1" variant="danger"
+                  >Hubo un error al obtener los datos del medidor. ¡Refresca la página e intenta de nuevo!</b-alert
+                >
               </div>
             </div>
           </b-card>
@@ -88,42 +73,42 @@
         <b-col>
           <b-card class="text-center">
             <div class="text-right">
-              {{this.fechas}}
+              {{ this.fechas }}
               <hr />
             </div>
             <div class="d-flex justify-content-around">
-              <img src="/assets/images/negative.png" width="25" height="25" />
+              <img src="~@/assets/images/negative.png" width="25" height="25" />
               <div>Minimo</div>
 
-              {{minimo}} {{unidades}}
+              {{ minimo }} {{ unidades }}
             </div>
           </b-card>
         </b-col>
         <b-col>
           <b-card class="text-center">
             <div class="text-right">
-              {{this.fechas}}
+              {{ this.fechas }}
               <hr />
             </div>
             <div class="d-flex justify-content-around">
-              <img src="/assets/images/positive.png" width="25" height="25" />
+              <img src="~@/assets/images/positive.png" width="25" height="25" />
               <div>Maximo</div>
-              {{maximo}}
-              {{unidades}}
+              {{ maximo }}
+              {{ unidades }}
             </div>
           </b-card>
         </b-col>
         <b-col>
           <b-card class="text-center">
             <div class="text-right">
-              {{this.fechas}}
+              {{ this.fechas }}
               <hr />
             </div>
             <div class="d-flex justify-content-around">
-              <img src="/assets/images/promedio.png" width="28" height="28" />
+              <img src="~@/assets/images/promedio.png" width="28" height="28" />
               <div>Promedio</div>
-              {{promedio}}
-              {{unidades}}
+              {{ promedio }}
+              {{ unidades }}
             </div>
           </b-card>
         </b-col>

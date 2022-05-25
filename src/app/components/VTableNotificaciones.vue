@@ -1,70 +1,41 @@
 <template>
   <div class="list">
+    <img v-if="items.length <= 0" show class="center" src="~@/assets/images/loading.gif" width="300" height="300" border="0" />
 
-    <img  v-if="items.length <= 0" show class="center" src="../../assets/images/loading.gif" width="300" height="300" border="0">
-
-
-    <b-table
-      v-else
-      responsive
-      hover
-      :items="items"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      @row-clicked="rowClickHandler"
-    >
-
-    
-      <template v-slot:cell(status)="data" >
-        <i
-          v-show="data.item.status"
-          style="color: #2d9b14; font-size: 15px"
-          class="fas fa-check-circle"
-        ></i>
-        <i
-          v-show="!data.item.status"
-          style="color: #ba0d0d; font-size: 15px"
-          class="fas fa-times-circle"
-        ></i>
+    <b-table v-else responsive hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" @row-clicked="rowClickHandler">
+      <template v-slot:cell(status)="data">
+        <i v-show="data.item.status" style="color: #2d9b14; font-size: 15px" class="fas fa-check-circle"></i>
+        <i v-show="!data.item.status" style="color: #ba0d0d; font-size: 15px" class="fas fa-times-circle"></i>
       </template>
-      <template v-slot:cell(botonEliminarCompany)="data" >
-        <button
-          class="btn icon-btn delete"
-          type="button"
-          @click.stop="$emit('delete-company', data.item.id)"
-        >
+      <template v-slot:cell(botonEliminarCompany)="data">
+        <button class="btn icon-btn delete" type="button" @click.stop="$emit('delete-company', data.item.id)">
           <i class="far fa-trash-alt"></i>
         </button>
       </template>
 
-      <template v-slot:cell(Descripcion)="data" >{{data.item.Descripcion}}</template>
+      <template v-slot:cell(Descripcion)="data">{{ data.item.Descripcion }}</template>
 
-      <template  v-slot:cell(usuarios)="data" >
-        <button
-          class="btn icon-btn delete"
-          type="button"
-          @click.stop="$emit('delete-notification', data.item.id)"
-        >
+      <template v-slot:cell(usuarios)="data">
+        <button class="btn icon-btn delete" type="button" @click.stop="$emit('delete-notification', data.item.id)">
           <i class="far fa-trash-alt"></i>
         </button>
       </template>
 
-      <template v-slot:cell(Fecha)="data" >{{data.item.Fecha}}</template>
+      <template v-slot:cell(Fecha)="data">{{ data.item.Fecha }}</template>
 
-      <template v-slot:cell(id)="data" >
+      <template v-slot:cell(id)="data">
         <vernotificacion :DataNotificacion="data.item"></vernotificacion>
       </template>
 
-      <template v-slot:cell(Dispositivos)  >{{dispositivo}}</template>
+      <template v-slot:cell(Dispositivos)>{{ dispositivo }}</template>
 
-      <template v-slot:cell(botonEditCompany)="data"  >
+      <template v-slot:cell(botonEditCompany)="data">
         <editcompany :DataCompany="data.item"></editcompany>
       </template>
-      <template  v-slot:cell(pdf)="data" >
+      <template v-slot:cell(pdf)="data">
         <a class="btn btn-primary" :href="data.item.pdf" target="_blank">Ver PDF</a>
       </template>
-      <template  v-slot:cell(Status)="data" >
+      <template v-slot:cell(Status)="data">
         <b-button
           title="Click para cambiar estado"
           @click.stop="statusChange(data.item.id, data.item.Status)"
@@ -76,20 +47,14 @@
         </b-button>
       </template>
 
-
-         <template   v-slot:cell(Max)="data">
- <MaximosYminimos :DataDesignated="data.item">  </MaximosYminimos>
-
-       </template>
-
-
-      <template v-slot:cell(Reset)="data" >
-        <b-button
-          @click.stop="$emit('reset-password', data.item)"
-          variant="primary"
-        >{{ 'Restaurar' }}</b-button>
+      <template v-slot:cell(Max)="data">
+        <MaximosYminimos :DataDesignated="data.item"> </MaximosYminimos>
       </template>
-      <template  v-slot:cell(Delete)="data" >
+
+      <template v-slot:cell(Reset)="data">
+        <b-button @click.stop="$emit('reset-password', data.item)" variant="primary">{{ 'Restaurar' }}</b-button>
+      </template>
+      <template v-slot:cell(Delete)="data">
         <button class="btn icon-btn delete" type="button" @click.stop="$emit('delete', data.item)">
           <i class="far fa-trash-alt"></i>
         </button>
@@ -100,51 +65,45 @@
         <b-form-select :options="pageOptions" v-model="perPage" />
       </b-col>
       <b-col md="6" class="my-1">
-        <b-pagination
-          class="my-0"
-          :total-rows="items.length"
-          :per-page="perPage"
-          v-model="currentPage"
-        />
+        <b-pagination class="my-0" :total-rows="items.length" :per-page="perPage" v-model="currentPage" />
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
-import editcompany from "./editCompany";
-import vernotificacion from "./vernotificacion";
-import designatedMeters from "@/services/designatedMeters";
-import MaximosYminimos from "./MaximosYminimos";
-
+import editcompany from './editCompany';
+import vernotificacion from './vernotificacion';
+import designatedMeters from '@/services/designatedMeters';
+import MaximosYminimos from './MaximosYminimos';
 
 export default {
   components: {
-    MaximosYminimos : MaximosYminimos,
+    MaximosYminimos: MaximosYminimos,
     editcompany: editcompany,
-    vernotificacion: vernotificacion
+    vernotificacion: vernotificacion,
   },
   props: {
     items: {
       type: Array,
-      required: true
+      required: true,
     },
     fields: {
       type: Array,
-      required: true
+      required: true,
     },
     route: {
       type: String,
-      required: false
+      required: false,
     },
     alertMessage: {
       type: String,
-      default: "No hay elementos"
+      default: 'No hay elementos',
     },
     rowClickEvent: {
       type: Function,
-      default: function() {}
-    }
+      default: function () {},
+    },
   },
   beforeMount() {
     this.company();
@@ -152,38 +111,37 @@ export default {
 
   data() {
     return {
-      fixedDate: "",
-      dispositivo: "",
+      fixedDate: '',
+      dispositivo: '',
       currentPage: 1,
       perPage: 10,
-      pageOptions: [5, 10, 15]
+      pageOptions: [5, 10, 15],
     };
   },
 
   computed: {
-    mensaje(){
-                  setTimeout(function(){
-                  console.log("ya pasaron dos segundos")
-                  if(this.items.length <= 0){
-                    console.log("no hay elementos")
-                  }
-                }, 2000);
+    mensaje() {
+      console.log('ya pasaron dos segundos');
+      if (this.items.length <= 0) {
+        return console.log('no hay elementos');
+      }
+      return 0;
     },
     status() {
-      return data.item.Status ? "Activo" : "Inactivo";
-    }
+      return this.data.item.Status ? 'Activo' : 'Inactivo';
+    },
   },
 
   methods: {
     company() {
-      let idEmpresa = JSON.parse(localStorage.getItem("user")).company_id;
+      let idEmpresa = JSON.parse(localStorage.getItem('user')).company_id;
       designatedMeters
         .find({
           filter: {
-            where: { company_id: idEmpresa }
-          }
+            where: { company_id: idEmpresa },
+          },
         })
-        .then(eds => {
+        .then((eds) => {
           this.dispositivo = eds[0].device_name;
           console.log(eds[0].device_name);
           console.log(eds);
@@ -192,19 +150,19 @@ export default {
     // TODO delete this method, replace with prop function
     rowClickHandler(record, index) {
       if (this.route) {
-        if (this.route === "companyDetail") {
-          this.$store.commit("setCurrentCompanyDetailId", record.id);
+        if (this.route === 'companyDetail') {
+          this.$store.commit('setCurrentCompanyDetailId', record.id);
           this.$router.push({ name: this.route });
         }
         this.$router.push({ name: this.route, params: { id: record.id } });
       } else {
-        this.$emit("clicked", { id: record.id, index, item: record });
+        this.$emit('clicked', { id: record.id, index, item: record });
       }
     },
     statusChange(rowId, status) {
       console.log(rowId, status);
-      this.$emit("statusChange", { id: rowId, status: status ? 1 : 0 });
-    }
-  }
+      this.$emit('statusChange', { id: rowId, status: status ? 1 : 0 });
+    },
+  },
 };
 </script>

@@ -5,16 +5,9 @@
       <h5 v-if="freeTrialCompany">
         <i class="fas fa-building"></i>
         {{ freeTrialCompany.company_name }}
-        <i
-          class="fas fa-times-circle"
-          @click="removeCompany"
-        ></i>
+        <i class="fas fa-times-circle" @click="removeCompany"></i>
       </h5>
-      <b-alert
-        v-else
-        show
-        variant="warning"
-      >No existe una compañía designada para prueba de software</b-alert>
+      <b-alert v-else show variant="warning">No existe una compañía designada para prueba de software</b-alert>
     </b-col>
     <b-col lg="6">
       <h3>Designar compañía</h3>
@@ -25,12 +18,7 @@
     </b-col>
     <b-col>
       <h3>Usuarios de prueba</h3>
-      <v-table
-        :items="freeTrialUsers"
-        :fields="userFields"
-        @delete="revokeFreeTrial"
-        @clicked="showPersonalData"
-      ></v-table>
+      <v-table :items="freeTrialUsers" :fields="userFields" @delete="revokeFreeTrial" @clicked="showPersonalData"></v-table>
       <confirmation-dialog
         title="Información de contacto"
         :showAcceptButton="false"
@@ -62,19 +50,20 @@
 </template>
 
 <script>
-import ConfirmationDialog from "@/app/components/ConfirmationDialog.vue";
-import VTable from "@/app/components/VTable.vue";
-import company from "@/services/companies";
-import eUsers from "@/services/eUsers";
-import notify from "@/mixins/notify";
+import ConfirmationDialog from '@/app/components/ConfirmationDialog.vue';
+import VTable from '@/app/components/VTable.vue';
+import company from '@/services/companies';
+import eUsers from '@/services/eUsers';
+import notify from '@/mixins/notify';
+import moment from 'moment';
 
 export default {
   components: {
     VTable,
-    ConfirmationDialog
+    ConfirmationDialog,
   },
 
-  mixins: [notify("notification")],
+  mixins: [notify('notification')],
 
   data() {
     return {
@@ -85,12 +74,12 @@ export default {
       showContactData: false,
       contactData: {},
       userFields: [
-        { key: "name", label: "Nombre del usuario" },
-        { key: "created_at", label: "Fecha de creación" },
-        { key: "company_name", label: "Compañía asociada de prueba" },
-        { key: "phone", label: "Teléfono" },
-        { key: "Delete", label: "Revocar periodo de prueba" }
-      ]
+        { key: 'name', label: 'Nombre del usuario' },
+        { key: 'created_at', label: 'Fecha de creación' },
+        { key: 'company_name', label: 'Compañía asociada de prueba' },
+        { key: 'phone', label: 'Teléfono' },
+        { key: 'Delete', label: 'Revocar periodo de prueba' },
+      ],
     };
   },
 
@@ -101,11 +90,11 @@ export default {
 
   computed: {
     companies() {
-      return this.raw_companies.map(company => ({
+      return this.raw_companies.map((company) => ({
         value: company.id,
-        text: company.company_name
+        text: company.company_name,
       }));
-    }
+    },
   },
 
   methods: {
@@ -114,19 +103,19 @@ export default {
         .find({
           filter: {
             where: {
-              free_trial: true
+              free_trial: true,
             },
-            include: ["company"]
-          }
+            include: ['company'],
+          },
         })
-        .then(users => {
-          this.freeTrialUsers = users.map(user => ({
+        .then((users) => {
+          this.freeTrialUsers = users.map((user) => ({
             company_name: user.company.company_name,
             contact_data: user.contact_data,
             name: `${user.name} ${user.lastname}`,
             phone: user.phone,
-            created_at: moment(user.created_at).format("LL"),
-            id: user.id
+            created_at: moment(user.created_at).format('LL'),
+            id: user.id,
           }));
         });
     },
@@ -134,16 +123,15 @@ export default {
     getCompanies() {
       company
         .find({
-          where: { status: 1 }
+          where: { status: 1 },
         })
-        .then(res => {
-          this.raw_companies = res.filter(company => !company.for_free_trial);
-          this.selectedCompany =
-            this.raw_companies[0] && this.raw_companies[0].id;
-          let ftc = res.filter(company => company.for_free_trial);
+        .then((res) => {
+          this.raw_companies = res.filter((company) => !company.for_free_trial);
+          this.selectedCompany = this.raw_companies[0] && this.raw_companies[0].id;
+          let ftc = res.filter((company) => company.for_free_trial);
           this.freeTrialCompany = ftc && ftc[0];
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -152,36 +140,27 @@ export default {
       if (this.freeTrialCompany) {
         company
           .patch({ id: this.freeTrialCompany.id }, { for_free_trial: false })
-          .then(updated => {
+          .then((updated) => {
             this.raw_companies.push(updated);
-            return company.patch(
-              { id: this.selectedCompany },
-              { for_free_trial: true }
-            );
+            return company.patch({ id: this.selectedCompany }, { for_free_trial: true });
           })
-          .then(freetrialCompany => {
+          .then((freetrialCompany) => {
             this.freeTrialCompany = freetrialCompany;
-            this.raw_companies = this.raw_companies.filter(
-              company => company.id !== this.selectedCompany
-            );
-            this.selectedCompany =
-              this.raw_companies[0] && this.raw_companies[0].id;
+            this.raw_companies = this.raw_companies.filter((company) => company.id !== this.selectedCompany);
+            this.selectedCompany = this.raw_companies[0] && this.raw_companies[0].id;
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       } else {
         company
           .patch({ id: this.selectedCompany }, { for_free_trial: true })
-          .then(freetrialCompany => {
+          .then((freetrialCompany) => {
             this.freeTrialCompany = freetrialCompany;
-            this.raw_companies = this.raw_companies.filter(
-              company => company.id !== this.selectedCompany
-            );
-            this.selectedCompany =
-              this.raw_companies[0] && this.raw_companies[0].id;
+            this.raw_companies = this.raw_companies.filter((company) => company.id !== this.selectedCompany);
+            this.selectedCompany = this.raw_companies[0] && this.raw_companies[0].id;
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       }
@@ -191,21 +170,11 @@ export default {
       eUsers
         .destroyById({ id: user.id })
         .then(() => {
-          this.notify(
-            "Licencia revocada",
-            `El periodo de prueba del usuario ${user.name} ha terminado`,
-            "success"
-          );
-          this.freeTrialUsers = this.freeTrialUsers.filter(
-            usr => usr.id !== user.id
-          );
+          this.notify('Licencia revocada', `El periodo de prueba del usuario ${user.name} ha terminado`, 'success');
+          this.freeTrialUsers = this.freeTrialUsers.filter((usr) => usr.id !== user.id);
         })
         .catch(() => {
-          this.notify(
-            "Error al revocar licencia",
-            "No se pudo revocar la licencia en este momento",
-            "error"
-          );
+          this.notify('Error al revocar licencia', 'No se pudo revocar la licencia en este momento', 'error');
         });
     },
 
@@ -220,19 +189,16 @@ export default {
 
     removeCompany() {
       company
-        .patch(
-          { id: this.freeTrialCompany ? this.freeTrialCompany.id : "" },
-          { for_free_trial: false }
-        )
-        .then(updated => {
+        .patch({ id: this.freeTrialCompany ? this.freeTrialCompany.id : '' }, { for_free_trial: false })
+        .then((updated) => {
           this.freeTrialCompany = null;
           this.raw_companies.push(updated);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

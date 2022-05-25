@@ -5,11 +5,7 @@
         <b-col>
           <b-row class="header">
             <div class="filters-container">
-              <b-form-select
-                v-model="metersFilter.selected"
-                :options="metersFilter.options"
-                class="mb-3"
-              />
+              <b-form-select v-model="metersFilter.selected" :options="metersFilter.options" class="mb-3" />
             </div>
           </b-row>
           <b-row>
@@ -21,28 +17,13 @@
                 <template v-slot:body>
                   <b-row class="properties">
                     <b-col cols="12">
-                      <v-property
-                        property-name="Generación"
-                        :property-value="generation"
-                        property-unit="kWh"
-                        :property-image="images.generation"
-                      />
+                      <v-property property-name="Generación" :property-value="generation" property-unit="kWh" :property-image="images.generation" />
                     </b-col>
                     <b-col cols="12">
-                      <v-property
-                        property-name="Auto consumo"
-                        :property-value="selfConsumption"
-                        property-unit="kWh"
-                        :property-image="images.selfConsumption"
-                      />
+                      <v-property property-name="Auto consumo" :property-value="selfConsumption" property-unit="kWh" :property-image="images.selfConsumption" />
                     </b-col>
                     <b-col cols="12">
-                      <v-property
-                        property-name="Inyección a la red"
-                        :property-value="netInjection"
-                        property-unit="kWh"
-                        :property-image="images.netInjection"
-                      />
+                      <v-property property-name="Inyección a la red" :property-value="netInjection" property-unit="kWh" :property-image="images.netInjection" />
                     </b-col>
                   </b-row>
                 </template>
@@ -56,12 +37,7 @@
                 <template v-slot:body>
                   <b-row class="properties">
                     <b-col cols="12">
-                      <v-property
-                        property-name="Generación"
-                        :property-value="generationValue"
-                        property-unit="$"
-                        :property-image="images.generation"
-                      />
+                      <v-property property-name="Generación" :property-value="generationValue" property-unit="$" :property-image="images.generation" />
                     </b-col>
                     <b-col cols="12">
                       <v-property
@@ -91,17 +67,12 @@
                 <template v-slot:body>
                   <b-row class="properties">
                     <b-col cols="12">
-                      <v-property
-                        property-name="Generación"
-                        :property-value="Eco2EMensual"
-                        property-unit="$"
-                        :property-image="images.generation"
-                      />
+                      <v-property property-name="Generación" :property-value="Eco2EMensual" property-unit="$" :property-image="images.generation" />
                     </b-col>
                     <b-col cols="12">
                       <v-property
                         property-name="Auto Consumo"
-                        :property-value="AutoconsumoMensual "
+                        :property-value="AutoconsumoMensual"
                         property-unit="KWh"
                         :property-image="images.selfConsumption"
                       />
@@ -109,7 +80,7 @@
                     <b-col cols="12">
                       <v-property
                         property-name="Inyección a la red"
-                        :property-value="InyeccionMensual "
+                        :property-value="InyeccionMensual"
                         property-unit="KWh"
                         :property-image="images.netInjection"
                       />
@@ -133,13 +104,13 @@
 </template>
 
 <script>
-import ReadingCard from "@/app/components/ReadingCard";
-import VProperty from "@/app/components/VProperty";
-import designatedMeters from "@/services/designatedMeters";
-import meters from "@/services/meters";
-import VColumns from "@/app/components/chart/VColumnsGeneration.vue";
-import Constants from "@/constants.json";
-
+import ReadingCard from '@/app/components/ReadingCard';
+import VProperty from '@/app/components/VProperty';
+import designatedMeters from '@/services/designatedMeters';
+import meters from '@/services/meters';
+import VColumns from '@/app/components/chart/VColumnsGeneration.vue';
+import Constants from '@/constants.json';
+import moment from 'moment';
 export default {
   components: {
     ReadingCard,
@@ -149,16 +120,16 @@ export default {
 
   data() {
     return {
-      AutoconsumoMensual: "",
-      InyeccionMensual: "",
-      Eco2EMensual: "",
+      AutoconsumoMensual: '',
+      InyeccionMensual: '',
+      Eco2EMensual: '',
       metersFilter: {
-        selected: "",
+        selected: '',
         options: [],
       },
       eds: [],
       cardStyle: {
-        height: "205px",
+        height: '205px',
       },
       generation: 0,
       generationValue: 0,
@@ -171,23 +142,23 @@ export default {
       images: {
         generation: {
           src: Constants.images.generationCircle,
-          alt: "generation img",
+          alt: 'generation img',
         },
         selfConsumption: {
           src: Constants.images.selfConsumption,
-          alt: "self consumption img",
+          alt: 'self consumption img',
         },
         netInjection: {
           src: Constants.images.netInjection,
-          alt: "net injection img",
+          alt: 'net injection img',
         },
         co2e: {
           src: Constants.images.co2e,
-          alt: "co2e img",
+          alt: 'co2e img',
         },
         emissionFactor: {
           src: Constants.images.emissionFactor,
-          alt: "emission factor image",
+          alt: 'emission factor image',
         },
       },
     };
@@ -196,19 +167,19 @@ export default {
     currentmonth() {
       moment().locale();
 
-      return moment().format("MMMM");
+      return moment().format('MMMM');
     },
     companyId() {
       return this.$store.state.company_id;
     },
     currentDay() {
       moment().locale();
-      return moment().format("dddd D [de] MMMM");
+      return moment().format('dddd D [de] MMMM');
     },
   },
   methods: {
     getServerData() {
-      let tmpArr = this.metersFilter.selected.split("*");
+      let tmpArr = this.metersFilter.selected.split('*');
       let serviceName;
       let deviceName;
       if (tmpArr.length === 3) {
@@ -219,18 +190,17 @@ export default {
         deviceName = tmpArr[1];
       }
 
-      if (this.$store.state.mode == "ACUVIM") {
+      if (this.$store.state.mode == 'ACUVIM') {
+        console.log('acuvim');
       } else {
-        meters
-          .getCo2e(tmpArr[0], deviceName, serviceName, 3, 3600, {})
-          .then((res) => {
-            var sumatoria = 0;
-            res.forEach((elemento) => {
-              sumatoria = sumatoria + elemento.co2e;
-            });
-
-            this.Eco2EMensual = sumatoria.toFixed(2);
+        meters.getCo2e(tmpArr[0], deviceName, serviceName, 3, 3600, {}).then((res) => {
+          var sumatoria = 0;
+          res.forEach((elemento) => {
+            sumatoria = sumatoria + elemento.co2e;
           });
+
+          this.Eco2EMensual = sumatoria.toFixed(2);
+        });
 
         meters
           .getGenerationReadings(
@@ -252,9 +222,7 @@ export default {
               // si es negativo dejarlo en 0
               this.AutoconsumoMensual = 0;
             } else {
-              this.AutoconsumoMensual = parseFloat(
-                sumatoriaautoconsumo.toFixed(2)
-              ).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              this.AutoconsumoMensual = parseFloat(sumatoriaautoconsumo.toFixed(2)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             }
           });
 
@@ -274,24 +242,14 @@ export default {
           });
 
         meters
-          .getGenerationReadings(
-            tmpArr[0],
-            deviceName,
-            serviceName,
-            3,
-            3600,
-            2,
-            {}
-          ) // Inyeccion a la red
+          .getGenerationReadings(tmpArr[0], deviceName, serviceName, 3, 3600, 2, {}) // Inyeccion a la red
           .then((res) => {
             var sumatoriaInyeccion = 0;
             res.forEach((elemento) => {
               sumatoriaInyeccion = sumatoriaInyeccion + elemento.value;
             });
 
-            this.InyeccionMensual = sumatoriaInyeccion
-              .toFixed(2)
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            this.InyeccionMensual = sumatoriaInyeccion.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           });
 
         designatedMeters
@@ -317,13 +275,9 @@ export default {
               // si es negativo dejarlo en 0
               this.selfConsumptionValue = 0;
             } else {
-              this.selfConsumptionValue = parseFloat(
-                res.selfConsumptionValue.toFixed(2)
-              );
+              this.selfConsumptionValue = parseFloat(res.selfConsumptionValue.toFixed(2));
             }
-            this.netInjectionValue = parseFloat(
-              res.networkInjectionValue.toFixed(2)
-            );
+            this.netInjectionValue = parseFloat(res.networkInjectionValue.toFixed(2));
             console.log(res);
           })
           .catch((err) => {
@@ -335,7 +289,7 @@ export default {
       designatedMeters
         .find({
           filter: {
-            include: ["services"],
+            include: ['services'],
             where: { company_id: this.companyId },
           },
         })
@@ -343,7 +297,7 @@ export default {
           if (!eds[0]) return;
           this.eds = eds[0];
           console.log(eds);
-          if (eds[0].tipo == "Acuvim II") {
+          if (eds[0].tipo == 'Acuvim II') {
             this.metersFilter.options.push({
               value: `${this.eds.meter_id}*${this.eds.id}`,
               text: this.eds.device_name,
@@ -382,7 +336,7 @@ export default {
     companyId() {
       this.updateServices();
     },
-    "metersFilter.selected": function () {
+    'metersFilter.selected': function () {
       this.getServerData();
     },
   },

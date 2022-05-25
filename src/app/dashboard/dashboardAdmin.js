@@ -1,27 +1,28 @@
 /* eslint-disable */
-import VHeader from "@/app/components/VHeader.vue";
-import companies from "@/services/companies";
-import VTable from "@/app/components/VTable.vue";
-import { gmapApi } from "vue2-google-maps";
-import { uncompensateScroll } from "fullcalendar";
-import users from "@/services/eUsers";
-import adminValues from "@/services/adminValues.js";
-import VColumnscfe from "@/app/components/chart/VColumnscfe.vue";
-import VueHighcharts from "vue2-highcharts";
+import VHeader from '@/app/components/VHeader.vue';
+import companies from '@/services/companies';
+import VTable from '@/app/components/VTable.vue';
+import { gmapApi } from 'vue2-google-maps';
+import { uncompensateScroll } from 'fullcalendar';
+import users from '@/services/eUsers';
+import adminValues from '@/services/adminValues.js';
+import VColumnscfe from '@/app/components/chart/VColumnsCFE.vue';
+import VueHighcharts from 'vue2-highcharts';
+import moment from 'moment';
 
 var dataColumn = {
   chart: {
-    type: "spline",
+    type: 'spline',
   },
   title: {
-    text: "Preiodo CFE",
+    text: 'Preiodo CFE',
   },
   xAxis: {
-    categories: ["aqui", "van", "los", "dias"],
+    categories: ['aqui', 'van', 'los', 'dias'],
   },
   yAxis: {
     title: {
-      text: "Holawe",
+      text: 'Holawe',
     },
   },
   tooltip: {
@@ -39,7 +40,6 @@ var dataColumn = {
     },
   },
   series: [],
-
 };
 export default {
   components: {
@@ -52,21 +52,18 @@ export default {
   computed: {
     google: gmapApi,
     cfePrices() {
-      return this.$store.getters["meter/getCfePrices"];
+      return this.$store.getters['meter/getCfePrices'];
     },
   },
 
   watch: {
     selected: function (val, oldVal) {
-
-
-      var ok = { data: [1, 2, 3, 4, 5], name: "holawe", color: "#2f7ed8", zoneAxis: 'x', zones: 0 }
+      var ok = { data: [1, 2, 3, 4, 5], name: 'holawe', color: '#2f7ed8', zoneAxis: 'x', zones: 0 };
 
       this.chartOptions.series.push(ok);
 
-
       console.log(this.chartOptions);
-      console.log("ya entre ");
+      console.log('ya entre ');
       adminValues
         .get({
           filter: {
@@ -128,24 +125,18 @@ export default {
               .then((empresa, index) => {
                 this.items.push({
                   Nombre: empresa[0].company_name,
-                  Administrador: company.company_name + " (Admin)",
-                  "Fecha de Registro": moment(empresa[0].created_at).format(
-                    "LL"
-                  ),
+                  Administrador: company.company_name + ' (Admin)',
+                  'Fecha de Registro': moment(empresa[0].created_at).format('LL'),
                 });
                 if (empresa[0].location && this.google) {
-                  this.setMarkers(
-                    empresa[0].location,
-                    index,
-                    empresa[0].company_name
-                  );
+                  this.setMarkers(empresa[0].location, index, empresa[0].company_name);
                 }
               });
           });
         });
       })
       .catch((err) => {
-        console.log("error al traer compañias", err);
+        console.log('error al traer compañias', err);
       });
   },
 
@@ -155,19 +146,15 @@ export default {
       datos: [],
       selected: null,
       options: [
-        { value: null, text: "Selecciona una ciudad" },
-        { value: "Zamora Michoacán", text: "Zamora Michoacán" },
-        { value: "Jacona Michoacán", text: "Jacona Michoacán" },
-        { value: "Purepero Michoacán", text: "Purepero Michoacán" },
-        { value: "Ciudad Guzmán", text: "Ciudad Guzmán" },
+        { value: null, text: 'Selecciona una ciudad' },
+        { value: 'Zamora Michoacán', text: 'Zamora Michoacán' },
+        { value: 'Jacona Michoacán', text: 'Jacona Michoacán' },
+        { value: 'Purepero Michoacán', text: 'Purepero Michoacán' },
+        { value: 'Ciudad Guzmán', text: 'Ciudad Guzmán' },
       ],
       companies: [],
       items: [],
-      fields: [
-        { key: "Nombre", sortable: true },
-        "Administrador",
-        "Fecha de Registro",
-      ],
+      fields: [{ key: 'Nombre', sortable: true }, 'Administrador', 'Fecha de Registro'],
       markers: [],
       infoWinOpen: false,
       infoWindowPos: {
@@ -180,7 +167,7 @@ export default {
           height: -35,
         },
       },
-      infoContent: "",
+      infoContent: '',
       currMarkerIdx: null,
     };
   },
@@ -197,7 +184,7 @@ export default {
         icon: {
           size: new this.google.maps.Size(40, 80),
           scaledSize: new this.google.maps.Size(40, 80),
-          url: "/assets/images/marker.svg",
+          url: '~@/assets/images/marker.svg',
         },
       });
     },

@@ -1,10 +1,10 @@
 /* eslint-disable */
-import eUsers from "@/services/eUsers";
-import companies from "@/services/companies";
-import VTable from "@/app/components/VTable.vue";
-import { gmapApi } from "vue2-google-maps";
-import Constants from "@/constants";
-import ConfirmationDialog from "@/app/components/ConfirmationDialog.vue";
+import eUsers from '@/services/eUsers';
+import companies from '@/services/companies';
+import VTable from '@/app/components/VTable.vue';
+import { gmapApi } from 'vue2-google-maps';
+import Constants from '@/constants';
+import ConfirmationDialog from '@/app/components/ConfirmationDialog.vue';
 
 const meterActive = Constants.Meters.active;
 
@@ -12,7 +12,8 @@ function validateEmail(email, celular) {
   if (celular.length > 10) {
     return false;
   } else {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return re.test(email);
   }
@@ -27,13 +28,13 @@ export default {
   data() {
     return {
       options: [
-        { value: "Gerencia", text: "Gerencia" },
-        { value: "Ingeniería", text: "Ingeniería" },
-        { value: "Eficiencia energética", text: "Eficiencia energética" },
-        { value: "Técnico", text: "Técnico" },
-        { value: "Administración", text: "Administración" },
-        { value: "Ventas", text: "Ventas" },
-        { value: "Otro", text: "Otro" },
+        { value: 'Gerencia', text: 'Gerencia' },
+        { value: 'Ingeniería', text: 'Ingeniería' },
+        { value: 'Eficiencia energética', text: 'Eficiencia energética' },
+        { value: 'Técnico', text: 'Técnico' },
+        { value: 'Administración', text: 'Administración' },
+        { value: 'Ventas', text: 'Ventas' },
+        { value: 'Otro', text: 'Otro' },
       ],
       edit: false,
       changePassword: false,
@@ -43,38 +44,34 @@ export default {
         company: {},
       },
       newPassword: {
-        password: "",
-        confirm: "",
+        password: '',
+        confirm: '',
       },
       items: { users: [], meters: [] },
       fields: {
         users: [
-          { key: "Nombre", sortable: true },
-          { key: "Fecha de Registro", sortable: true },
-          { key: "Email", label: "Correo" },
-          "Rol",
-          { key: "Reset", label: "Contraseña" },
-          { key: "Delete", label: "Eliminar usuario" },
+          { key: 'Nombre', sortable: true },
+          { key: 'Fecha de Registro', sortable: true },
+          { key: 'Email', label: 'Correo' },
+          'Rol',
+          { key: 'Reset', label: 'Contraseña' },
+          { key: 'Delete', label: 'Eliminar usuario' },
         ],
-        meters: [
-          { key: "No. de Serie", sortable: true, label: "No. de Serie" },
-          "Fecha de Registro",
-          "Estado",
-        ],
+        meters: [{ key: 'No. de Serie', sortable: true, label: 'No. de Serie' }, 'Fecha de Registro', 'Estado'],
       },
       companyPosition: { lat: 20.663782, lng: -103.3916394 },
       showCreateUserModal: false,
       showPasswordResetModal: false,
       newUser: {
-        name: "",
-        lastname: "",
-        email: "",
-        password: "",
-        celular: "",
-        puesto: "",
+        name: '',
+        lastname: '',
+        email: '',
+        password: '',
+        celular: '',
+        puesto: '',
       },
-      selectedUser: "",
-      password: "",
+      selectedUser: '',
+      password: '',
     };
   },
 
@@ -100,19 +97,19 @@ export default {
     },
 
     isCompanyProfile: function () {
-      return this.$route.name === "companyProfile";
+      return this.$route.name === 'companyProfile';
     },
 
     userFullname: function () {
-      return this.user.name + " " + this.user.lastname;
+      return this.user.name + ' ' + this.user.lastname;
     },
 
     userCreatedAt: function () {
-      return moment(this.user.created_at).format("LL");
+      return moment(this.user.created_at).format('LL');
     },
 
     userLastLogin: function () {
-      return moment(this.user.lastLogin).format("LL");
+      return moment(this.user.lastLogin).format('LL');
     },
 
     google: gmapApi,
@@ -122,7 +119,7 @@ export default {
         return {
           size: new this.google.maps.Size(40, 80),
           scaledSize: new this.google.maps.Size(40, 80),
-          url: "/assets/images/marker.svg",
+          url: '~@/assets/images/marker.svg',
         };
       }
       return {};
@@ -130,9 +127,9 @@ export default {
   },
 
   beforeMount() {
-    if (this.$route.name === "profile") {
+    if (this.$route.name === 'profile') {
       this.getUser();
-    } else if (this.$route.name === "companyProfile") {
+    } else if (this.$route.name === 'companyProfile') {
       this.getCompany();
     }
   },
@@ -143,7 +140,7 @@ export default {
       eUsers
         .find({
           id: userId,
-          filter: { include: ["company"] },
+          filter: { include: ['company'] },
         })
         .then((user) => {
           this.user = user;
@@ -163,7 +160,7 @@ export default {
     getCompany() {
       let id = this.companyId;
       companies
-        .find({ id, filter: { include: ["meters", "users"] } })
+        .find({ id, filter: { include: ['meters', 'users'] } })
         .then((company) => {
           this.user.company = company;
           this.user.created_at = company.created_at;
@@ -185,7 +182,7 @@ export default {
       this.changePassword = false;
       this.editCompany = false;
       this.user = JSON.parse(JSON.stringify(this.originalData));
-      this.newPassword = { password: "", confirm: "" };
+      this.newPassword = { password: '', confirm: '' };
     },
 
     saveChanges() {
@@ -210,7 +207,7 @@ export default {
         } else {
           this.items.users.push({
             Nombre: `${user.name} ${user.lastname}`,
-            "Fecha de Registro": moment(user.created_at).format("LL"),
+            'Fecha de Registro': moment(user.created_at).format('LL'),
             Email: user.email,
             Rol: user.role_id,
             id: user.id,
@@ -222,8 +219,8 @@ export default {
     mapCompanyMeters() {
       this.user.company.meters.forEach((meter) => {
         this.items.meters.push({
-          "No. de Serie": meter.serial_number,
-          "Fecha de Registro": moment(meter.created_at).format("LL"),
+          'No. de Serie': meter.serial_number,
+          'Fecha de Registro': moment(meter.created_at).format('LL'),
           Estado: meterActive[meter.active],
         });
       });
@@ -256,12 +253,12 @@ export default {
 
     showUserModal() {
       this.newUser = {
-        name: "",
-        lastname: "",
-        email: "",
-        password: "",
-        puesto: "Gerencia",
-        celular: "",
+        name: '',
+        lastname: '',
+        email: '',
+        password: '',
+        puesto: 'Gerencia',
+        celular: '',
       };
       this.showCreateUserModal = true;
     },
@@ -271,14 +268,7 @@ export default {
     },
 
     validateUser() {
-      if (
-        !this.newUser.name ||
-        !this.newUser.lastname ||
-        !this.newUser.email ||
-        !this.newUser.password ||
-        !this.newUser.puesto ||
-        !this.newUser.celular
-      )
+      if (!this.newUser.name || !this.newUser.lastname || !this.newUser.email || !this.newUser.password || !this.newUser.puesto || !this.newUser.celular)
         return false;
       return validateEmail(this.newUser.email, this.newUser.celular);
     },
@@ -286,9 +276,9 @@ export default {
     addNewUser() {
       if (!this.validateUser()) {
         this.$notify({
-          group: "notification",
-          type: "warn",
-          text: "Revisa que los campos estén escritos corréctamente",
+          group: 'notification',
+          type: 'warn',
+          text: 'Revisa que los campos estén escritos corréctamente',
         });
         return;
       }
@@ -297,23 +287,23 @@ export default {
         .then(({ user }) => {
           this.items.users.push({
             Nombre: `${user.name} ${user.lastname}`,
-            "Fecha de Registro": moment(user.created_at).format("LL"),
+            'Fecha de Registro': moment(user.created_at).format('LL'),
             Email: user.email,
             Rol: user.role_id,
             id: user.id,
           });
           this.$notify({
-            group: "notification",
-            type: "success",
-            text: "Usuario creado con éxito",
+            group: 'notification',
+            type: 'success',
+            text: 'Usuario creado con éxito',
           });
         })
         .catch((err) => {
           console.log(err);
           this.$notify({
-            group: "notification",
-            type: "error",
-            text: "Error al crear usuario",
+            group: 'notification',
+            type: 'error',
+            text: 'Error al crear usuario',
           });
         })
         .finally(() => {
@@ -325,21 +315,19 @@ export default {
       eUsers
         .delete(user.id)
         .then(() => {
-          this.items.users = this.items.users.filter(
-            (usr) => usr.id !== user.id
-          );
+          this.items.users = this.items.users.filter((usr) => usr.id !== user.id);
           this.$notify({
-            group: "notification",
-            type: "success",
-            text: "Usuario eliminado exitosamente",
+            group: 'notification',
+            type: 'success',
+            text: 'Usuario eliminado exitosamente',
           });
         })
         .catch((err) => {
           console.log(err);
           this.$notify({
-            group: "notification",
-            type: "error",
-            text: "Error al borrar usuario",
+            group: 'notification',
+            type: 'error',
+            text: 'Error al borrar usuario',
           });
         });
     },
@@ -355,17 +343,17 @@ export default {
         .resetPasswordEdited(this.selectedUser.id, this.password)
         .then(() => {
           this.$notify({
-            group: "notification",
-            type: "success",
-            text: "Password reseteado con éxito",
+            group: 'notification',
+            type: 'success',
+            text: 'Password reseteado con éxito',
           });
         })
         .catch((err) => {
           console.log(err);
           this.$notify({
-            group: "notification",
-            type: "error",
-            text: "Error al resetear contraseña",
+            group: 'notification',
+            type: 'error',
+            text: 'Error al resetear contraseña',
           });
         });
     },

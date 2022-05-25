@@ -1,13 +1,14 @@
 /* eslint-disable */
-import VHeader from "@/app/components/VHeader.vue";
-import companies from "@/services/companies";
-import Dashboard from "@/app/dashboard/Dashboard.vue";
-import Graphs from "@/app/graphs/Graphs.vue";
-import costtab from "@/app/components/tabCosts.vue";
-import netcodetab from "@/app/components/tabNetcode.vue";
-import historytab from "@/app/components/tabZhistory.vue";
-import carbonfootprintab from "@/app/components/tabCarbonFootprint.vue";
-import generationtab from "@/app/components/tabGeneration.vue";
+import VHeader from '@/app/components/VHeader.vue';
+import companies from '@/services/companies';
+import Dashboard from '@/app/dashboard/Dashboard.vue';
+import Graphs from '@/app/graphs/Graphs.vue';
+import costtab from '@/app/components/tabCosts.vue';
+import netcodetab from '@/app/components/tabNetcode.vue';
+import historytab from '@/app/components/tabZhistory.vue';
+import carbonfootprintab from '@/app/components/tabCarbonFootprint.vue';
+import generationtab from '@/app/components/tabGeneration.vue';
+import moment from 'moment';
 
 export default {
   components: {
@@ -18,7 +19,7 @@ export default {
     netcodetab,
     historytab,
     carbonfootprintab,
-    generationtab
+    generationtab,
   },
   computed: {
     isAdmin() {
@@ -34,20 +35,19 @@ export default {
       return this.$store.state.isAccounting;
     },
     companyId() {
-      if (!this.$store.state.currentCompanyDetailId)
-        this.$router.push({ name: "companies" });
+      if (!this.$store.state.currentCompanyDetailId) this.$router.push({ name: 'companies' });
       return this.$store.state.currentCompanyDetailId;
-    }
+    },
   },
   data() {
     return {
       company: {
         users: [],
-        meters: []
+        meters: [],
       },
       edit: false,
       originalData: {},
-      tabIndex: 0
+      tabIndex: 0,
     };
   },
 
@@ -56,10 +56,10 @@ export default {
       .find({
         id: this.companyId,
         filter: {
-          include: ["users", "meters"]
-        }
+          include: ['users', 'meters'],
+        },
       })
-      .then(company => {
+      .then((company) => {
         this.company = company;
         this.originalData = JSON.parse(JSON.stringify(this.company));
         console.log(company);
@@ -75,15 +75,15 @@ export default {
     addUser(user) {
       this.items.push({
         name: `${user.name} ${user.lastname}`,
-        created_at: moment(user.created_at).format("LL"),
+        created_at: moment(user.created_at).format('LL'),
         email: user.email,
         role: user.role_id,
         status: companyStatus[user.status],
-        id: user.id
+        id: user.id,
       });
     },
     linkClass(idx) {
       console.log(idx, this.tabIndex);
-    }
-  }
+    },
+  },
 };

@@ -1,10 +1,11 @@
 /* eslint-disable */
-import companies from "@/services/companies";
-import VHeader from "@/app/components/VHeader.vue";
-import VTable from "@/app/components/VTable.vue";
-import CompaniesForm from "@/app/companies/CompaniesForm.vue";
-import Constants from "@/constants";
-import users from "@/services/eUsers";
+import companies from '@/services/companies';
+import VHeader from '@/app/components/VHeader.vue';
+import VTable from '@/app/components/VTable.vue';
+import CompaniesForm from '@/app/companies/CompaniesForm.vue';
+import Constants from '@/constants';
+import users from '@/services/eUsers';
+import moment from 'moment';
 
 const companyStatus = Constants.Companies.status;
 
@@ -17,42 +18,42 @@ export default {
   data() {
     return {
       companies: [],
-      admins: [{ value: 0, text: "Selecciona una compañía" }],
+      admins: [{ value: 0, text: 'Selecciona una compañía' }],
       items: [],
       fields: [
-        { key: "name", sortable: true, label: "Nombre" },
-        { key: "phone", label: "Teléfono" },
-        { key: "created_at", label: "Fecha de Registro" },
-        { key: "size", label: "No. de Empleados" },
-        { key: "type", label: "Tipo" },
-        { key: "status", label: "Estado" },
+        { key: 'name', sortable: true, label: 'Nombre' },
+        { key: 'phone', label: 'Teléfono' },
+        { key: 'created_at', label: 'Fecha de Registro' },
+        { key: 'size', label: 'No. de Empleados' },
+        { key: 'type', label: 'Tipo' },
+        { key: 'status', label: 'Estado' },
       ],
       newCompany: {
-        company_name: "",
-        phone: "",
-        size: "Mediana",
+        company_name: '',
+        phone: '',
+        size: 'Mediana',
         location: {
-          lat: "",
-          lon: "",
+          lat: '',
+          lon: '',
         },
         city: 0,
         created_at: new Date(),
-        legal_name: "",
-        address: "",
+        legal_name: '',
+        address: '',
       },
       newManager: {
-        name: "",
-        lastname: "",
-        email: "",
-        Administrando: ["Ninguno"],
+        name: '',
+        lastname: '',
+        email: '',
+        Administrando: ['Ninguno'],
       },
       newUser: {
-        name: "",
-        lastname: "",
-        email: "",
-        contraseña: "",
-        celular: "",
-        puesto: "",
+        name: '',
+        lastname: '',
+        email: '',
+        contraseña: '',
+        celular: '',
+        puesto: '',
       },
       toggle: {
         newManager: true,
@@ -77,19 +78,19 @@ export default {
   methods: {
     resetCompany() {
       this.newCompany = {
-        company_name: "",
-        phone: "",
-        size: "Mediana",
+        company_name: '',
+        phone: '',
+        size: 'Mediana',
         location: {
-          lat: "",
-          lon: "",
+          lat: '',
+          lon: '',
         },
         city: 0,
-        domain: "",
+        domain: '',
         created_at: new Date(),
-        legal_name: "",
-        address: "",
-        licencia: "",
+        legal_name: '',
+        address: '',
+        licencia: '',
       };
     },
     getCompanies() {
@@ -116,9 +117,9 @@ export default {
       });
     },
     verifyData() {
-      console.log("nuevaempresa");
+      console.log('nuevaempresa');
       console.log(this.newCompany);
-      console.log("nuevousuario");
+      console.log('nuevousuario');
       console.log(this.newUser);
 
       /*   if (isNaN(this.newCompany.location.lat) || isNaN(this.newCompany.location.lon)) return false;
@@ -133,9 +134,9 @@ export default {
     createCompany() {
       if (!this.verifyData()) {
         this.$notify({
-          group: "notification",
-          type: "warn",
-          text: "Verifica que los datos estén llenados de la mejor manera",
+          group: 'notification',
+          type: 'warn',
+          text: 'Verifica que los datos estén llenados de la mejor manera',
         });
         return;
       }
@@ -151,16 +152,16 @@ export default {
           }
           this.resetCompany();
           this.$notify({
-            group: "notification",
-            type: "success",
-            text: "La compañía se ha creado con éxito",
+            group: 'notification',
+            type: 'success',
+            text: 'La compañía se ha creado con éxito',
           });
         })
         .catch(() => {
           this.$notify({
-            group: "notification",
-            type: "error",
-            text: "Hubo un error al crear la compañía",
+            group: 'notification',
+            type: 'error',
+            text: 'Hubo un error al crear la compañía',
           });
         });
     },
@@ -169,24 +170,24 @@ export default {
       data.company = newCompany;
       data.manager = this.newManager;
 
-      if (this.newUser.email !== "") {
+      if (this.newUser.email !== '') {
         data.user = this.newUser;
       }
-      console.log("corriste?");
+      console.log('corriste?');
       companies
         .addAdmins({ data: data })
         .then(() => {
           this.$notify({
-            group: "notification",
-            type: "success",
-            text: "Usuarios creados con éxito",
+            group: 'notification',
+            type: 'success',
+            text: 'Usuarios creados con éxito',
           });
         })
         .catch(() => {
           this.$notify({
-            group: "notification",
-            type: "error",
-            text: "Hubo un error al crear usuarios",
+            group: 'notification',
+            type: 'error',
+            text: 'Hubo un error al crear usuarios',
           });
         });
     },
@@ -194,7 +195,7 @@ export default {
       this.items.push({
         name: company.company_name,
         phone: company.phone,
-        created_at: moment(company.created_at).format("LL"),
+        created_at: moment(company.created_at).format('LL'),
         size: company.size,
         type: company.company_type,
         status: companyStatus[company.status],

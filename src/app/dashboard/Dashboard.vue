@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-parent">
-    <b-row id="dashboard" class="main user-dashboard" v-if="!isAdmin ">
+    <b-row id="dashboard" class="main user-dashboard" v-if="!isAdmin">
       <b-col>
         <b-row class="dashboard-content-user">
           <b-col>
@@ -16,7 +16,7 @@
                   <template v-slot:body>
                     <b-row>
                       <b-col md="2" class="dashboard-icon-container">
-                        <img class="dashboard-image" src="/assets/images/consumption.svg" />
+                        <img class="dashboard-image" src="~@/assets/images/consumption.svg" />
                       </b-col>
                       <b-col md="10" class="dashboard-data-container">
                         <p>Consumo</p>
@@ -25,7 +25,7 @@
                       </b-col>
                     </b-row>
                   </template>
-                  <template v-slot:footer>Última actualización: {{dailyLastUpdatedTime}}</template>
+                  <template v-slot:footer>Última actualización: {{ dailyLastUpdatedTime }}</template>
                 </reading-card>
               </b-col>
               <b-col xl="4" lg="6">
@@ -39,7 +39,7 @@
                   <template v-slot:body>
                     <b-row>
                       <b-col md="2" class="dashboard-icon-container">
-                        <img class="dashboard-image" src="/assets/images/capacity.svg" />
+                        <img class="dashboard-image" src="~@/assets/images/capacity.svg" />
                       </b-col>
                       <b-col md="10" class="dashboard-data-container">
                         <p>Capacidad</p>
@@ -48,7 +48,7 @@
                       </b-col>
                     </b-row>
                   </template>
-                  <template v-slot:footer>Última actualización: {{dailyLastUpdatedTime}}</template>
+                  <template v-slot:footer>Última actualización: {{ dailyLastUpdatedTime }}</template>
                 </reading-card>
               </b-col>
               <b-col xl="4" lg="12">
@@ -62,7 +62,7 @@
                   <template v-slot:body>
                     <b-row>
                       <b-col md="2" class="dashboard-icon-container">
-                        <img class="dashboard-image" src="/assets/images/distribution.svg" />
+                        <img class="dashboard-image" src="~@/assets/images/distribution.svg" />
                       </b-col>
                       <b-col md="10" class="dashboard-data-container">
                         <p>Distribución</p>
@@ -71,7 +71,7 @@
                       </b-col>
                     </b-row>
                   </template>
-                  <template v-slot:footer>Última actualización: {{dailyLastUpdatedTime}}</template>
+                  <template v-slot:footer>Última actualización: {{ dailyLastUpdatedTime }}</template>
                 </reading-card>
               </b-col>
             </b-row>
@@ -93,7 +93,7 @@
                         <b-col>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/consumption.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/consumption.svg" />
                             </div>
                             <div class="data-container">
                               <p>Consumo</p>
@@ -111,25 +111,25 @@
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/distribution.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/distribution.svg" />
                             </div>
                             <div class="data-container">
                               <p>Distribución</p>
                               <b-row>
                                 <b-col>
-                                  <h5>{{ distributionMonth ? distributionMonth: 0 }}</h5>
+                                  <h5>{{ distributionMonth ? distributionMonth : 0 }}</h5>
                                   <span>kW</span>
                                 </b-col>
                                 <b-col>
                                   <span>$</span>
-                                  <h5>{{ distributionMonthCost ? distributionMonthCost: 0 }}</h5>
+                                  <h5>{{ distributionMonthCost ? distributionMonthCost : 0 }}</h5>
                                 </b-col>
                               </b-row>
                             </div>
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/capacity.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/capacity.svg" />
                             </div>
                             <div class="data-container">
                               <p>Capacidad</p>
@@ -147,7 +147,7 @@
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/fp.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/fp.svg" />
                             </div>
                             <div class="data-container">
                               <p>F.P</p>
@@ -161,22 +161,19 @@
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img
-                                class="dashboard-image"
-                                src="/assets/images/networkInjection.svg"
-                              />
+                              <img class="dashboard-image" src="~@/assets/images/networkInjection.svg" />
                             </div>
                             <div class="data-container">
                               <p>Inyección a la red</p>
                               <b-row>
                                 <b-col cols="6">
-                                  <h5>{{InyeccionMensual ? InyeccionMensual : 0 }}</h5>
+                                  <h5>{{ InyeccionMensual ? InyeccionMensual : 0 }}</h5>
                                   <span></span>
                                 </b-col>
                                 <b-col>
                                   <span>$</span>
                                   <h5>{{ CostNet ? CostNet : '' }}</h5>
-                                  {{valuedemanda}}
+                                  {{ valuedemanda }}
                                 </b-col>
                               </b-row>
                             </div>
@@ -197,7 +194,7 @@
                     <b-btn
                       :disabled="refreshingData"
                       class="refresh-btn"
-                      :class="refreshingData?'disable-refresh':'enable-refresh'"
+                      :class="refreshingData ? 'disable-refresh' : 'enable-refresh'"
                       @click="refresh()"
                     ></b-btn>
                   </b-row>
@@ -212,10 +209,10 @@
                   </b-row>
                   <b-row class="general-body">
                     <b-col>
-                      <template v-if="tariffType==='GDMTO'">
+                      <template v-if="tariffType === 'GDMTO'">
                         <v-cfeGDMTO :allowEditing="false" :forceCurrentMonth="true" />
                       </template>
-                      <template v-if="tariffType==='GDMTH'">
+                      <template v-if="tariffType === 'GDMTH'">
                         <v-cfeGDMTH :allowEditing="false" :forceCurrentMonth="true" />
                       </template>
                     </b-col>
@@ -233,7 +230,7 @@
                   </b-row>
                   <vue-highcharts :options="lineOptions" ref="lineCharts"></vue-highcharts>
                 </b-card>
-                <div v-if="this.$store.state.mode =='ACUVIM'">{{this.VariablesAcu}}</div>
+                <div v-if="this.$store.state.mode == 'ACUVIM'">{{ this.VariablesAcu }}</div>
               </b-col>
             </b-row>
           </b-col>
@@ -272,7 +269,7 @@
                   <template v-slot:body>
                     <b-row>
                       <b-col md="2" class="dashboard-icon-container">
-                        <img class="dashboard-image" src="/assets/images/consumption.svg" />
+                        <img class="dashboard-image" src="~@/assets/images/consumption.svg" />
                       </b-col>
                       <b-col md="10" class="dashboard-data-container">
                         <p>Consumo</p>
@@ -295,7 +292,7 @@
                   <template v-slot:body>
                     <b-row>
                       <b-col md="2" class="dashboard-icon-container">
-                        <img class="dashboard-image" src="/assets/images/capacity.svg" />
+                        <img class="dashboard-image" src="~@/assets/images/capacity.svg" />
                       </b-col>
                       <b-col md="10" class="dashboard-data-container">
                         <p>Capacidad</p>
@@ -318,7 +315,7 @@
                   <template v-slot:body>
                     <b-row>
                       <b-col md="2" class="dashboard-icon-container">
-                        <img class="dashboard-image" src="/assets/images/distribution.svg" />
+                        <img class="dashboard-image" src="~@/assets/images/distribution.svg" />
                       </b-col>
                       <b-col md="10" class="dashboard-data-container">
                         <p>Distribución</p>
@@ -349,7 +346,7 @@
                         <b-col>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/consumption.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/consumption.svg" />
                             </div>
                             <div class="data-container">
                               <p>Consumo</p>
@@ -367,7 +364,7 @@
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/distribution.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/distribution.svg" />
                             </div>
                             <div class="data-container">
                               <p>Distribución</p>
@@ -385,7 +382,7 @@
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/capacity.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/capacity.svg" />
                             </div>
                             <div class="data-container">
                               <p>Capacidad</p>
@@ -403,7 +400,7 @@
                           </div>
                           <div class="analysis-item--cat">
                             <div class="icon-container">
-                              <img class="dashboard-image" src="/assets/images/fp.svg" />
+                              <img class="dashboard-image" src="~@/assets/images/fp.svg" />
                             </div>
                             <div class="data-container">
                               <p>F.P</p>
@@ -419,7 +416,7 @@
                             <div class="icon-container">
                               <img
                                 class="dashboard-image"
-                                src="/assets/images/networkInjection.svg"
+                                src="~@/assets/images/networkInjection.svg"
                               />
                             </div>
                             <div class="data-container">

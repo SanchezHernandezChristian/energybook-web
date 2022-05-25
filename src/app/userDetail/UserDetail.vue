@@ -4,23 +4,13 @@
       <b-card class="profile-header">
         <b-row>
           <b-col md="4" class="user-info">
-            <img src="/assets/images/user-avatar.png" />
+            <img src="~@/assets/images/user-avatar.png" />
             <h5 v-if="!isCompanyProfile">{{ userFullname }}</h5>
             <p>{{ user.company.company_name }}</p>
           </b-col>
           <b-col md="8" class="profile-map-container">
-            <GmapMap
-              :center="{lat:20.663782, lng:-103.3916394}"
-              :zoom="7"
-              map-type-id="roadmap"
-              :options="{ disableDefaultUI : true }"
-            >
-              <GmapMarker
-                :position="companyPosition"
-                :clickable="false"
-                :draggable="false"
-                :icon="marker"
-              />
+            <GmapMap :center="{ lat: 20.663782, lng: -103.3916394 }" :zoom="7" map-type-id="roadmap" :options="{ disableDefaultUI: true }">
+              <GmapMarker :position="companyPosition" :clickable="false" :draggable="false" :icon="marker" />
             </GmapMap>
           </b-col>
         </b-row>
@@ -36,53 +26,26 @@
               <b-tab title="Información">
                 <b-row align-h="end">
                   <b-col v-if="!edit && !changePassword && !editCompany" md="6" class="action">
-                    <b-button
-                      hidden
-                      v-if="!isCompanyProfile"
-                      :variant="'outline-success'"
-                      class="right"
-                      @click="changePassword = true"
-                    >Cambiar Contraseña</b-button>
-                    <b-button
-                      v-if="isAdmin || isManager"
-                      :variant="'outline-success'"
-                      class="right"
-                      hidden
-                      @click="editCompany = true"
-                    >Editar Compañía</b-button>
-                    <b-button
-                      hidden
-                      v-if="!isCompanyProfile"
-                      :variant="'outline-success'"
-                      class="right"
-                      @click="edit = true"
-                    >Editar Correo</b-button>
+                    <b-button hidden v-if="!isCompanyProfile" :variant="'outline-success'" class="right" @click="changePassword = true"
+                      >Cambiar Contraseña</b-button
+                    >
+                    <b-button v-if="isAdmin || isManager" :variant="'outline-success'" class="right" hidden @click="editCompany = true"
+                      >Editar Compañía</b-button
+                    >
+                    <b-button hidden v-if="!isCompanyProfile" :variant="'outline-success'" class="right" @click="edit = true">Editar Correo</b-button>
                   </b-col>
                 </b-row>
                 <b-row>
                   <b-col md="6">
-                    <b-form-group
-                      v-if="!changePassword && !editCompany && !isCompanyProfile"
-                      label="Email"
-                    >
-                      <b-form-input
-                        :readonly="!edit"
-                        :type="'email'"
-                        v-model="user.email"
-                        required
-                        placeholder="Email"
-                      ></b-form-input>
+                    <b-form-group v-if="!changePassword && !editCompany && !isCompanyProfile" label="Email">
+                      <b-form-input :readonly="!edit" :type="'email'" v-model="user.email" required placeholder="Email"></b-form-input>
                     </b-form-group>
                     <div v-if="changePassword">
                       <b-form-group>
                         <b-form-input :type="'password'" required placeholder="Nueva Contraseña"></b-form-input>
                       </b-form-group>
                       <b-form-group>
-                        <b-form-input
-                          :type="'password'"
-                          required
-                          placeholder="Confirmar Contraseña"
-                        ></b-form-input>
+                        <b-form-input :type="'password'" required placeholder="Confirmar Contraseña"></b-form-input>
                       </b-form-group>
                     </div>
                   </b-col>
@@ -91,42 +54,18 @@
                   <h5 v-if="!editCompany && !isCompanyProfile">Mi compañía</h5>
                   <b-col>
                     <b-form-group label="Nombre">
-                      <b-form-input
-                        :readonly="!editCompany"
-                        :type="'text'"
-                        v-model="user.company.company_name"
-                        required
-                        placeholder="Nombre"
-                      ></b-form-input>
+                      <b-form-input :readonly="!editCompany" :type="'text'" v-model="user.company.company_name" required placeholder="Nombre"></b-form-input>
                     </b-form-group>
                     <b-form-group label="Teléfono">
-                      <b-form-input
-                        :readonly="!editCompany"
-                        :type="'text'"
-                        v-model="user.company.phone"
-                        required
-                        placeholder="Teléfono"
-                      ></b-form-input>
+                      <b-form-input :readonly="!editCompany" :type="'text'" v-model="user.company.phone" required placeholder="Teléfono"></b-form-input>
                     </b-form-group>
                     <b-form-group label="Tamaño de empresa">
-                      <b-form-input
-                        :readonly="!editCompany"
-                        :type="'text'"
-                        v-model="user.company.size"
-                        required
-                        placeholder="Tamaño de empresa"
-                      ></b-form-input>
+                      <b-form-input :readonly="!editCompany" :type="'text'" v-model="user.company.size" required placeholder="Tamaño de empresa"></b-form-input>
                     </b-form-group>
                   </b-col>
                   <b-col>
                     <b-form-group v-if="isUser" label="Puesto">
-                      <b-form-input
-                        :readonly="!editCompany"
-                        :type="'text'"
-                        v-model="user.position"
-                        required
-                        placeholder="Puesto"
-                      ></b-form-input>
+                      <b-form-input :readonly="!editCompany" :type="'text'" v-model="user.position" required placeholder="Puesto"></b-form-input>
                     </b-form-group>
                     <b-form-group v-else label="Razón Social">
                       <b-form-input
@@ -138,12 +77,7 @@
                       ></b-form-input>
                     </b-form-group>
                     <b-form-group label="Giro">
-                      <b-form-input
-                        :readonly="!editCompany"
-                        :type="'text'"
-                        required
-                        placeholder="Industrial"
-                      ></b-form-input>
+                      <b-form-input :readonly="!editCompany" :type="'text'" required placeholder="Industrial"></b-form-input>
                     </b-form-group>
                     <b-form-group label="Ubicación">
                       <b-form-input
@@ -189,19 +123,14 @@
                     <b-form-select v-model="newUser.puesto" :options="options" />
                   </b-form-group>
                   <b-form-group label="Telefono">
-                    <b-form-input
-                      type="text"
-                      v-model="newUser.celular"
-                      required
-                      placeholder="10 digitos"
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="newUser.celular" required placeholder="10 digitos"></b-form-input>
                   </b-form-group>
                 </confirmation-dialog>
                 <confirmation-dialog
                   title="Atención"
                   :show="showPasswordResetModal"
-                  @cancel="() => showPasswordResetModal = false"
-                  @hidden="() => showPasswordResetModal = false"
+                  @cancel="() => (showPasswordResetModal = false)"
+                  @hidden="() => (showPasswordResetModal = false)"
                   @accept="resetPassword"
                 >
                   <b-form>
@@ -209,21 +138,13 @@
                       <b-form-input type="text" id="password" v-model="password" />
                     </b-form-group>
 
-                    <p>
-                      Se restablecerá la contraseña del usuario {{selectedUser.Nombre}}.
-                      <br />Esta seguro?
-                    </p>
+                    <p>Se restablecerá la contraseña del usuario {{ selectedUser.Nombre }}. <br />Esta seguro?</p>
                   </b-form>
                 </confirmation-dialog>
                 <div class="text-right mb-5 mt-2">
                   <b-button variant="success" @click="showUserModal">Agregar usuario</b-button>
                 </div>
-                <v-table
-                  :items="items.users"
-                  :fields="fields.users"
-                  @reset-password="showPasswordReset"
-                  @delete="deleteUser"
-                />
+                <v-table :items="items.users" :fields="fields.users" @reset-password="showPasswordReset" @delete="deleteUser" />
               </b-tab>
             </b-tabs>
           </b-card>

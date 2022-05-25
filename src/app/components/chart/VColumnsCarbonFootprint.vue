@@ -8,69 +8,53 @@
             v-for="(interval, index) in meditionIntervals"
             :key="index"
             :class="{
-                            'btn-success': index === currentMeditionInterval,
-                            'btn-outline-success': index !== currentMeditionInterval
-                            }"
+              'btn-success': index === currentMeditionInterval,
+              'btn-outline-success': index !== currentMeditionInterval,
+            }"
             @click="changeInterval(index)"
-          >{{ interval }}</b-button>
+            >{{ interval }}</b-button
+          >
         </b-col>
-        <b-col :md="showMeditionIntervals? 9:12" class="text-right">
+        <b-col :md="showMeditionIntervals ? 9 : 12" class="text-right">
           <div class="datepickers" v-if="showDatePicker">
-            <date-picker
-              placeholder="Desde"
-              v-model="date_custom.from"
-              @dp-change="setCustomDate"
-              :config="dateConfig"
-            ></date-picker>
-            <date-picker
-              class="mr-0"
-              placeholder="Hasta"
-              v-model="date_custom.until"
-              @dp-change="setCustomDate"
-              :config="dateConfig"
-            ></date-picker>
+            <date-picker placeholder="Desde" v-model="date_custom.from" @dp-change="setCustomDate" :config="dateConfig"></date-picker>
+            <date-picker class="mr-0" placeholder="Hasta" v-model="date_custom.until" @dp-change="setCustomDate" :config="dateConfig"></date-picker>
           </div>
           <b-button
             variant="outline-dark"
             v-for="(button, index) in buttons.options"
             :key="index"
             :class="{
-                            'btn-success': currentPeriod === button.value,
-                            'btn-outline-success':currentPeriod !== button.value
-                            }"
+              'btn-success': currentPeriod === button.value,
+              'btn-outline-success': currentPeriod !== button.value,
+            }"
             @click="changePeriod(button.value)"
-          >{{ button.text }}</b-button>
+            >{{ button.text }}</b-button
+          >
         </b-col>
       </b-row>
     </div>
     <div class="chart-container">
       <vue-highcharts v-if="!dangerAlert" :options="ColumnOptions" ref="columnCharts"></vue-highcharts>
-      <b-alert
-        v-else
-        show
-        class="margin-top-1"
-        variant="danger"
-      >Hubo un error al obtener los datos del medidor. ¡Refresca la página e intenta de nuevo!</b-alert>
+      <b-alert v-else show class="margin-top-1" variant="danger"
+        >Hubo un error al obtener los datos del medidor. ¡Refresca la página e intenta de nuevo!</b-alert
+      >
     </div>
   </div>
 </template>
 
 <script>
-import VueHighcharts from "vue2-highcharts";
-import meters from "@/services/meters";
-import datePicker from "vue-bootstrap-datetimepicker";
-import Minutesss from "@/services/Minutes";
+import VueHighcharts from 'vue2-highcharts';
+import meters from '@/services/meters';
+import datePicker from 'vue-bootstrap-datetimepicker';
+import Minutesss from '@/services/minutes';
+import moment from 'moment';
 
-import {
-  parseDate,
-  parseDateTime,
-  parseDayName,
-  parseMonth,
-} from "@/utils/dateTime";
+import { parseDate, parseDateTime, parseDayName, parseMonth } from '@/utils/dateTime';
 
 var dataColumn = {
   chart: {
-    type: "column",
+    type: 'column',
   },
   title: {
     text: null,
@@ -86,9 +70,8 @@ var dataColumn = {
   tooltip: {
     crosshairs: true,
     shared: true,
-    pointFormat:
-      '<span style="color:{point.color}">\u25CF</span> CO2e: <b>${point.y}</b><br/>',
-    valueSuffix: " T",
+    pointFormat: '<span style="color:{point.color}">\u25CF</span> CO2e: <b>${point.y}</b><br/>',
+    valueSuffix: ' T',
   },
   credits: {
     enabled: false,
@@ -130,32 +113,32 @@ export default {
         until: null,
       },
       dateConfig: {
-        format: "YYYY-MM-DD",
+        format: 'YYYY-MM-DD',
         useCurrent: false,
       },
       showDatePicker: false,
       ColumnOptions: dataColumn,
       plot: {
-        name: "",
+        name: '',
         data: [],
       },
       buttons: {
         selected: 0,
         options: [
-          { value: -1, text: "Calendario" },
-          { value: 0, text: "Hoy" },
-          { value: 1, text: "Ayer" },
-          { value: 2, text: "Esta Semana" },
-          { value: 3, text: "Este Mes" },
-          { value: 4, text: "Este Año" },
+          { value: -1, text: 'Calendario' },
+          { value: 0, text: 'Hoy' },
+          { value: 1, text: 'Ayer' },
+          { value: 2, text: 'Esta Semana' },
+          { value: 3, text: 'Este Mes' },
+          { value: 4, text: 'Este Año' },
         ],
       },
       currentPeriod: 0,
       dangerAlert: false,
       colors: {
-        base: "#1dd6c0",
+        base: '#1dd6c0',
       },
-      meditionIntervals: ["Cada hora", "Cada día"],
+      meditionIntervals: ['Cada hora', 'Cada día'],
       currentMeditionInterval: 0,
       isLoading: false,
     };
@@ -170,31 +153,25 @@ export default {
   computed: {
     dayDifference() {
       if (this.date_custom.until && this.date_custom.from) {
-        return moment(this.date_custom.until).diff(
-          moment(this.date_custom.from),
-          "days"
-        );
+        return moment(this.date_custom.until).diff(moment(this.date_custom.from), 'days');
       }
       return 0;
     },
 
     showMeditionIntervals() {
-      return (
-        (this.currentPeriod > 1 && this.currentPeriod < 4) ||
-        this.currentPeriod === -1
-      );
+      return (this.currentPeriod > 1 && this.currentPeriod < 4) || this.currentPeriod === -1;
     },
   },
 
   beforeMount() {
-    this.plot.name = "CO2e";
+    this.plot.name = 'CO2e';
   },
 
   methods: {
     showLoading() {
       this.isLoading = true;
       let columnCharts = this.$refs.columnCharts;
-      columnCharts.delegateMethod("showLoading", "Loading...");
+      columnCharts.delegateMethod('showLoading', 'Loading...');
     },
 
     load() {
@@ -216,18 +193,18 @@ export default {
       let errorMessage = {};
       if (moment(this.date_custom.until).isBefore(this.date_custom.from)) {
         errorMessage = {
-          title: "Fecha incorrecta",
-          text: "La fecha de inicio no puede ser mayor a la final",
+          title: 'Fecha incorrecta',
+          text: 'La fecha de inicio no puede ser mayor a la final',
         };
       } else if (this.dayDifference > 31) {
         errorMessage = {
-          title: "Periodo muy grande",
-          text: "El periodo no puede exceder más de 31 días",
+          title: 'Periodo muy grande',
+          text: 'El periodo no puede exceder más de 31 días',
         };
       } else if (moment().isBefore(this.date_custom.from)) {
         errorMessage = {
-          title: "Periodo inexistente",
-          text: "La fecha de inicio no puede ser mayor a la actual",
+          title: 'Periodo inexistente',
+          text: 'La fecha de inicio no puede ser mayor a la actual',
         };
       } else {
         isValid = true;
@@ -242,8 +219,8 @@ export default {
           this.renderChartWithData();
         } else {
           this.$notify({
-            group: "notification",
-            type: "warn",
+            group: 'notification',
+            type: 'warn',
             title: errorMessage.title,
             text: errorMessage.text,
           });
@@ -254,10 +231,10 @@ export default {
     changeInterval(interval) {
       if (this.isLoading) {
         this.$notify({
-          group: "notification",
-          type: "warn",
-          title: "Petición en proceso",
-          text: "Por favor, espera mientras los datos de la gráfica se cargan",
+          group: 'notification',
+          type: 'warn',
+          title: 'Petición en proceso',
+          text: 'Por favor, espera mientras los datos de la gráfica se cargan',
         });
         return;
       }
@@ -271,10 +248,10 @@ export default {
     changePeriod(period) {
       if (this.isLoading) {
         this.$notify({
-          group: "notification",
-          type: "warn",
-          title: "Petición en proceso",
-          text: "Por favor, espera mientras los datos de la gráfica se cargan",
+          group: 'notification',
+          type: 'warn',
+          title: 'Petición en proceso',
+          text: 'Por favor, espera mientras los datos de la gráfica se cargan',
         });
         return;
       }
@@ -313,21 +290,14 @@ export default {
     },
 
     getData(filter, interval, chart) {
-      const meter = this.meterId.split("*");
+      const meter = this.meterId.split('*');
       let meter_id = meter[0];
-      let meter_device = meter[1] === "EDS" ? "" : meter[1];
-      let service = meter[1] === "EDS" ? meter[2] : "";
-      console.log(
-        meter_id,
-        meter_device,
-        service,
-        filter,
-        interval,
-        this.date_custom
-      );
+      let meter_device = meter[1] === 'EDS' ? '' : meter[1];
+      let service = meter[1] === 'EDS' ? meter[2] : '';
+      console.log(meter_id, meter_device, service, filter, interval, this.date_custom);
 
-      if (this.$store.state.mode == "ACUVIM") {
-        console.log("hola");
+      if (this.$store.state.mode == 'ACUVIM') {
+        console.log('hola');
 
         Minutesss.FootprintGraph(meter_device, filter).then((res) => {
           let data = [];
@@ -339,14 +309,8 @@ export default {
             tickInterval = result.tickInterval;
             return result.res;
           });
-          let plotOptions = this.formatPlotOptions(
-            this.currentPeriod,
-            res.response.length
-          );
-          let tooltip = this.formatTooltip(
-            this.currentMeditionInterval,
-            this.currentPeriod
-          );
+          let plotOptions = this.formatPlotOptions(this.currentPeriod, res.response.length);
+          let tooltip = this.formatTooltip(this.currentMeditionInterval, this.currentPeriod);
           chart.update({
             xAxis: { categories: xAxis, tickInterval },
             plotOptions: plotOptions,
@@ -356,14 +320,7 @@ export default {
         });
       } else {
         meters
-          .getCo2e(
-            meter_id,
-            meter_device,
-            service,
-            filter,
-            interval,
-            this.date_custom
-          )
+          .getCo2e(meter_id, meter_device, service, filter, interval, this.date_custom)
           .then((res) => {
             console.log(res);
             if (res) {
@@ -376,14 +333,8 @@ export default {
                 tickInterval = result.tickInterval;
                 return result.res;
               });
-              let plotOptions = this.formatPlotOptions(
-                this.currentPeriod,
-                res.length
-              );
-              let tooltip = this.formatTooltip(
-                this.currentMeditionInterval,
-                this.currentPeriod
-              );
+              let plotOptions = this.formatPlotOptions(this.currentPeriod, res.length);
+              let tooltip = this.formatTooltip(this.currentMeditionInterval, this.currentPeriod);
               chart.update({
                 xAxis: { categories: xAxis, tickInterval },
                 plotOptions: plotOptions,
@@ -407,8 +358,7 @@ export default {
 
     formatTooltip(interval, period) {
       return {
-        pointFormat:
-          '<span style="color:{point.color}">\u25CF</span> Emisiones: <b>{point.y}</b><br/>',
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> Emisiones: <b>{point.y}</b><br/>',
       };
     },
 
@@ -435,10 +385,7 @@ export default {
       let day = parseDayName(date);
       let month = parseMonth(date);
       let tickInterval = 1;
-      if (
-        this.currentMeditionInterval === 1 &&
-        (this.currentPeriod > 1 || this.currentPeriod === -1)
-      ) {
+      if (this.currentMeditionInterval === 1 && (this.currentPeriod > 1 || this.currentPeriod === -1)) {
         return { res: `${day} ${date.substring(0, 2)}`, tickInterval };
       }
       if (this.currentPeriod === -1) {
@@ -452,7 +399,7 @@ export default {
         return { res: `${day} ${time}`, tickInterval };
       } else if (this.currentPeriod === 3) {
         tickInterval = 12;
-        if (time === "00:00:00") {
+        if (time === '00:00:00') {
           return { res: `${day} ${date.substring(0, 2)}`, tickInterval };
         } else {
           return { res: `${time}`, tickInterval };
@@ -470,37 +417,34 @@ export default {
       let month = parseMonth(date);
       if (this.currentMeditionInterval === 1 && this.currentPeriod === 2) {
         return {
-          name: `${"CO2e"} - ${day} ${date.substring(0, 2)}`,
+          name: `${'CO2e'} - ${day} ${date.substring(0, 2)}`,
           y: parseFloat(co2e.toFixed(6)),
-          color: this.colors["base"],
+          color: this.colors['base'],
         };
-      } else if (
-        this.currentMeditionInterval === 1 &&
-        this.currentPeriod === 3
-      ) {
+      } else if (this.currentMeditionInterval === 1 && this.currentPeriod === 3) {
         return {
-          name: `${"CO2e"} - ${dat}`,
+          name: `${'CO2e'} - ${dat}`,
           y: parseFloat(co2e.toFixed(6)),
-          color: this.colors["base"],
+          color: this.colors['base'],
         };
       }
       if (this.currentPeriod === 2) {
         return {
-          name: `${"CO2e"} - ${day} ${time}`,
+          name: `${'CO2e'} - ${day} ${time}`,
           y: parseFloat(co2e.toFixed(6)),
-          color: this.colors["base"],
+          color: this.colors['base'],
         };
       } else if (this.currentPeriod === 3) {
         return {
-          name: `${"CO2e"} - ${dat} ${time}`,
+          name: `${'CO2e'} - ${dat} ${time}`,
           y: parseFloat(co2e.toFixed(6)),
-          color: this.colors["base"],
+          color: this.colors['base'],
         };
       } else {
         return {
-          name: `${"CO2e"} - ${month}`,
+          name: `${'CO2e'} - ${month}`,
           y: parseFloat(co2e.toFixed(6)),
-          color: this.colors["base"],
+          color: this.colors['base'],
         };
       }
     },

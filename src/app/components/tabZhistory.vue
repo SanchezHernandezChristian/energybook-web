@@ -19,8 +19,7 @@
                   <span @click="changePeriod(-1, 0)">
                     <i class="fas fa-arrow-alt-circle-left"></i>
                   </span>
-                  <b-form-input v-model="month" type="text" disabled>
-                  </b-form-input>
+                  <b-form-input v-model="month" type="text" disabled> </b-form-input>
                   <span @click="changePeriod(1, 0)">
                     <i class="fas fa-arrow-alt-circle-right"></i>
                   </span>
@@ -29,45 +28,29 @@
                   <span @click="changePeriod(0, -1)">
                     <i class="fas fa-arrow-alt-circle-left"></i>
                   </span>
-                  <b-form-input v-model="year" type="text" disabled>
-                  </b-form-input>
+                  <b-form-input v-model="year" type="text" disabled> </b-form-input>
                   <span @click="changePeriod(0, 1)">
                     <i class="fas fa-arrow-alt-circle-right"></i>
                   </span>
                 </div>
               </b-col>
               <b-col cols="12" class="text-center">
-                <b-button
-                  variant="outline-dark"
-                  :disabled="isLoading"
-                  class="btn-confirmation"
-                  @click="getMonthlyHistory"
-                >
-                  Confirmar
-                </b-button>
+                <b-button variant="outline-dark" :disabled="isLoading" class="btn-confirmation" @click="getMonthlyHistory"> Confirmar </b-button>
               </b-col>
             </b-row>
           </b-col>
           <b-col cols="12">
             <div v-if="isLoading" class="loading-spinner text-center">
-              <img src="/assets/images/loading.svg" alt="loading" />
+              <img src="~@/assets/images/loading.svg" alt="loading" />
             </div>
             <div v-if="noData" class="no-data-alert">
-              <b-alert class="tmp-alert" variant="warning" show
-                >No hay datos que mostrar para el mes seleccionado</b-alert
-              >
+              <b-alert class="tmp-alert" variant="warning" show>No hay datos que mostrar para el mes seleccionado</b-alert>
             </div>
-            <b-row
-              v-if="!isLoading && hasData && !noData"
-              class="monthly-readings"
-            >
+            <b-row v-if="!isLoading && hasData && !noData" class="monthly-readings">
               <b-col>
                 <div class="analysis-item--cat">
                   <div class="icon-container">
-                    <img
-                      class="dashboard-image"
-                      src="/assets/images/consumption.svg"
-                    />
+                    <img class="dashboard-image" src="~@/assets/images/consumption.svg" />
                   </div>
                   <div class="data-container">
                     <p>Consumo</p>
@@ -85,10 +68,7 @@
                 </div>
                 <div class="analysis-item--cat">
                   <div class="icon-container">
-                    <img
-                      class="dashboard-image"
-                      src="/assets/images/distribution.svg"
-                    />
+                    <img class="dashboard-image" src="~@/assets/images/distribution.svg" />
                   </div>
                   <div class="data-container">
                     <p>Distribución</p>
@@ -106,10 +86,7 @@
                 </div>
                 <div class="analysis-item--cat">
                   <div class="icon-container">
-                    <img
-                      class="dashboard-image"
-                      src="/assets/images/capacity.svg"
-                    />
+                    <img class="dashboard-image" src="~@/assets/images/capacity.svg" />
                   </div>
                   <div class="data-container">
                     <p>Capacidad</p>
@@ -127,7 +104,7 @@
                 </div>
                 <div class="analysis-item--cat">
                   <div class="icon-container">
-                    <img class="dashboard-image" src="/assets/images/fp.svg" />
+                    <img class="dashboard-image" src="~@/assets/images/fp.svg" />
                   </div>
                   <div class="data-container">
                     <p>F.P</p>
@@ -149,90 +126,70 @@
 </template>
 
 <script>
-import Services from "@/services/services";
-import meters from "@/services/meters";
-import designatedMeters from "@/services/designatedMeters";
-import Constants from "@/constants.json";
+import Services from '@/services/services';
+import meters from '@/services/meters';
+import designatedMeters from '@/services/designatedMeters';
+import Constants from '@/constants.json';
+import moment from 'moment';
 
 export default {
   props: {
     companyIdProp: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
-      date: moment()
-        .startOf("month")
-        .subtract(1, "month")
-        .format(),
+      date: moment().startOf('month').subtract(1, 'month').format(),
 
       service: 0,
       isLoading: false,
       data: {},
       noData: false,
-      consumptionCost: 0
+      consumptionCost: 0,
     };
   },
   computed: {
     month: {
       get() {
-        const month = moment(this.date).format("MMMM");
+        const month = moment(this.date).format('MMMM');
         return `${month.charAt(0).toUpperCase()}${month.slice(1)}`;
       },
-      set() {}
+      set() {},
     },
     year: {
       get() {
-        return moment(this.date).format("YYYY");
+        return moment(this.date).format('YYYY');
       },
-      set() {}
+      set() {},
     },
     services() {
       return this.$store.state.services.map((service, index) => ({
         value: index,
-        text: service
+        text: service,
       }));
     },
     companyId() {
       return this.companyIdProp;
     },
     hasData() {
-      return (
-        this.data.consumption &&
-        this.data.distribution &&
-        this.data.capacity &&
-        this.data.fp
-      );
+      return this.data.consumption && this.data.distribution && this.data.capacity && this.data.fp;
     },
     cfePrices() {
-      return this.$store.getters["meter/getCfePrices"];
+      return this.$store.getters['meter/getCfePrices'];
     },
     distributionCost() {
-      return (
-        this.cfePrices.distributionPrice * parseFloat(this.data.distribution)
-      )
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return (this.cfePrices.distributionPrice * parseFloat(this.data.distribution)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
     capacityCost() {
-      return (this.cfePrices.capacityPrice * parseFloat(this.data.capacity))
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+      return (this.cfePrices.capacityPrice * parseFloat(this.data.capacity)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
   },
   methods: {
     changePeriod(months, years) {
-      const new_date = moment(this.date)
-        .add(months, "month")
-        .add(years, "year")
-        .format();
-      if (
-        moment()
-          .startOf("month")
-          .isAfter(new_date)
-      ) {
+      const new_date = moment(this.date).add(months, 'month').add(years, 'year').format();
+      if (moment().startOf('month').isAfter(new_date)) {
         this.date = new_date;
       }
     },
@@ -244,58 +201,42 @@ export default {
         .then(({ data }) => {
           if (data) {
             let custom_dates = {
-              from: moment(this.date)
-                .startOf("month")
-                .format(),
-              until: moment(this.date)
-                .endOf("month")
-                .format()
+              from: moment(this.date).startOf('month').format(),
+              until: moment(this.date).endOf('month').format(),
             };
             designatedMeters
               .find({
                 filter: {
                   where: {
-                    company_id: this.companyId
-                  }
-                }
+                    company_id: this.companyId,
+                  },
+                },
               })
-              .then(mets => {
+              .then((mets) => {
                 let edsId = mets[0].meter_id;
-                meters
-                  .getConsumptionCostsByFilter(
-                    edsId,
-                    "",
-                    serviceSelected,
-                    Constants.Meters.filters.custom,
-                    86400,
-                    custom_dates
-                  )
-                  .then(res => {
-                    let cost = res
-                      .reduce((prev, curr) => {
-                        return prev + parseFloat(curr.cost);
-                      }, 0)
-                      .toFixed(2);
-                    this.consumptionCost = cost.replace(
-                      /\B(?=(\d{3})+(?!\d))/g,
-                      ","
-                    );
-                  });
+                meters.getConsumptionCostsByFilter(edsId, '', serviceSelected, Constants.Meters.filters.custom, 86400, custom_dates).then((res) => {
+                  let cost = res
+                    .reduce((prev, curr) => {
+                      return prev + parseFloat(curr.cost);
+                    }, 0)
+                    .toFixed(2);
+                  this.consumptionCost = cost.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                });
               });
             this.data = data;
           } else {
             this.noData = true;
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           this.noData = true;
         })
         .finally(() => {
           this.isLoading = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

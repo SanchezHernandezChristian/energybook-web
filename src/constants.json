@@ -50,24 +50,24 @@
     },
     "Weather": {
         "condition_icons": {
-            "01d": "/assets/weather/ECGday.svg",
-            "01n": "/assets/weather/ECGnight.svg",
-            "02d": "/assets/weather/ECGcloudy-day-1.svg",
-            "02n": "/assets/weather/ECGcloudy-night-1.svg",
-            "03d": "/assets/weather/ECGcloudy.svg",
-            "03n": "/assets/weather/ECGcloudy.svg",
-            "04d": "/assets/weather/ECGcloudy.svg",
-            "04n": "/assets/weather/ECGcloudy.svg",
-            "09d": "/assets/weather/ECGrainy-shower.svg",
-            "09n": "/assets/weather/ECGrainy-shower.svg",
-            "10d": "/assets/weather/ECGrainy-day.svg",
-            "10n": "/assets/weather/ECGrainy-night.svg",
-            "11d": "/assets/weather/ECGthunder.svg",
-            "11n": "/assets/weather/ECGthunder.svg",
-            "13d": "/assets/weather/ECGsnowy-day.svg",
-            "13n": "/assets/weather/ECGsnowy-night.svg",
-            "50d": "/assets/weather/ECGrainy-grail.svg",
-            "50n": "/assets/weather/ECGrainy-grail.svg"
+            "01d": "~@/assets/weather/ECGday.svg",
+            "01n": "~@/assets/weather/ECGnight.svg",
+            "02d": "~@/assets/weather/ECGcloudy-day-1.svg",
+            "02n": "~@/assets/weather/ECGcloudy-night-1.svg",
+            "03d": "~@/assets/weather/ECGcloudy.svg",
+            "03n": "~@/assets/weather/ECGcloudy.svg",
+            "04d": "~@/assets/weather/ECGcloudy.svg",
+            "04n": "~@/assets/weather/ECGcloudy.svg",
+            "09d": "~@/assets/weather/ECGrainy-shower.svg",
+            "09n": "~@/assets/weather/ECGrainy-shower.svg",
+            "10d": "~@/assets/weather/ECGrainy-day.svg",
+            "10n": "~@/assets/weather/ECGrainy-night.svg",
+            "11d": "~@/assets/weather/ECGthunder.svg",
+            "11n": "~@/assets/weather/ECGthunder.svg",
+            "13d": "~@/assets/weather/ECGsnowy-day.svg",
+            "13n": "~@/assets/weather/ECGsnowy-night.svg",
+            "50d": "~@/assets/weather/ECGrainy-grail.svg",
+            "50n": "~@/assets/weather/ECGrainy-grail.svg"
         }
     },
     "CFE": {
@@ -112,15 +112,15 @@
         "Valle de Mexico Sur"
     ],
     "images": {
-        "consumption": "/assets/images/consumption.svg",
-        "generation": "/assets/images/generation.svg",
-        "generationCircle": "/assets/images/generationCircle.svg",
-        "total": "/assets/images/total.svg",
-        "co2e": "/assets/images/CO2Emissions.svg",
-        "emissionFactor": "/assets/images/emissionFactor.svg",
-        "co2eLimit": "/assets/images/emissionLimit.svg",
-        "selfConsumption": "/assets/images/selfConsumption.svg",
-        "netInjection": "/assets/images/networkInjection.svg"
+        "consumption": "~@/assets/images/consumption.svg",
+        "generation": "~@/assets/images/generation.svg",
+        "generationCircle": "~@/assets/images/generationCircle.svg",
+        "total": "~@/assets/images/total.svg",
+        "co2e": "~@/assets/images/CO2Emissions.svg",
+        "emissionFactor": "~@/assets/images/emissionFactor.svg",
+        "co2eLimit": "~@/assets/images/emissionLimit.svg",
+        "selfConsumption": "~@/assets/images/selfConsumption.svg",
+        "netInjection": "~@/assets/images/networkInjection.svg"
     },
     "tarifas": [
         "Gran demanda media tensión horaria",
