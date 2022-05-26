@@ -16,20 +16,20 @@
                 </div>
                 <div class="date-selector text-center">
                   <span @click="changePeriod(1, -1)">
-                    <i class="fas fa-arrow-alt-circle-left"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-left" />
                   </span>
                   <b-form-input v-model="selectedMonth" type="text" disabled></b-form-input>
                   <span @click="changePeriod(1, 1)">
-                    <i class="fas fa-arrow-alt-circle-right"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-right" />
                   </span>
                 </div>
                 <div class="date-selector text-center">
                   <span @click="changePeriod(0, -1)">
-                    <i class="fas fa-arrow-alt-circle-left"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-left" />
                   </span>
                   <b-form-input v-model="selectedYear" type="text" disabled></b-form-input>
                   <span @click="changePeriod(0, 1)">
-                    <i class="fas fa-arrow-alt-circle-right"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-right" />
                   </span>
                 </div>
               </b-col>
@@ -37,25 +37,25 @@
             <hr />
             <b-row>
               <b-col lg="3" md="12" class="prices">
-                <p style="text-align:center">
+                <p style="text-align: center">
                   <b>GRAN DEMANDA EN MEDIA TENSIÓN HORARIA</b>
                 </p>
                 <v-cfeGDMTH ref="cfeValues" :fullWidth="false" :forceCurrentMonth="false" />
               </b-col>
               <b-col lg="3" md="12" class="prices">
-                <p style="text-align:center">
+                <p style="text-align: center">
                   <b>GRAN DEMANDA EN MEDIA TENSIÓN ORDINARIA</b>
                 </p>
                 <v-cfeGDMTO :fullWidth="false" :forceCurrentMonth="false" />
               </b-col>
               <b-col lg="3" md="12" class="prices">
-                <p style="text-align:center">
+                <p style="text-align: center">
                   <b>GRAN DEMANDA BAJA TENSION</b>
                 </p>
                 <v-cfeGDMTO :fullWidth="false" :forceCurrentMonth="false" />
               </b-col>
               <b-col lg="3" md="12" class="prices">
-                <p style="text-align:center">
+                <p style="text-align: center">
                   <b>PEQUEÑA DEMANDA BAJA TENSION</b>
                 </p>
                 <v-cfeGDMTO :fullWidth="false" :forceCurrentMonth="false" />
@@ -69,50 +69,48 @@
 </template>
 
 <script>
-import moment from "moment";
-import constants from "@/constants.json";
-import VCfeGDMTH from "@/app/components/VCfeGDMTH";
-import VCfeGDMTO from "@/app/components/VCfeGDMTO";
-import _l from "lodash";
+import moment from 'moment';
+import constants from '@/constants.json';
+import VCfeGDMTH from '@/app/components/VCfeGDMTH';
+import VCfeGDMTO from '@/app/components/VCfeGDMTO';
+import _l from 'lodash';
 
 export default {
   components: {
     VCfeGDMTH,
-    VCfeGDMTO
+    VCfeGDMTO,
   },
 
   beforeMount() {
     this.city = this.selectedCity;
-    this.$store.dispatch("meter/changeCfePeriod", {
+    this.$store.dispatch('meter/changeCfePeriod', {
       date: { years: 0, months: 0 },
-      division: this.cities[this.city]
+      division: this.cities[this.city],
     });
   },
 
   data() {
     return {
-      city: 0
+      city: 0,
     };
   },
 
   computed: {
     selectedMonth: {
       get() {
-        let date = moment(this.$store.state.meter.cfeValues.date).format(
-          "MMMM"
-        );
+        let date = moment(this.$store.state.meter.cfeValues.date).format('MMMM');
         return date.charAt(0).toUpperCase() + date.slice(1);
       },
 
-      set() {}
+      set() {},
     },
 
     selectedYear: {
       get() {
-        return moment(this.$store.state.meter.cfeValues.date).format("YYYY");
+        return moment(this.$store.state.meter.cfeValues.date).format('YYYY');
       },
 
-      set() {}
+      set() {},
     },
 
     selectedCity() {
@@ -120,24 +118,24 @@ export default {
     },
 
     userCompany() {
-      return this.$store.getters["user/getUserCompany"];
+      return this.$store.getters['user/getUserCompany'];
     },
 
     cities() {
       return constants.Divisiones.map((city, index) => ({
         value: index,
-        text: city
+        text: city,
       }));
-    }
+    },
   },
 
   watch: {
     city(newCity) {
-      this.$store.dispatch("meter/changeCfePeriod", {
+      this.$store.dispatch('meter/changeCfePeriod', {
         date: { years: 0, months: 0 },
-        division: this.cities[newCity]
+        division: this.cities[newCity],
       });
-    }
+    },
   },
 
   methods: {
@@ -145,20 +143,20 @@ export default {
       if (!this.$refs.cfeValues.isEditing) {
         if (type === 0) {
           // Year
-          this.$store.dispatch("meter/changeCfePeriod", {
+          this.$store.dispatch('meter/changeCfePeriod', {
             date: { years: quantity, months: 0 },
-            division: this.cities[this.city]
+            division: this.cities[this.city],
           });
         } else if (type === 1) {
           // Month
-          this.$store.dispatch("meter/changeCfePeriod", {
+          this.$store.dispatch('meter/changeCfePeriod', {
             date: { years: 0, months: quantity },
-            division: this.cities[this.city]
+            division: this.cities[this.city],
           });
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -7,20 +7,20 @@
       <b-nav vertical class="w-100">
         <b-nav-item v-if="isAdmin && !isadminNormal" v-bind:class="{ 'current-view': currentView === 'dashboard' }" @click="goTo('dashboard')">
           <div class="menu-icon-container">
-            <i class="fas fa-tachometer-alt"></i>
+            <font-awesome-icon icon="tachometer-alt" />
           </div>
           Dashboard
         </b-nav-item>
         <b-nav-item v-else-if="isAdmin && isadminNormal" v-bind:class="{ 'current-view': currentView === 'dashboard2' }" @click="goTo('Dashboard2')">
           <div class="menu-icon-container">
-            <i class="fas fa-tachometer-alt"></i>
+            <font-awesome-icon icon="tachometer-alt" />
           </div>
           Dashboard
         </b-nav-item>
         <div v-else>
           <b-nav-item v-b-toggle.serviceSelection v-bind:class="{ 'current-view': currentView === 'dashboard' }" @click="toggleShowCollapse">
             <div class="menu-icon-container">
-              <i class="fas fa-tachometer-alt"></i>
+              <font-awesome-icon icon="tachometer-alt" />
             </div>
             Dashboard
           </b-nav-item>
@@ -42,85 +42,83 @@
           @click="goTo('companies')"
         >
           <div class="menu-icon-container">
-            <i class="far fa-building"></i>
+            <font-awesome-icon icon="building" />
           </div>
           Partner
         </b-nav-item>
         <b-nav-item v-if="isAdmin && isadminNormal" v-bind:class="{ 'current-view': currentView === 'meters' }" @click="goTo('meters')">
           <div class="menu-icon-container">
-            <i class="fas fa-solar-panel"></i>
+            <font-awesome-icon icon="solar-panel" />
           </div>
           Medidores
         </b-nav-item>
         <b-nav-item v-if="isAdmin && !isadminNormal" v-bind:class="{ 'current-view': currentView === 'cfeValues' }" @click="goTo('cfeValues')">
           <div class="menu-icon-container">
-            <i class="fas fa-bolt"></i>
+            <font-awesome-icon icon="bolt" />
           </div>
           CFE
         </b-nav-item>
         <b-nav-item v-if="isAdmin && isadminNormal" v-bind:class="{ 'current-view': currentView === 'partners' }" @click="goTo('partners')">
           <div class="menu-icon-container">
-            <i class="fas fa-bolt"></i>
+            <font-awesome-icon icon="bolt" />
           </div>
           Clientes
         </b-nav-item>
         <b-nav-item v-if="!isAdmin" v-bind:class="{ 'current-view': currentView === 'graphs' }" @click="goTo('graphs')">
           <div class="menu-icon-container">
-            <i class="fas fa-chart-line"></i>
+            <font-awesome-icon icon="chart-line" />
           </div>
           Gráficas
         </b-nav-item>
         <b-nav-item v-if="isUser" v-bind:class="{ 'current-view': currentView === 'userCosts' }" @click="goTo('userCosts')">
           <div class="menu-icon-container">
-            <i class="fas fa-coins"></i>
+            <font-awesome-icon icon="coins" />
           </div>
           Costos
         </b-nav-item>
         <b-nav-item v-if="isUser" v-bind:class="{ 'current-view': currentView === 'netCode' }" @click="goTo('netCode')">
           <div class="menu-icon-container">
-            <i class="fas fa-gavel"></i>
+            <font-awesome-icon icon="gavel" />
           </div>
           Código de red
         </b-nav-item>
         <b-nav-item v-if="isUser" v-bind:class="{ 'current-view': currentView === 'history' }" @click="goTo('history')">
           <div class="menu-icon-container">
-            <i class="fas fa-history"></i>
+            <font-awesome-icon icon="history" />
           </div>
           Historial
         </b-nav-item>
         <b-nav-item v-if="isUser" v-bind:class="{ 'current-view': currentView === 'carbonFootprint' }" @click="goTo('carbonFootprint')">
           <div class="menu-icon-container">
-            <i class="fas fa-shoe-prints"></i>
+            <font-awesome-icon icon="shoe-prints" />
           </div>
           Huella de carbono
         </b-nav-item>
         <b-nav-item v-if="isManager" v-bind:class="{ 'current-view': currentView === 'payments' }" @click="goTo('payments')">
-          <div class="menu-icon-container">
-            <i class="fas fa-dollar-sign"></i>
-          </div>
+          <div class="menu-icon-container">dollar-sign</div>
           Facturación
         </b-nav-item>
         <b-nav-item v-if="isAdmin && !isadminNormal" v-bind:class="{ 'current-view': currentView === 'customize' }" @click="goTo('customize')">
           <div class="menu-icon-container">
-            <i class="fas fa-cogs"></i>
+            <font-awesome-icon icon="cogs" />
           </div>
           Personalizar
         </b-nav-item>
         <b-nav-item v-bind:class="{ 'current-view': currentView === 'generation' }" @click="goTo('generation')" v-if="isUser">
           <div class="menu-icon-container">
-            <i class="fas fa-bolt"></i>
+            <font-awesome-icon icon="bolt" />
           </div>
           Generación
         </b-nav-item>
         <b-nav-item v-bind:class="{ 'current-view': currentView === 'information' }" @click="goTo('information')" v-if="isUser">
           <div class="menu-icon-container">
-            <i class="fas fa-info-circle"></i>
+            <font-awesome-icon icon="info-circle" />
           </div>
           Información
         </b-nav-item>
         <b-nav-item v-bind:class="{ 'current-view': currentView === 'eficiencia' }" @click="goTo('eficiencia')" v-if="isUser">
           <div class="menu-icon-container">
-            <i class="far fa-calendar-plus"></i>
+            <font-awesome-icon icon="calendar-plus" />
           </div>
           Eficiencia
         </b-nav-item>
@@ -153,15 +151,16 @@
             variant="outline-secondary"
             @click="goTo('notificaciones')"
           >
-            <i class="far fa-bell"></i>
+            <font-awesome-icon icon="bell" />
+
             <b-badge variant="dark">{{ notificacion }}</b-badge>
           </b-button>
 
           <b-collapse is-nav id="nav_dropdown_collapse" class="menu-dropdown">
             <b-navbar-nav>
               <b-nav-item-dropdown :text="user.user.name + ' ' + user.user.lastname" right>
-                <b-dropdown-item v-if="!isAccounting" @click="goTo('profile')"> <i class="far fa-user"></i> Perfil </b-dropdown-item>
-                <b-dropdown-item @click="logout()"> <i class="fas fa-sign-out-alt"></i> Cerrar Sesión </b-dropdown-item>
+                <b-dropdown-item v-if="!isAccounting" @click="goTo('profile')"> <font-awesome-icon icon="user" />Perfil </b-dropdown-item>
+                <b-dropdown-item @click="logout()"> <font-awesome-icon icon="sign-out-alt" /> Cerrar Sesión </b-dropdown-item>
               </b-nav-item-dropdown>
             </b-navbar-nav>
           </b-collapse>

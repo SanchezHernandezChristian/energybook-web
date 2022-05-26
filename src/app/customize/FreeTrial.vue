@@ -3,9 +3,9 @@
     <b-col lg="6">
       <h3>Compañía designada para pruebas de software</h3>
       <h5 v-if="freeTrialCompany">
-        <i class="fas fa-building"></i>
+        <font-awesome-icon icon="building" />
         {{ freeTrialCompany.company_name }}
-        <i class="fas fa-times-circle" @click="removeCompany"></i>
+        <font-awesome-icon icon="times-circle" @click="removeCompany" />
       </h5>
       <b-alert v-else show variant="warning">No existe una compañía designada para prueba de software</b-alert>
     </b-col>

@@ -50,24 +50,24 @@
     },
     "Weather": {
         "condition_icons": {
-            "01d": "~@/assets/weather/ECGday.svg",
-            "01n": "~@/assets/weather/ECGnight.svg",
-            "02d": "~@/assets/weather/ECGcloudy-day-1.svg",
-            "02n": "~@/assets/weather/ECGcloudy-night-1.svg",
-            "03d": "~@/assets/weather/ECGcloudy.svg",
-            "03n": "~@/assets/weather/ECGcloudy.svg",
-            "04d": "~@/assets/weather/ECGcloudy.svg",
-            "04n": "~@/assets/weather/ECGcloudy.svg",
-            "09d": "~@/assets/weather/ECGrainy-shower.svg",
-            "09n": "~@/assets/weather/ECGrainy-shower.svg",
-            "10d": "~@/assets/weather/ECGrainy-day.svg",
-            "10n": "~@/assets/weather/ECGrainy-night.svg",
-            "11d": "~@/assets/weather/ECGthunder.svg",
-            "11n": "~@/assets/weather/ECGthunder.svg",
-            "13d": "~@/assets/weather/ECGsnowy-day.svg",
-            "13n": "~@/assets/weather/ECGsnowy-night.svg",
-            "50d": "~@/assets/weather/ECGrainy-grail.svg",
-            "50n": "~@/assets/weather/ECGrainy-grail.svg"
+            "01d": "ECGday.svg", 
+            "01n": "ECGnight.svg",
+            "02d": "ECGcloudy-day-1.svg",
+            "02n": "ECGcloudy-night-1.svg",
+            "03d": "ECGcloudy.svg",
+            "03n": "ECGcloudy.svg",
+            "04d": "ECGcloudy.svg",
+            "04n": "ECGcloudy.svg",
+            "09d": "ECGrainy-shower.svg",
+            "09n": "ECGrainy-shower.svg",
+            "10d": "ECGrainy-day.svg",
+            "10n": "ECGrainy-night.svg",
+            "11d": "ECGthunder.svg",
+            "11n": "ECGthunder.svg",
+            "13d": "ECGsnowy-day.svg",
+            "13n": "ECGsnowy-night.svg",
+            "50d": "ECGrainy-grail.svg",
+            "50n": "ECGrainy-grail.svg"
         }
     },
     "CFE": {
@@ -112,15 +112,15 @@
         "Valle de Mexico Sur"
     ],
     "images": {
-        "consumption": "~@/assets/images/consumption.svg",
-        "generation": "~@/assets/images/generation.svg",
-        "generationCircle": "~@/assets/images/generationCircle.svg",
-        "total": "~@/assets/images/total.svg",
-        "co2e": "~@/assets/images/CO2Emissions.svg",
-        "emissionFactor": "~@/assets/images/emissionFactor.svg",
-        "co2eLimit": "~@/assets/images/emissionLimit.svg",
-        "selfConsumption": "~@/assets/images/selfConsumption.svg",
-        "netInjection": "~@/assets/images/networkInjection.svg"
+        "consumption": "consumption.svg",
+        "generation": "generation.svg",
+        "generationCircle": "generationCircle.svg",
+        "total": "total.svg",
+        "co2e": "CO2Emissions.svg",
+        "emissionFactor": "emissionFactor.svg",
+        "co2eLimit": "emissionLimit.svg",
+        "selfConsumption": "selfConsumption.svg",
+        "netInjection": "networkInjection.svg"
     },
     "tarifas": [
         "Gran demanda media tensión horaria",

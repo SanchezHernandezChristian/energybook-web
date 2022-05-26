@@ -3,25 +3,21 @@
     <b-row>
       <b-col cols="2" class="property flex-item">
         <template v-if="propertyImage">
-          <img :src="propertyImage.src" :alt="propertyImage.alt" />
+          <img :src="require(`../../assets/images/${propertyImage.src}`)" :alt="propertyImage.alt" />
         </template>
         <template v-else>
-          <i class="fas fa-leaf"></i>
+          <font-awesome-icon icon="leaf" />
         </template>
       </b-col>
       <b-col class="property flex-item" cols="5">
-        <h5>{{propertyName}}</h5>
+        <h5>{{ propertyName }}</h5>
       </b-col>
       <b-col cols="5">
-        <div
-          class="value"
-          v-if="propertyUnit !== undefined && propertyUnit === '$' "
-          :class="{negativeValue: isNegative}"
-        >
-          <h5>{{isNegative ? '-': ''}} {{propertyUnit}} {{Math.abs(propertyValue)}}</h5>
+        <div class="value" v-if="propertyUnit !== undefined && propertyUnit === '$'" :class="{ negativeValue: isNegative }">
+          <h5>{{ isNegative ? '-' : '' }} {{ propertyUnit }} {{ Math.abs(propertyValue) }}</h5>
         </div>
         <div class="value" v-else>
-          <h5>{{propertyValue}} {{propertyUnit}}</h5>
+          <h5>{{ propertyValue }} {{ propertyUnit }}</h5>
         </div>
       </b-col>
     </b-row>

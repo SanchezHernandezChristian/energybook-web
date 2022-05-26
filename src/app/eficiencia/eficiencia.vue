@@ -27,11 +27,10 @@
                     <p style="font-size: 17px">Produccion</p>
                     <p style="font-size: 17px">{{ valorMuestra }}</p>
                   </div>
-
                   <b-row>
-                    <b-col><b-form-input v-model="produccion" variant="Primary"></b-form-input></b-col>
+                    <b-col><b-form-input v-model="produccion" variant="light" style="background-color: white"></b-form-input></b-col>
                     <b-col
-                      ><b-button @click="GuardarValor(produccion, ctx)" variant="light"> <i class="fas fa-save"></i> Guardar</b-button></b-col
+                      ><b-button @click="GuardarValor(produccion, ctx)" variant="light"> <font-awesome-icon icon="save" /> Guardar</b-button></b-col
                     >
                   </b-row>
                 </div>

@@ -17,20 +17,20 @@
                 </div>
                 <div class="date-selector text-center">
                   <span @click="changePeriod(-1, 0)">
-                    <i class="fas fa-arrow-alt-circle-left"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-left" />
                   </span>
                   <b-form-input v-model="month" type="text" disabled></b-form-input>
                   <span @click="changePeriod(1, 0)">
-                    <i class="fas fa-arrow-alt-circle-right"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-right" />
                   </span>
                 </div>
                 <div class="date-selector text-center">
                   <span @click="changePeriod(0, -1)">
-                    <i class="fas fa-arrow-alt-circle-left"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-left" />
                   </span>
                   <b-form-input v-model="year" type="text" disabled></b-form-input>
                   <span @click="changePeriod(0, 1)">
-                    <i class="fas fa-arrow-alt-circle-right"></i>
+                    <font-awesome-icon icon="arrow-alt-circle-right" />
                   </span>
                 </div>
               </b-col>

@@ -8,6 +8,13 @@ import * as VueGoogleMaps from 'vue2-google-maps';
 import Notifications from 'vue-notification';
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'; // eslint-disable-line
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faS, fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(fas);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 import './index.scss';
 

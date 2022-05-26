@@ -4,12 +4,12 @@
 
     <b-table v-else responsive hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" @row-clicked="rowClickHandler">
       <template v-slot:cell(status)="data">
-        <i v-show="data.item.status" style="color: #2d9b14; font-size: 15px" class="fas fa-check-circle"></i>
-        <i v-show="!data.item.status" style="color: #ba0d0d; font-size: 15px" class="fas fa-times-circle"></i>
+        <i v-show="data.item.status" style="color: #2d9b14; font-size: 15px"></i> <font-awesome-icon icon="check-circle" />
+        <i v-show="!data.item.status" style="color: #ba0d0d; font-size: 15px"></i> <font-awesome-icon icon="times-circle" />
       </template>
       <template v-slot:cell(botonEliminarCompany)="data">
         <button class="btn icon-btn delete" type="button" @click.stop="$emit('delete-company', data.item.id)">
-          <i class="far fa-trash-alt"></i>
+          <font-awesome-icon icon="trash-alt" />
         </button>
       </template>
 
@@ -17,7 +17,7 @@
 
       <template v-slot:cell(usuarios)="data">
         <button class="btn icon-btn delete" type="button" @click.stop="$emit('delete-notification', data.item.id)">
-          <i class="far fa-trash-alt"></i>
+          <font-awesome-icon icon="trash-alt" />
         </button>
       </template>
 
@@ -56,7 +56,7 @@
       </template>
       <template v-slot:cell(Delete)="data">
         <button class="btn icon-btn delete" type="button" @click.stop="$emit('delete', data.item)">
-          <i class="far fa-trash-alt"></i>
+          <font-awesome-icon icon="trash-alt" />
         </button>
       </template>
     </b-table>

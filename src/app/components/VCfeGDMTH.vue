@@ -1,68 +1,58 @@
 <template>
-  <b-form :class="{'medium': !fullWidth}" class="prices-form" @submit="(e) => {e.preventDefault()}">
+  <b-form
+    :class="{ medium: !fullWidth }"
+    class="prices-form"
+    @submit="
+      (e) => {
+        e.preventDefault();
+      }
+    "
+  >
     <div v-show="allowEditing" class="edit-buttons text-right">
       <span @click="savePrices" v-if="isEditing">
-        <i class="far fa-save"></i>
+        <font-awesome-icon icon="save" />
       </span>
       <span @click="cancelEditing" v-if="isEditing">
-        <i class="fas fa-trash-alt"></i>
+        <font-awesome-icon icon="trash-alt" />
       </span>
       <span @click="editFields" v-else>
-        <i class="fas fa-edit"></i>
+        <font-awesome-icon icon="edit" />
       </span>
     </div>
     <b-form-group label="Precio base:" label-for="base_price">
       <b-form-input v-model="base" id="base_price" :disabled="!isEditing" step="any" type="text"></b-form-input>
     </b-form-group>
     <b-form-group label="Precio media:" label-for="middle_price">
-      <b-form-input
-        v-model="middle"
-        id="middle_price"
-        :disabled="!isEditing"
-        step="any"
-        type="text"
-      ></b-form-input>
+      <b-form-input v-model="middle" id="middle_price" :disabled="!isEditing" step="any" type="text"></b-form-input>
     </b-form-group>
     <b-form-group label="Precio punta:" label-for="peak_price">
       <b-form-input v-model="peak" id="peak_price" :disabled="!isEditing" step="any" type="text"></b-form-input>
     </b-form-group>
     <b-form-group label="Precio capacidad:" label-for="capacity_price">
-      <b-form-input
-        v-model="capacity"
-        id="capacity_price"
-        :disabled="!isEditing"
-        step="any"
-        type="text"
-      ></b-form-input>
+      <b-form-input v-model="capacity" id="capacity_price" :disabled="!isEditing" step="any" type="text"></b-form-input>
     </b-form-group>
     <b-form-group label="Precio distribución:" label-for="distribution_price">
-      <b-form-input
-        v-model="distribution"
-        id="distribution_price"
-        :disabled="!isEditing"
-        step="any"
-        type="text"
-      ></b-form-input>
+      <b-form-input v-model="distribution" id="distribution_price" :disabled="!isEditing" step="any" type="text"></b-form-input>
     </b-form-group>
   </b-form>
 </template>
 
 <script>
-import constants from "@/constants.json";
+import constants from '@/constants.json';
 
 export default {
   props: {
     allowEditing: {
       type: Boolean,
-      default: true
+      default: true,
     },
     fullWidth: {
       type: Boolean,
-      default: true
+      default: true,
     },
     forceCurrentMonth: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
 
   data() {
@@ -72,13 +62,13 @@ export default {
       peak: null,
       capacity: null,
       distribution: null,
-      isEditing: false
+      isEditing: false,
     };
   },
 
   beforeMount() {
     this.resetPrices();
-    this.$store.dispatch("meter/getCurrentCfePeriod", this.userCompany);
+    this.$store.dispatch('meter/getCurrentCfePeriod', this.userCompany);
   },
 
   computed: {
@@ -108,23 +98,22 @@ export default {
     },
     distributionPrice() {
       if (this.forceCurrentMonth) {
-        return this.$store.state.meter.cfeValues.currentPrices
-          .distributionPrice;
+        return this.$store.state.meter.cfeValues.currentPrices.distributionPrice;
       }
       return this.$store.state.meter.cfeValues.GDMTH.prices.distribution;
     },
     userCompany() {
-      return this.$store.getters["user/getUserCompany"];
+      return this.$store.getters['user/getUserCompany'];
     },
     isAdmin() {
-      return JSON.parse(localStorage.getItem("user")).role_id === 1;
+      return JSON.parse(localStorage.getItem('user')).role_id === 1;
     },
     cities() {
       return constants.Divisiones;
     },
     selectedCity() {
       return this.$store.state.meter.cfeValues.citySelected;
-    }
+    },
   },
 
   watch: {
@@ -145,15 +134,15 @@ export default {
     },
     userCompany(company) {
       if (this.forceCurrentMonth) {
-        this.$store.dispatch("meter/getCurrentCfePeriod", company);
+        this.$store.dispatch('meter/getCurrentCfePeriod', company);
       } else {
-        this.$store.dispatch("meter/changeCfePeriod", {
+        this.$store.dispatch('meter/changeCfePeriod', {
           date: { years: 0, months: 0 },
-          Division: company.Division
+          Division: company.Division,
         });
       }
       this.resetPrices();
-    }
+    },
   },
 
   methods: {
@@ -175,32 +164,32 @@ export default {
           middle: parseFloat(this.middle),
           peak: parseFloat(this.peak),
           capacity: parseFloat(this.capacity),
-          distribution: parseFloat(this.distribution)
+          distribution: parseFloat(this.distribution),
         };
-        let city = "";
+        let city = '';
         if (this.isAdmin) {
           city = this.cities[this.selectedCity];
         } else {
           city = this.userCompany.Division;
         }
         this.$store
-          .dispatch("meter/setCfePrices", {
+          .dispatch('meter/setCfePrices', {
             city,
             payload,
-            tariffType: "GDMTH"
+            tariffType: 'GDMTH',
           })
           .then(() => {
             this.$notify({
-              group: "notification",
-              type: "success",
-              title: "Los precios de este mes se cambiaron correctamente"
+              group: 'notification',
+              type: 'success',
+              title: 'Los precios de este mes se cambiaron correctamente',
             });
           })
-          .catch(err => {
+          .catch((err) => {
             this.$notify({
-              group: "notification",
-              type: "error",
-              title: "No fue posible cambiar los precios"
+              group: 'notification',
+              type: 'error',
+              title: 'No fue posible cambiar los precios',
             });
           })
           .finally(() => {
@@ -208,9 +197,9 @@ export default {
           });
       } else {
         this.$notify({
-          group: "notification",
-          type: "warn",
-          title: "Verifica que los campos estén llenados de forma correcta"
+          group: 'notification',
+          type: 'warn',
+          title: 'Verifica que los campos estén llenados de forma correcta',
         });
       }
     },
@@ -227,8 +216,8 @@ export default {
     cancelEditing() {
       this.isEditing = false;
       this.resetPrices();
-    }
-  }
+    },
+  },
 };
 </script>
 
