@@ -32,13 +32,14 @@ function addTokenFromLocalStorage(http) {
 }
 
 const http = axios.create({
-  baseURL: 'http://stg.api.olus.mx/api',
+  //baseURL: 'http://stg.api.olus.mx/api',
+  baseURL: "https://api.olus.mx/api",
   //baseURL: "http://api.ienergybook.com/api",
   //baseURL: "http://localhost:3000/api",
 });
 
 // Current setLoading function
-let setLoading = () => {};
+let setLoading = () => { };
 
 http.setLoadingFunction = (fn) => {
   setLoading = fn;
@@ -86,7 +87,7 @@ const interceptResErrors = (err) => {
   try {
     setLoading(false, err.config.uid || err.response.config.uid);
     err = Object.assign(new Error(), err.response.data.error);
-  } catch (e) {}
+  } catch (e) { }
   return Promise.reject(err);
 };
 

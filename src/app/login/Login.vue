@@ -54,7 +54,7 @@
         <b-button type="submit" variant="primary">Iniciar Sesión</b-button>
 
         <div>
-          <a href="http://ienergybook.com/Aviso%20de%20privacidad.html" target="_blank">Checa nuestra politica de privacidad</a>
+          <a href="http://olus.mx/Aviso%20de%20privacidad.html" target="_blank">Checa nuestra politica de privacidad</a>
         </div>
         <div>
           <a v-b-modal.modal-1>Olvidó su contraseña?</a>

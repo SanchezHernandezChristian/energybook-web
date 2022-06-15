@@ -208,7 +208,7 @@ export default {
       this.costodemandamensual = suma.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       var total = convertidoconsumo + distributionMonthCost + monthcostCpacidad; // sumando
 
-      var formula2 = total / this.ProduccionDelMes;
+      var formula2 = parseFloat(Consumodinero.replace(',', '')) / this.ProduccionDelMes;
 
       this.DisplayFormula2 = formula2.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' $/Unidad';
     },
@@ -320,6 +320,7 @@ export default {
                 .guardar(this.$store.state.user.user.id, this.selectedYMD, produccion, id_eficiencia_a_cambiar)
                 .then((res) => {
                   console.log(res);
+                  location.reload();
                 })
                 .catch((err) => {
                   console.log(err);
@@ -436,7 +437,7 @@ export default {
                 .reduce((a, b) => a + b, 0) //Sumando los valores
                 .toFixed(2); //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
 
-              this.consumoDinero = Costo_Dispositivo;
+              this.consumoDinero = Costo_Dispositivo.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             })
             .catch((err) => {
               console.log(err);
@@ -494,7 +495,7 @@ export default {
                 .reduce((a, b) => a + b, 0) //Sumando los valores
                 .toFixed(2); //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
 
-              this.consumoDinero = Costo_Dispositivo;
+              this.consumoDinero = Costo_Dispositivo.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             })
             .catch((err) => {
               console.log(err);
@@ -538,9 +539,9 @@ export default {
             .reduce((a, b) => a + b, 0) //Sumando los valores
             .toFixed(2); //redondearlo a dos punto  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") Mostrarlo de manera bonita
 
-          this.DiaConsumoKwh = String(khwConsumoTotalDia) + ' kWh';
+          this.DiaConsumoKwh = String(khwConsumoTotalDia).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' kWh';
 
-          this.DiaDemandaKwh = String((khwConsumoTotalDia / (24 * 1 * 0.57)).toFixed(2)) + ' kW  ';
+          this.DiaDemandaKwh = String((khwConsumoTotalDia / (24 * 1 * 0.57)).toFixed(2)).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' kW  ';
         })
         .catch((err) => {
           console.log(err);

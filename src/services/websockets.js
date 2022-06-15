@@ -2,9 +2,9 @@
 import eUsers from '@/services/eUsers';
 import store from '@/store/store';
 const { Socket } = require('engine.io-client');
-const socket = new Socket('http://stg.api.olus.mx/api');
+//const socket = new Socket('http://stg.api.olus.mx/api');
 //var socket = require('engine.io-client')('http://stg.api.olus.mx/api');
-//let socket = require('engine.io-client')('http://api.olus.mx/api')
+const socket = require('engine.io-client')('http://api.olus.mx/api')
 //let socket = require('engine.io-client')('http://localhost:3000/api')
 
 socket.on('open', function () {

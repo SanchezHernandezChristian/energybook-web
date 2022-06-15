@@ -55,10 +55,7 @@
             </p>
             <b-alert show variant="info">
               <b-form-checkbox v-model="checkbox">
-                <a
-                  href="http://ienergybook.com/Aviso%20de%20privacidad.html"
-                  target="_blank"
-                >Acepto el Aviso de privacidad</a>
+                <a href="http://olus.mx/Aviso%20de%20privacidad.html" target="_blank">Acepto el Aviso de privacidad</a>
               </b-form-checkbox>
             </b-alert>
           </b-col>
@@ -68,13 +65,10 @@
   </div>
 </template>
 
-
 <style scoped>
 .btn-register:active {
   background-color: darkgray !important;
 }
 </style>
-
-
 
 <script src="./register"></script>
